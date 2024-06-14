@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import FishemiButton from '../layouts/FishemiButton.vue';
+import FishemiHeader from '../layouts/headers/FishemiHeader.vue';
 </script>
 <template>
-  <div>
-    <h1>Hero Section</h1>
-    <FishemiButton label="Espace client" />
+  <div class="w-full flex justify-between">
+    <FishemiHeader />
   </div>
 </template>
