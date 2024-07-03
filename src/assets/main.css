@@ -131,3 +131,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+.fishemi-text-color {
+  font-weight: bold;
+  background: radial-gradient(circle, #e9ff90 0%, #ccff00 40%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
