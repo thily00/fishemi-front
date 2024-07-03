@@ -1,7 +1,12 @@
-<script setup lang="ts">
+<script setup>
+import { ref } from 'vue';
 import { RouterView } from 'vue-router';
+
+const isDarkMode = ref(true);
 </script>
 
 <template>
-  <RouterView />
+    <div :class="{ dark: isDarkMode }">
+        <RouterView />
+    </div>
 </template>
