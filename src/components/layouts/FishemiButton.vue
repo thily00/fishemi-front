@@ -5,6 +5,10 @@ const props = defineProps({
   icon: String,
   label: String,
   action: Function,
+  fullWidth: {
+    type: Boolean,
+    default: false,
+  }
 });
 </script>
 
@@ -13,8 +17,8 @@ const props = defineProps({
     <Button
       :icon="props.icon"
       :label="props.label"
+      :class="{ 'w-full': props.fullWidth, 'custom-button': true}"
       @click="props.action"
-      class="custom-button"
     />
   </div>
 </template>
