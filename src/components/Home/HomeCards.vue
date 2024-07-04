@@ -3,34 +3,32 @@ import { computed } from "vue";
 
 const props = defineProps({
   title: String,
-  content: String,
   percentage: String,
-  logo: String, // Ajoutez une nouvelle prop pour le logo
+  logo: String,
 });
 
 const isLargeText = computed(() => {
-  // Vérifie si la chaîne contient uniquement des chiffres, %, $ ou €
-  return /^[0-9$€%]+$/.test(props.percentage);
+  return /^[0-9.,$€%\s]+$/.test(props.percentage);
 });
 </script>
 
 <template>
-  <div class="bg-gray-800 p-6 rounded-md text-white">
-    <div v-if="logo">
-      <img :src="logo" alt="logo" class="h-12 w-12" />
-      <!-- Ajustez la taille du logo selon vos besoins -->
+  <div class="bg-blue p-6 rounded-md text-grey">
+    <div class="mb-4" v-if="logo">
+      <img :src="logo" alt="logo" class="" />
     </div>
     <p
       v-else
       :class="[
-        isLargeText ? 'text-8xl' : 'text-4xl',
+        isLargeText
+          ? 'text-4xl sm:text-6xl md:text-7xl lg:text:8xl'
+          : 'text-2xl sm:text-2xl md:text-4xl',
         'font-bold',
-        'text-yellow-400',
+        'fishemi-text-color',
       ]"
     >
       {{ percentage }}
     </p>
     <p class="mt-2">{{ title }}</p>
-    <p class="mt-2">{{ content }}</p>
   </div>
 </template>
