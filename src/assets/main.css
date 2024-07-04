@@ -94,6 +94,7 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  font-family: "Aeonik", sans-serif !important;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -132,8 +133,26 @@ table {
   border-spacing: 0;
 }
 
+/* to do */
+/* span,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+label,
+input,
+button,
+select,
+option,
+textarea {
+  letter-spacing: -2%;
+} */
 .fishemi-text-color {
-  font-weight: bold;
   background: radial-gradient(circle, #e9ff90 0%, #ccff00 40%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
