@@ -46,38 +46,42 @@
 </template>
 
 <script setup>
-import InputText from 'primevue/inputtext';
-import FishemiButton from '@/components/layouts/FishemiButton.vue';
-import FishemiContainer from '@/components/layouts/FishemiContainer.vue';
+import InputText from "primevue/inputtext";
+import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import FishemiContainer from "@/components/layouts/FishemiContainer.vue";
 </script>
 
 <style scoped>
-
-.card{
-    position: relative;
-    z-index: 2;
+.card {
+  position: relative;
+  z-index: 2;
 }
 
 .bg-frame {
-    position: absolute;
-    top: 47%;
-    left: 51%;
-    transform: translate(-50%, -50%);
-    background: url('/bg-frame/bg.svg');
-    width: 1350px;
-    height: 100%;
-    z-index: 1;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
+  position: absolute;
+  top: 47%;
+  left: 51%;
+  transform: translate(-50%, -50%);
+  background: url("/bg-frame/bg.svg");
+  width: 1350px;
+  height: 100%;
+  z-index: 1;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 @media screen and (max-width: 1350px) {
+<<<<<<< HEAD
     .bg-frame {
         width: 100%;
         top: 50%;
         left: 50%;
     } 
+=======
+  .bg-frame {
+    width: 1200px;
+  }
+>>>>>>> 11cac99e525c7566dbc0fec023fb30a41520e7b5
 }
-
 </style>
