@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>ilies gay</h1>
+    <Sidebar />
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import InputText from "primevue/inputtext";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import FishemiContainer from "@/components/layouts/FishemiContainer.vue";
+import Sidebar from "@/components/layouts/Sidebar.vue";
 </script>
 
 <style scoped></style>
