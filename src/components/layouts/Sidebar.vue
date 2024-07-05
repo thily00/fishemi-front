@@ -1,5 +1,5 @@
 <template>
-  <div class="w-60 h-screen p-4 flex flex-col justify-between">
+  <div class="w-56 h-[90vh] flex flex-col justify-between">
     <!-- Première partie avec les icônes et les noms -->
     <div class="bg-blue py-8 rounded-lg flex justify-center">
       <ul class="space-y-6">
@@ -71,7 +71,9 @@
       </ul>
     </div>
 
-    <div class="bg-blue p-4 rounded mt-6 text-center text-white">
+    <div
+      class="bg-blue p-8 rounded-lg mt-6 text-center text-white flex flex-col gap-4"
+    >
       <p>Profitez de 10% de remise en ce moment</p>
       <FishemiButton label="C’est parti!" />
     </div>
