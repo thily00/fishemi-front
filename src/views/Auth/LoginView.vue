@@ -1,35 +1,35 @@
 <template>
     <div class="loginView"> 
-        <!-- <div class="bg-frame"></div> -->
+        <div class="bg-frame hidden md:block"></div>
         <FishemiContainer>
             <div class="auth-screen flex w-full h-screen justify-between items-center gap-4">
-                <div class="flex gap-14">
-                    <div class="flex-auto xl:w-[38%] lg:w-[50%] rounded-xl p-10 flex flex-col gap-6 items-center bg-blue card">
-                        <div class="flex gap-2 items-center mb-8">
+                <div class="w-full flex flex-col-reverse md:flex-row gap-10">
+                    <div class="flex-auto xl:w-[40%] lg:w-[48%] md:w-1/2 rounded-xl p-10 flex flex-col gap-6 items-center bg-blue card">
+                        <div class="flex gap-2 items-center mb-3">
                             <img src="/logo-alt.png" class="w-10 h-10" alt="logo">
                             <span class="text-white text-2xl">Fishemi</span>
                         </div>
         
-                        <div class="flex flex-col gap-4 text-white">
+                        <div class="flex flex-col gap-4 md:gap-6 text-white">
                             <div class="flex items-center gap-2">
                                 <img src="/icons/check.svg" alt="check_icon" class="w-6 h-6">
-                                <p class="text-xl"> Accéder à une interface de gestion intuitive</p>
+                                <p class="xl:text-xl lg:text-lg"> Accéder à une interface de gestion intuitive</p>
                             </div>
         
                             <div class="flex items-center gap-2">
                                 <img src="/icons/check.svg" alt="check_icon" class="w-6 h-6">
-                                <p class="text-xl"> Commencez à intégrer vos employés gratuitetement par imporrt de fichier .CSV</p>
+                                <p class="xl:text-xl lg:text-lg"> Commencez à intégrer vos employés gratuitetement par imporrt de fichier .CSV</p>
                             </div>
          
                             <div class="flex items-center gap-2">
                                 <img src="/icons/check.svg" alt="check_icon" class="w-6 h-6">
-                                <p class="text-xl"> Profitez d'un support 100% francçais présent 7j/7 de 9h à 20h (heure Paris)</p>
+                                <p class="xl:text-xl lg:text-lg"> Profitez d'un support 100% francçais présent 7j/7 de 9h à 20h (heure Paris)</p>
                             </div>
                         </div>
                     </div> 
         
-                    <div class="flex-auto xl:w-3/6 h-auto rounded-xl p-10 flex flex-col justify-between bg-blue card">
-                        <p class="fishemi-text-color text-[40px]">Connectez-vous à votre compte</p>
+                    <div class="flex-auto xl:w-3/6  lg:w-3/6 md:w-1/2 h-auto rounded-xl p-10 flex flex-col justify-between bg-blue card">
+                        <p class="fishemi-text-color font-bold xl:text-5xl lg:text-4xl md:text-3xl xs:text-2xl text-3xl mb-8">Connectez-vous à votre compte</p>
             
                         <div class="flex flex-col gap-2 text-white">
                             <label for="email">E-mail</label>
@@ -74,7 +74,9 @@ import FishemiContainer from '@/components/layouts/FishemiContainer.vue';
 
 @media screen and (max-width: 1350px) {
     .bg-frame {
-        width: 1200px;  
+        width: 100%;
+        top: 50%;
+        left: 50%;
     } 
 }
 
