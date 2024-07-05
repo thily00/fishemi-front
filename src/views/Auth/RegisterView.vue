@@ -1,5 +1,5 @@
 <template>
-    <div class="loginView"> 
+    <div class="registerView"> 
         <div class="bg-frame hidden md:block"></div>
         <FishemiContainer>
             <div class="auth-screen flex w-full h-screen justify-between items-center gap-4">
@@ -29,13 +29,24 @@
                     </div> 
         
                     <div class="flex-auto xl:w-3/6  lg:w-3/6 md:w-1/2 h-auto rounded-xl p-10 flex flex-col justify-between bg-blue card">
-                        <p class="fishemi-text-color font-bold xl:text-5xl lg:text-4xl md:text-3xl xs:text-2xl text-3xl mb-8">Connectez-vous à votre compte</p>
+                        <p class="fishemi-text-color font-bold xl:text-5xl lg:text-4xl md:text-3xl xs:text-2xl text-3xl mb-8">Créez votre compte</p>
             
+                        <div class="flex flex-col gap-2 text-white">
+                            <label for="email">Nom complet</label>
+                            <InputText id="email" v-model="value" class="mb-2 bg-background border-slate-700"/>
+                        </div>
+
                         <div class="flex flex-col gap-2 text-white">
                             <label for="email">E-mail</label>
                             <InputText id="email" v-model="value" class="mb-2 bg-background border-slate-700"/>
-                            <FishemiButton label="Connexion" fullWidth="true" />
                         </div>
+
+                        <div class="flex flex-col gap-2 text-white">
+                            <label for="email">Nom de votre entreprise</label>
+                            <InputText id="email" v-model="value" class="mb-2 bg-background border-slate-700"/>
+                        </div>
+
+                        <FishemiButton label="Connexion" fullWidth="true" />
                     </div> 
                 </div>
                 
