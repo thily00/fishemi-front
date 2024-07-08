@@ -1,5 +1,5 @@
 <template>
-  <div class="w-56 h-[90vh] flex flex-col justify-between">
+  <div class="w-56 min-h-[82vh] h-auto flex flex-col justify-between">
     <!-- Première partie avec les icônes et les noms -->
     <div class="bg-blue py-8 rounded-lg flex justify-center">
       <ul class="space-y-6">
