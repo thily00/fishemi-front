@@ -2,6 +2,14 @@
 import FishemiHeader from "../layouts/headers/FishemiHeader.vue";
 import FishemiButton from "../layouts/FishemiButton.vue";
 import Card from "../home/HomeCards.vue";
+
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const goToRegister = () => {
+  router.push("/register");
+};
+
 </script>
 
 <template>
@@ -28,7 +36,7 @@ import Card from "../home/HomeCards.vue";
               Sécurisez votre entreprise avec nos solutions intelligentes et
               restez toujours un pas en avant des menaces
             </h2>
-            <FishemiButton label="Inscrire mon organisation" />
+            <FishemiButton label="Inscrire mon organisation" :action="goToRegister" />
           </div>
         </div>
       </div>
@@ -84,7 +92,8 @@ import Card from "../home/HomeCards.vue";
         class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10 mt-4 md:mt-10 mb-12 md:mb-24"
       >
         <div
-          class="col-span-1 md:col-span-2 custom-card p-6 rounded-md text-background text-center"
+          class="col-span-1 md:col-span-2 custom-card p-6 rounded-md text-background text-center cursor-pointer"
+          @click="goToRegister"
         >
           <p class="text-3xl text-blue">L'inscription est 100% gratuite</p>
           <div class="mt-4 md:mt-10 px-4 py-3 bg-blue rounded-lg inline-block">

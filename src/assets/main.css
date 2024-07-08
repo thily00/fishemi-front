@@ -157,3 +157,25 @@ textarea {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.auth-bg-frame {
+  position: absolute;
+  top: 47%;
+  left: 51%;
+  transform: translate(-50%, -50%);
+  background: url("/bg-frame/bg.svg");
+  width: 1350px;
+  height: 100%;
+  z-index: 1;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 1380px) {
+    .auth-bg-frame {
+        width: 100%;
+        top: 50%;
+        left: 50%;
+    } 
+}
