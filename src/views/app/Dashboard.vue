@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <Sidebar />
+    <!-- <Sidebar /> -->
     <div class="flex-1 p-4">
       <div class="bg-blue p-6 rounded-lg mb-4">
         <div class="flex justify-between items-center mb-4">
