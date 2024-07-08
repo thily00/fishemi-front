@@ -1,6 +1,5 @@
 <template>
   <div class="w-56 h-[90vh] flex flex-col justify-between">
-    <!-- Première partie avec les icônes et les noms -->
     <div class="bg-blue py-8 rounded-lg flex justify-center">
       <ul class="space-y-6">
         <li>
@@ -83,13 +82,3 @@
 <script setup>
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 </script>
-
-<style scoped>
-.bg-blue {
-  background-color: #1e2a38; /* Couleur de fond pour la sidebar */
-}
-
-.bg-darkBlueLight {
-  background-color: #243447; /* Couleur de fond pour la carte de promotion */
-}
-</style>
