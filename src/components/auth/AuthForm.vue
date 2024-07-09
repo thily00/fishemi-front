@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from "vue";
+import axios from "axios";
 import InputText from "primevue/inputtext";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 
@@ -18,6 +20,29 @@ const redirectTo = (pagename) => {
 
   emit("redirect-to", pagename);
 };
+
+const email = ref("");
+const fullName = ref("");
+const companyName = ref("");
+
+const handleSubmit = async () => {
+  const payload = {
+    email: email.value,
+    user_full_name: fullName.value,
+    company_name: companyName.value,
+  };
+
+  try {
+    const response = await axios.post(
+      "https://preprod.api.fishemi.ilies.ch/account/signup",
+      payload
+    );
+    console.log(response.data);
+    redirectTo("dashboard");
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 <template>
   <div class="rounded-xl p-10 flex flex-col justify-between bg-blue w-full">
@@ -31,10 +56,10 @@ const redirectTo = (pagename) => {
 
     <div class="flex flex-col gap-2 text-white">
       <div class="flex flex-col gap-2 text-white" v-if="!props.isLogin">
-        <label for="email">Nom complet</label>
+        <label for="fullName">Nom complet</label>
         <InputText
-          id="email"
-          v-model="value"
+          id="fullName"
+          v-model="fullName"
           class="mb-2 bg-background border-slate-700"
         />
       </div>
@@ -43,16 +68,16 @@ const redirectTo = (pagename) => {
         <label for="email">E-mail</label>
         <InputText
           id="email"
-          v-model="value"
+          v-model="email"
           class="mb-2 bg-background border-slate-700"
         />
       </div>
 
       <div class="flex flex-col gap-2 text-white" v-if="!props.isLogin">
-        <label for="email">Nom de votre entreprise</label>
+        <label for="companyName">Nom de votre entreprise</label>
         <InputText
-          id="email"
-          v-model="value"
+          id="companyName"
+          v-model="companyName"
           class="mb-2 bg-background border-slate-700"
         />
       </div>
@@ -61,7 +86,7 @@ const redirectTo = (pagename) => {
         <FishemiButton
           label="Connexion"
           fullWidth="true"
-          :action="() => redirectTo('dashboard')"
+          :action="handleSubmit"
         />
         <p class="mt-3 cursor-pointer">
           {{
