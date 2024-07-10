@@ -1,5 +1,5 @@
 <template>
-  <div class="w-56 min-h-[82vh] h-auto flex flex-col gap-4">
+  <div class="w-60 min-h-[82vh] h-auto flex flex-col gap-4">
     <div class="bg-blue py-8 rounded-lg flex justify-center">
       <ul class="space-y-6">
         <li>
