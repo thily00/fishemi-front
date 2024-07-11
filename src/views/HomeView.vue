@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import HeroSection from '@/components/home/HeroSection.vue';
 import FishemiContainer from '@/components/layouts/FishemiContainer.vue';
 </script>
