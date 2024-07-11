@@ -18,7 +18,7 @@ const goToRegister = () => {
     <div class="relative">
       <img
         src="/public/bg-frame/bg.svg"
-        alt="map background"
+        alt="map background" z
         class="w-100 h-auto m-auto top-[90px] object-cover absolute inset-0 z-0 hidden md:block"
       />
       <div class="grid md:grid-cols-6 gap-4 pt-8 relative z-10">
