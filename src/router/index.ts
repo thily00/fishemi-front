@@ -13,21 +13,21 @@ const router = createRouter({
     //   name: "login",
     //   component: () => import("@/views/auth/LoginView.vue"),
     // },
-    {
-      path: "/register",
-      name: "register",
-      component: () => import("@/views/auth/RegisterView.vue"),
-    },
-    {
-      path: "/dashboard",
-      name: "dashboard",
-      component: () => import("@/views/app/DashboardView.vue"),
-    },
-    {
-      path: "/mes-employes",
-      name: "employees",
-      component: () => import("@/views/app/EmployeesView.vue"),
-    }  
+    // {
+    //   path: "/register",
+    //   name: "register",
+    //   component: () => import("@/views/auth/RegisterView.vue"),
+    // },
+    // {
+    //   path: "/dashboard",
+    //   name: "dashboard",
+    //   component: () => import("@/views/app/DashboardView.vue"),
+    // },
+    // {
+    //   path: "/mes-employes",
+    //   name: "employees",
+    //   component: () => import("@/views/app/EmployeesView.vue"),
+    // }  
   ],
 });
 
