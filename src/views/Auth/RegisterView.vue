@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import FishemiContainer from "@/components/layouts/FishemiContainer.vue";
 import AuthContent from "@/components/auth/AuthContent.vue";
 

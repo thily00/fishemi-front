@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import FishemiHeader from "../layouts/headers/FishemiHeader.vue";
 import FishemiButton from "../layouts/FishemiButton.vue";
 import Card from "../home/HomeCards.vue";

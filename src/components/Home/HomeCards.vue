@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
 const props = defineProps({
@@ -8,7 +8,11 @@ const props = defineProps({
 });
 
 const isLargeText = computed(() => {
-  return /^[0-9.,$€%\s]+$/.test(props.percentage);
+  if(props.percentage){
+    return /^[0-9.,$€%\s]+$/.test(props.percentage);
+  }else{
+    return true
+  }
 });
 </script>
 

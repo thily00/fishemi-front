@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
 import InfoCard from "@/components/auth/InfoCard.vue";
 import AuthForm from "@/components/auth/AuthForm.vue";
@@ -13,7 +13,7 @@ const props = defineProps({
 
 const isLogin = props.type === 'login';
 
-const redirectTo = (pagename) => {
+const redirectTo = (pagename: string) => {
     router.push(`/${pagename}`);
 };
 </script>
