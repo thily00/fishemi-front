@@ -34,8 +34,8 @@
   </div>
 </template>
 
-<script setup>
-import Sidebar from "@/components/layouts/Sidebar.vue";
+<script setup lang="ts">
+// import Sidebar from "@/components/layouts/Sidebar.vue";
 import Chart from "primevue/chart";
 import { ref } from "vue";
 

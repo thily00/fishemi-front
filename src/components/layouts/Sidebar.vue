@@ -79,6 +79,6 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 </script>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
 import InputText from "primevue/inputtext";
@@ -13,8 +13,8 @@ const props = defineProps({
   },
 });
 
-const redirectTo = (pagename) => {
-  if (pagename === undefined) {
+const redirectTo = (pagename: string) => {
+  if (pagename === 'authScreen') {
     pagename = props.isLogin ? "register" : "login";
   }
 
@@ -85,7 +85,7 @@ const handleSubmit = async () => {
       <div>
         <FishemiButton
           label="Connexion"
-          fullWidth="true"
+          :fullWidth=true
           :action="handleSubmit"
         />
         <p class="mt-3 cursor-pointer">
@@ -94,7 +94,7 @@ const handleSubmit = async () => {
               ? "Vous n'avez pas de compte ?"
               : "Vous avez déja un compte ?"
           }}
-          <span class="fishemi-text-color font-bold" @click="redirectTo()">{{
+          <span class="fishemi-text-color font-bold" @click="redirectTo('authScreen')">{{
             props.isLogin ? "S'inscrire" : "Se connecter"
           }}</span>
         </p>
