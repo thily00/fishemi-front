@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { RouterView } from "vue-router";
 import FishemiHeader2 from "@/components/layouts/headers/FishemiHeader2.vue"

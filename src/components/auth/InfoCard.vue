@@ -1,14 +1,7 @@
-<script setup>
+<script setup lang="ts">
 const emit = defineEmits(['redirect-to'])
 
-const props = defineProps({
-    isLogin: {
-        type: Boolean,
-        required: true
-    }
-});
-
-const redirectTo = (pagename) => {
+const redirectTo = (pagename: string) => {
     emit('redirect-to', pagename);
 }
 </script>

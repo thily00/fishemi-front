@@ -35,10 +35,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import Header from "@/components/layouts/headers/FishemiHeader2.vue";
 import Sidebar from "@/components/layouts/Sidebar.vue";
+
+// import Sidebar from "@/components/layouts/Sidebar.vue";
 import Chart from "primevue/chart";
 
 const sidebarVisible = ref(false);
