@@ -1,7 +1,8 @@
 <template>
-  <div class="flex">
-    <!-- <Sidebar /> -->
+  <div class="flex flex-col md:flex-row">
+    <!-- <Sidebar :sidebarVisible="sidebarVisible" /> -->
     <div class="flex-1 p-4">
+      <!-- <Header @toggle-sidebar="toggleSidebar" /> -->
       <div class="bg-blue p-6 rounded-lg mb-4">
         <div class="flex justify-between items-center mb-4">
           <div>
@@ -13,10 +14,10 @@
           type="line"
           :data="chartData"
           :options="chartOptions"
-          class="h-[30rem]"
+          class="w-full h-[20rem] md:h-[30rem]"
         />
       </div>
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-blue p-4 rounded-lg text-center text-white">
           <p class="text-xl font-bold">0</p>
           <p class="text-grey">Nouveaux événements</p>
@@ -35,9 +36,16 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import Header from "@/components/layouts/headers/FishemiHeader2.vue";
 import Sidebar from "@/components/layouts/Sidebar.vue";
 import Chart from "primevue/chart";
-import { ref } from "vue";
+
+const sidebarVisible = ref(false);
+
+const toggleSidebar = () => {
+  sidebarVisible.value = !sidebarVisible.value;
+};
 
 const chartData = ref({
   labels: [
