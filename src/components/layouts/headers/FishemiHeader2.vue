@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 
 const router = useRouter();
 const redirecTo = (pagename: string) => {
@@ -9,6 +9,7 @@ const redirecTo = (pagename: string) => {
 
 // État pour contrôler la visibilité de la sidebar
 const sidebarVisible = ref(false);
+const emit = defineEmits(["toggle-sidebar"]);
 
 // Émettre un événement pour basculer la visibilité de la sidebar
 const toggleSidebar = () => {
