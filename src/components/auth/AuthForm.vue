@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 const redirectTo = (pagename: string) => {
-  if (pagename === 'authScreen') {
+  if (pagename === "authScreen") {
     pagename = props.isLogin ? "register" : "login";
   }
 
@@ -38,7 +38,6 @@ const handleSubmit = async () => {
       payload
     );
     console.log(response.data);
-    redirectTo("dashboard");
   } catch (error) {
     console.error(error);
   }
@@ -85,7 +84,7 @@ const handleSubmit = async () => {
       <div>
         <FishemiButton
           label="Connexion"
-          :fullWidth=true
+          :fullWidth="true"
           :action="handleSubmit"
         />
         <p class="mt-3 cursor-pointer">
@@ -94,9 +93,11 @@ const handleSubmit = async () => {
               ? "Vous n'avez pas de compte ?"
               : "Vous avez déja un compte ?"
           }}
-          <span class="fishemi-text-color font-bold" @click="redirectTo('authScreen')">{{
-            props.isLogin ? "S'inscrire" : "Se connecter"
-          }}</span>
+          <span
+            class="fishemi-text-color font-bold"
+            @click="redirectTo('authScreen')"
+            >{{ props.isLogin ? "S'inscrire" : "Se connecter" }}</span
+          >
         </p>
       </div>
     </div>
