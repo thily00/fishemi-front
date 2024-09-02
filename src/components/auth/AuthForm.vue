@@ -3,6 +3,7 @@ import { ref } from "vue";
 import axios from "axios";
 import InputText from "primevue/inputtext";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import Message from "primevue/message";
 
 const emit = defineEmits(["redirect-to"]);
 
@@ -25,7 +26,28 @@ const email = ref("");
 const fullName = ref("");
 const companyName = ref("");
 
+const successMessage = ref("");
+const errorMessage = ref("");
+
+const validateFields = () => {
+  if (
+    !email.value ||
+    (!props.isLogin && (!fullName.value || !companyName.value))
+  ) {
+    errorMessage.value = "Tous les champs doivent être remplis.";
+    return false;
+  }
+  return true;
+};
+
 const handleSubmit = async () => {
+  successMessage.value = "";
+  errorMessage.value = "";
+
+  if (!validateFields()) {
+    return;
+  }
+
   const payload = {
     email: email.value,
     user_full_name: fullName.value,
@@ -37,12 +59,23 @@ const handleSubmit = async () => {
       "https://preprod.api.fishemi.ilies.ch/account/signup",
       payload
     );
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
+    successMessage.value =
+      "Inscription réussie ! Veuillez vérifier votre email.";
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      if (error.response.status === 409) {
+        errorMessage.value = "Un compte avec cet e-mail existe déjà.";
+      } else {
+        errorMessage.value =
+          error.response.data.message || "Une erreur s'est produite.";
+      }
+    } else {
+      errorMessage.value = "Une erreur inconnue s'est produite.";
+    }
   }
 };
 </script>
+
 <template>
   <div class="rounded-xl p-10 flex flex-col justify-between bg-blue w-full">
     <p
@@ -52,6 +85,13 @@ const handleSubmit = async () => {
         props.isLogin ? "Connectez-vous à votre compte" : "Créez votre compte"
       }}
     </p>
+
+    <div v-if="successMessage" class="mb-4">
+      <Message severity="success">{{ successMessage }}</Message>
+    </div>
+    <div v-if="errorMessage" class="mb-4">
+      <Message severity="error">{{ errorMessage }}</Message>
+    </div>
 
     <div class="flex flex-col gap-2 text-white">
       <div class="flex flex-col gap-2 text-white" v-if="!props.isLogin">
@@ -91,7 +131,7 @@ const handleSubmit = async () => {
           {{
             props.isLogin
               ? "Vous n'avez pas de compte ?"
-              : "Vous avez déja un compte ?"
+              : "Vous avez déjà un compte ?"
           }}
           <span
             class="fishemi-text-color font-bold"
