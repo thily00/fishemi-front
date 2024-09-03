@@ -40,7 +40,7 @@ const validateFields = () => {
   return true;
 };
 
-const handleSubmit = async () => {
+const handleSignup = async () => {
   successMessage.value = "";
   errorMessage.value = "";
 
@@ -74,6 +74,49 @@ const handleSubmit = async () => {
     }
   }
 };
+
+const handleLogin = async () => {
+  successMessage.value = "";
+  errorMessage.value = "";
+
+  if (!validateFields()) {
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      "https://preprod.api.fishemi.ilies.ch/account/sendOtp",
+      {
+        params: {
+          email: email.value,
+        },
+      }
+    );
+
+    successMessage.value =
+      "Connexion réussie ! Veuillez vérifier votre email pour le code OTP.";
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      if (error.response.status === 400) {
+        errorMessage.value =
+          "Erreur lors de la connexion. Vérifiez votre email.";
+      } else {
+        errorMessage.value =
+          error.response.data.message || "Une erreur s'est produite.";
+      }
+    } else {
+      errorMessage.value = "Une erreur inconnue s'est produite.";
+    }
+  }
+};
+
+const handleSubmit = () => {
+  if (props.isLogin) {
+    handleLogin();
+  } else {
+    handleSignup();
+  }
+};
 </script>
 
 <template>
@@ -94,7 +137,7 @@ const handleSubmit = async () => {
     </div>
 
     <div class="flex flex-col gap-2 text-white">
-      <div class="flex flex-col gap-2 text-white" v-if="!props.isLogin">
+      <div v-if="!props.isLogin" class="flex flex-col gap-2 text-white">
         <label for="fullName">Nom complet</label>
         <InputText
           id="fullName"
@@ -112,7 +155,7 @@ const handleSubmit = async () => {
         />
       </div>
 
-      <div class="flex flex-col gap-2 text-white" v-if="!props.isLogin">
+      <div v-if="!props.isLogin" class="flex flex-col gap-2 text-white">
         <label for="companyName">Nom de votre entreprise</label>
         <InputText
           id="companyName"
@@ -123,7 +166,7 @@ const handleSubmit = async () => {
 
       <div>
         <FishemiButton
-          label="Connexion"
+          :label="props.isLogin ? 'Connexion' : 'Inscription'"
           :fullWidth="true"
           :action="handleSubmit"
         />
