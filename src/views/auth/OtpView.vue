@@ -29,29 +29,26 @@ const login = async () => {
       }
     );
 
-    // Simuler un délai de 3 secondes avant de rediriger
     setTimeout(() => {
-      isLoading.value = false; // Arrêter le loader
+      isLoading.value = false;
 
-      // Sauvegarder les tokens si besoin
       const accessToken = response.data.access_token;
       const refreshToken = response.data.refresh_token;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
 
-      // Rediriger l'utilisateur après le succès du login
-      router.push("/dashboard"); // Modifier la route selon votre application
+      router.push("/dashboard");
     }, 3000);
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
-    isLoading.value = false; // Arrêter le loader même en cas d'erreur
+    isLoading.value = false;
   }
 };
 
 onMounted(() => {
-  // Récupérer les paramètres email et token de l'URL
   email.value = route.query.email as string | null;
   otpCode.value = route.query.token as string | null;
 
-  // Appeler l'API de login
   login();
 });
 </script>
