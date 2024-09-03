@@ -133,6 +133,10 @@ table {
   border-spacing: 0;
 }
 
+.pi{
+  font-family: 'primeicons' !important;
+}
+
 /* to do */
 /* span,
 a,
