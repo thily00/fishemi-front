@@ -39,26 +39,26 @@ const handleCheckboxChange = (checked: boolean) => {
   emit('update:selectedEmployees', updatedList);
 };
 
-const beforeEnter = (el: HTMLElement) => {
+const beforeEnter = (el: HTMLElement | any) => {
   el.style.maxHeight = '0';
   el.style.opacity = '0';
 };
 
-const enter = (el: HTMLElement) => {
+const enter = (el: HTMLElement | any) => {
   el.style.maxHeight = el.scrollHeight + 'px';
   el.style.opacity = '1';
 };
 
-const afterEnter = (el: HTMLElement) => {
+const afterEnter = (el: HTMLElement | any) => {
   el.style.maxHeight = 'none'; 
 };
 
-const beforeLeave = (el: HTMLElement) => {
+const beforeLeave = (el: HTMLElement | any) => {
   el.style.maxHeight = el.scrollHeight + 'px';
   el.style.opacity = '1';
 };
 
-const leave = (el: HTMLElement) => {
+const leave = (el: HTMLElement | any) => {
   el.style.maxHeight = '0';
   el.style.opacity = '0';
 };
@@ -116,7 +116,7 @@ const leave = (el: HTMLElement) => {
             <h6 class="text-gray-400">{{ props.email }}</h6>
           </div>
         </div>
-        <div class="form flex flex-col flex-start my-4">
+        <div class="form flex flex-col flex-start my-4" v-if="employeeStore.selectedEmployee">
           <div class="flex my-8 gap-4">
             <div class="w-full flex flex-col gap-2 text-white">
               <label for="name">Nom</label>

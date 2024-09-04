@@ -114,7 +114,7 @@ const fetchData = async () => {
     );
     chartData.value.labels = labels;
     chartData.value.datasets[0].data = values;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erreur lors de la récupération des données", error);
     if (error.response && error.response.status === 401) {
       console.error(

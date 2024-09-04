@@ -55,7 +55,8 @@ const handleSignup = async () => {
   };
 
   try {
-    const response = await axios.post(
+    //eslint-disable-next-line
+    const response: any = await axios.post(
       "https://preprod.api.fishemi.ilies.ch/account/signup",
       payload
     );
@@ -84,6 +85,7 @@ const handleLogin = async () => {
   }
 
   try {
+    //eslint-disable-next-line
     const response = await axios.get(
       "https://preprod.api.fishemi.ilies.ch/account/sendOtp",
       {
