@@ -4,6 +4,7 @@ import { RouterView } from "vue-router";
 import FishemiHeader2 from "@/components/layouts/headers/FishemiHeader2.vue";
 import Sidebar from "@/components/layouts/Sidebar.vue";
 import { useRoute } from "vue-router";
+import Toast from 'primevue/toast';
 
 const route = useRoute();
 const isDarkMode = ref(true);
@@ -30,6 +31,7 @@ const showAppLayout = computed(() => {
           </div>
         </div>
       </div>
+      <Toast />
     </div>
   </div>
 </template>

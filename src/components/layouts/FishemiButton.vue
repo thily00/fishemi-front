@@ -4,11 +4,12 @@ import Button from "primevue/button";
 const props = defineProps({
   icon: String,
   label: String,
+  action: Function,
+  loading: Boolean,
   type: {
     type: String as () => 'primary' | 'secondary',
     default: 'primary', // Valeur par défaut
   },
-  action: Function,
   fullWidth: {
     type: Boolean,
     default: false,
@@ -21,6 +22,7 @@ const props = defineProps({
     <Button
       :icon="props.icon"
       :label="props.label"
+      :loading="props.loading ? props.loading : false"
       :class="[
         { 'w-full': props.fullWidth}, 
         'custom-button',
