@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import("@/views/auth/RegisterView.vue"),
     },
     {
+      path: "/otp",
+      name: "otp",
+      component: () => import("@/views/auth/OtpView.vue"),
+    },
+    {
       path: "/dashboard",
       name: "dashboard",
       component: () => import("@/views/app/DashboardView.vue"),
@@ -27,7 +32,7 @@ const router = createRouter({
       path: "/mes-employes",
       name: "employees",
       component: () => import("@/views/app/EmployeesView.vue"),
-    }  
+    },
   ],
 });
 
