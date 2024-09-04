@@ -6,10 +6,7 @@ import { useEmployeeStore } from '@/stores/employeeStore';
 import EmployeeCard from '@/components/employees/EmployeeCard.vue';
 
 const toast = useToast();
-
-
 const employeeStore = useEmployeeStore();
-const selectedEmployees:Ref<string[]> = ref([]);
 const props = defineProps({
     employees: {
         type: Array<Employee>,
@@ -55,10 +52,6 @@ const removeEmployee = async (employeeIds: []) => {
     }
 };
 
-const handleUpdateSelectedEmployees = (updatedList: string[]) => {
-  selectedEmployees.value = updatedList;
-};
-
 </script>
 <template>
     <div class="w-full">
@@ -69,11 +62,9 @@ const handleUpdateSelectedEmployees = (updatedList: string[]) => {
                 :email="employee.email" 
                 :id="employee.id" 
                 :isOpen="employeeStore.selectedEmployee?.id === employee.id"
-                :selectedEmployees="selectedEmployees"
                 @edit="editEmployee"
                 @remove="removeEmployee"
                 @toggle="toggleCard(employee.id)"
-                @update:selectedEmployees="handleUpdateSelectedEmployees"
                />
             </li>
         </ul>

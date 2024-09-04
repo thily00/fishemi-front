@@ -6,12 +6,14 @@ import type { Employee } from '@/types/employee'
 interface EmployeeStore {
   employeeList: Employee[]
   selectedEmployee: Employee | null
+  selectedEmployees: string[]
 }
 
 export const useEmployeeStore = defineStore('employee', {
   state: (): EmployeeStore => ({
     employeeList: [],
-    selectedEmployee: null
+    selectedEmployee: null,
+    selectedEmployees: []
   }),
 
   getters: {
@@ -63,7 +65,6 @@ export const useEmployeeStore = defineStore('employee', {
       })
     },
 
-
     async updateEmployee() {
       const employee = this.selectedEmployee
 
@@ -83,7 +84,6 @@ export const useEmployeeStore = defineStore('employee', {
         })
       })
     },
-
 
     async deleteEmployee(employeeIds: string[]) {      
       const body= {'id': employeeIds}
@@ -106,11 +106,32 @@ export const useEmployeeStore = defineStore('employee', {
       })
     },
 
+    searchEmployee(value: string) {
+      return new Promise((resolve, reject) => {
+        const accessToken = localStorage.getItem('accessToken');
+        axios.get(`https://preprod.api.fishemi.ilies.ch/employee/search?name=${value}`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          reject(error)
+        })
+      })
+    },
+
     setSelectedEmployee(employeeId: string) {        
         const employee = this.getUserById(employeeId)
         if (employee) {
             this.selectedEmployee = employee
         }
+    },
+
+    setSelectionList(employeeIds: string[]) {
+      this.selectedEmployees = employeeIds
     }
-  },
+  }
 })

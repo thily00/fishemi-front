@@ -9,13 +9,13 @@ import { useEmployeeStore } from '@/stores/employeeStore';
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import EmployeeList from '@/components/employees/EmployeeList.vue';
 
+
 const toast = useToast();
 const searchValue: Ref<string> = ref('');
 const fileUploading: Ref<boolean> = ref(false);
 const fileInput:Ref<HTMLInputElement | null> = ref(null);
 const employeeStore = useEmployeeStore();
 const employees: Ref<Employee[]> = ref([]);
-
 
 const getEmployee = async () => {
     const response: any = await employeeStore.getAllEmployees();
@@ -31,6 +31,31 @@ onMounted(() => {
 const triggerFileInput = (): void => {
     if(fileInput.value) {
         fileInput.value.click();
+    }
+};
+
+const search = async () => {    
+    const response:any = await employeeStore.searchEmployee(searchValue.value);
+    if(response.status === 200) {
+        if(response.data.length === 0) {
+            getEmployee();
+        }
+        employees.value = response.data;
+    }
+}
+
+const removeSelection = async () => {
+    try {
+        const employeeIds =  employeeStore.selectedEmployees;
+        const response: any = await employeeStore.deleteEmployee(employeeIds);
+        if(response.status === 200) {
+            await getEmployee();
+            employeeStore.setSelectionList([]);
+            toast.add({ severity: 'success', summary: 'Suppression réussie', detail: 'Les données ont été supprimées avec succès.', life: 3000 });
+        }
+    } catch (error) {
+        console.log(error);
+        toast.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la suppression.', life: 3000 });
     }
 };
 
@@ -71,12 +96,15 @@ const handleFileUpload = async (event: Event): Promise<void> => {
             <div class="w-96">
                 <IconField>
                     <InputIcon class="pi pi-search"/>
-                    <InputText v-model="searchValue" placeholder="Rechercher un employé" class="bg-[#111826] border-0 p-4" />
+                    <InputText v-model="searchValue" @keyup.enter="search" placeholder="Rechercher un employé" class="bg-[#111826] border-0 p-4" />
                 </IconField>
             </div>
             <div class="w-0.5 h-full bg-gray-400"></div>
-            <div> <i class="pi pi-trash text-gray-400 cursor-pointer"></i> </div>
+            <div @click="removeSelection"> <i class="pi pi-trash text-gray-400 cursor-pointer"></i> </div>
         </div>
-        <EmployeeList :employees="employees" :getEmployee="getEmployee" />
+        <EmployeeList 
+          :employees="employees" 
+          :getEmployee="getEmployee"
+        />
     </div>
 </template>
