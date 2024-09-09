@@ -2,12 +2,9 @@
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import ProgressSpinner from "primevue/progressspinner";
-<<<<<<< HEAD
 import { useAccountStore } from "@/stores/accountStore";
-=======
-import {setAccessToken, setRefreshToken} from "@/services/AuthService";
-import {axiosNotAuthInstance} from "@/services/AxiosService";
->>>>>>> 2edf3b17de1b75ba089cd32004b755404af275a1
+import { setAccessToken, setRefreshToken } from "@/services/AuthService";
+import { axiosNotAuthInstance } from "@/services/AxiosService";
 
 const accountStore = useAccountStore();
 const isLoading = ref(true);
@@ -25,20 +22,12 @@ const login = async () => {
   }
 
   try {
-<<<<<<< HEAD
-    const response: any = await accountStore.login({ email, otpCode });
-    if (response && response?.status === 200) {
-      isLoading.value = false;
-=======
-    const response = await axiosNotAuthInstance().get(
-      "/account/login",
-      {
-        params: {
-          email: email.value,
-          "otp-code": otpCode.value,
-        },
-      }
-    );
+    const response = await axiosNotAuthInstance().get("/account/login", {
+      params: {
+        email: email,
+        "otp-code": otpCode,
+      },
+    });
 
     setTimeout(() => {
       isLoading.value = false;
@@ -47,10 +36,10 @@ const login = async () => {
       const refreshToken = response.data.refresh_token;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
+      accountStore.setConnexionStatus(true);
 
->>>>>>> 2edf3b17de1b75ba089cd32004b755404af275a1
       router.push("/dashboard");
-    }
+    });
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
     isLoading.value = false;

@@ -35,52 +35,56 @@ export const useAccountStore = defineStore("account", {
       });
     },
 
-    // This function is used to register a user
-    async signup({
-      email,
-      user_full_name,
-      company_name,
-    }: {
-      email: string;
-      user_full_name: string;
-      company_name: string;
-    }) {
-      return new Promise((resolve, reject) => {
-        axiosRequest
-          .post("/account/signup", {
-            email: email,
-            user_full_name: user_full_name,
-            company_name: company_name,
-          })
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    setConnexionStatus(status: boolean) {
+      this.isConnected = status;
     },
 
+    // This function is used to register a user
+    // async signup({
+    //   email,
+    //   user_full_name,
+    //   company_name,
+    // }: {
+    //   email: string;
+    //   user_full_name: string;
+    //   company_name: string;
+    // }) {
+    //   return new Promise((resolve, reject) => {
+    //     axiosRequest
+    //       .post("/account/signup", {
+    //         email: email,
+    //         user_full_name: user_full_name,
+    //         company_name: company_name,
+    //       })
+    //       .then((response) => {
+    //         resolve(response);
+    //       })
+    //       .catch((error) => {
+    //         reject(error);
+    //       });
+    //   });
+    // },
+
     // This function is used to login a user
-    async login({ email, otpCode }: { email: string; otpCode: string }) {
-      return new Promise((resolve, reject) => {
-        axiosRequest
-          .get(`/account/login?email=${email}&otp-code=${otpCode}`)
-          .then((response) => {
-            if (response.data) {
-              const accessToken = response.data.access_token;
-              const refreshToken = response.data.refresh_token;
-              localStorage.setItem("accessToken", accessToken);
-              localStorage.setItem("refreshToken", refreshToken);
-              this.isConnected = true;
-            }
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    },
+    // async login({ email, otpCode }: { email: string; otpCode: string }) {
+    //   return new Promise((resolve, reject) => {
+    //     axiosRequest
+    //       .get(`/account/login?email=${email}&otp-code=${otpCode}`)
+    //       .then((response) => {
+    //         if (response.data) {
+    //           const accessToken = response.data.access_token;
+    //           const refreshToken = response.data.refresh_token;
+    //           localStorage.setItem("accessToken", accessToken);
+    //           localStorage.setItem("refreshToken", refreshToken);
+    //           this.isConnected = true;
+    //         }
+    //         resolve(response);
+    //       })
+    //       .catch((error) => {
+    //         reject(error);
+    //       });
+    //   });
+    // },
 
     // This function is used to get the user's information
     async getUserInfo() {
