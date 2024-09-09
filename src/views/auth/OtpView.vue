@@ -37,6 +37,8 @@ const login = async () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
+      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
       router.push("/dashboard");
     }, 3000);
   } catch (error) {
