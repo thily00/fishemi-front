@@ -92,7 +92,7 @@ const toggleSidebar = () => {
           </p>
         </div>
         <div
-          class="w-8 md:w-10 h-8 md:h-10 bg-yellow-400 rounded-full flex justify-center items-center"
+          class="w-8 md:w-10 h-8 md:h-10 primary rounded-full flex justify-center items-center"
         >
           <p class="mb-0 font-normal text-xl">{{ capitalizedFullName }}</p>
         </div>

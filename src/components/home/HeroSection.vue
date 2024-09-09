@@ -16,7 +16,7 @@ const goToRegister = () => {
     <FishemiHeader />
     <div class="relative">
       <img
-        src="/public/bg-frame/bg.svg"
+        src="/bg-frame/bg.png"
         alt="map background"
         class="w-100 h-auto m-auto top-[90px] object-cover absolute inset-0 z-0 hidden md:block"
       />
@@ -56,7 +56,7 @@ const goToRegister = () => {
         />
         <Card
           class="col-span-1"
-          percentage="3"
+          percentage="3,99€"
           title="C'est le prix HT par employés que coûte une simulation d'attaque Fishemi"
         />
       </div>
@@ -68,12 +68,12 @@ const goToRegister = () => {
         <Card
           class="col-span-1"
           percentage="Une tarification comme bon vous semble"
-          title="Profitez d’une tarification “pay-as-go” et payez uniquement à chaque campagne lancée. Ainsi, si vous voulez lancer une simulation d’attaque avec 20 employés, vous ne payerez que 59,80 € (H.T)"
+          title="Profitez d’une tarification “pay-as-go” et payez uniquement à chaque campagne lancée. Ainsi, si vous voulez lancer une simulation d’attaque avec 20 employés, vous ne payerez que 79,80 € (H.T)"
         />
         <Card
           class="col-span-1"
           title="Nous prenons en charge les suites professionnelles Office 365 et Google Workspace afin de pouvoir fournir des templates d’e-mail de phishing ultra-réaliste en utilisant l’intelligence artificielle."
-          logo="/public/logo-google.png"
+          logo="/logo-google.png"
         />
       </div>
 
@@ -88,7 +88,12 @@ const goToRegister = () => {
 
       <!-- Quatrième ligne -->
       <div class="grid grid-cols-1 gap-4 md:gap-10 mt-4 md:mt-10">
-        <img src="/public/img-video-home.png" alt="logo" class="w-full" />
+        <div id="testimonial" class="flex w-full rounded-md items-center justify-center">
+          <a href="https://www.youtube.com/?gl=CH" class="flex flex-col items-center justify-center gap-3 p-5" target="_blank" rel="noreferrer nofollow">
+            <img src="/icons/play.svg" alt="Lancer la vidéo" />
+            <span class="text-2xl sm:text-2xl md:text-4xl fishemi-text-color">Découvrez comment Hetic a intégré Fishemi</span>
+          </a>
+        </div>
       </div>
 
       <!-- Cinquième ligne -->
@@ -116,5 +121,33 @@ const goToRegister = () => {
 <style>
 .custom-card {
   background: radial-gradient(circle, #e9ff90 0%, #ccff00 40%);
+}
+#testimonial {
+  position: relative;
+  background: url('/interview-bg.jpg');
+  background-size: cover;
+  height: 500px;
+}
+#testimonial:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(rgba(16, 24, 37, 1), rgba(16, 24, 37, 0.1));
+  opacity: 1;
+  z-index: 0;
+  transition-duration: .4s;
+}
+#testimonial:hover:before {
+  opacity: 0.75;
+}
+#testimonial > a {
+  z-index: 1;
+}
+#testimonial > a > img {
+  height: 50px;
 }
 </style>

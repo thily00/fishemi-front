@@ -3,10 +3,9 @@ import { ref } from "vue";
 import InputText from "primevue/inputtext";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import Message from "primevue/message";
-import { useAccountStore } from "@/stores/accountStore";
+import { axiosNotAuthInstance } from "@/services/AxiosService";
 
 const emit = defineEmits(["redirect-to"]);
-const accountStore = useAccountStore();
 const props = defineProps({
   isLogin: {
     type: Boolean,
@@ -62,7 +61,7 @@ const handleSignup = async () => {
   };
 
   try {
-    await accountStore.signup(payload);
+    await axiosNotAuthInstance().post("/account/signup", payload);
     successMessage.value =
       "Inscription réussie ! Veuillez vérifier votre email.";
   } catch (error: any) {
@@ -88,7 +87,12 @@ const handleLogin = async () => {
   }
 
   try {
-    await accountStore.sendOtp(email.value);
+    await axiosNotAuthInstance().get("/account/sendOtp", {
+      params: {
+        email: email.value,
+      },
+    });
+
     successMessage.value =
       "Connexion réussie ! Veuillez vérifier votre email pour le code OTP.";
   } catch (error: any) {

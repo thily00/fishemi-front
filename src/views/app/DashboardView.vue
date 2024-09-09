@@ -14,7 +14,7 @@
           type="line"
           :data="chartData"
           :options="chartOptions"
-          class="w-full h-[20rem] md:h-[30rem]"
+          class="w-full"
         />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -38,7 +38,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import Chart from "primevue/chart";
+<<<<<<< HEAD
 import { useAccountStore } from "@/stores/accountStore";
+=======
+import {axiosInstance} from "@/services/AxiosService";
+>>>>>>> 2edf3b17de1b75ba089cd32004b755404af275a1
 
 const accountStore = useAccountStore();
 const totalClicked = ref(0);
@@ -89,6 +93,10 @@ const fetchData = async () => {
   try {
     const response: any = await accountStore.getUserInfo();
 
+<<<<<<< HEAD
+=======
+    const response = await axiosInstance().get("/account/me");
+>>>>>>> 2edf3b17de1b75ba089cd32004b755404af275a1
     const data = response.data;
 
     totalClicked.value = data.events_stats.total_today;
