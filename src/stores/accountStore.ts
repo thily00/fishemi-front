@@ -39,6 +39,10 @@ export const useAccountStore = defineStore("account", {
       this.isConnected = status;
     },
 
+    setAccount(account: User) {
+      this.account = account;
+    },
+
     // This function is used to register a user
     // async signup({
     //   email,
@@ -87,21 +91,21 @@ export const useAccountStore = defineStore("account", {
     // },
 
     // This function is used to get the user's information
-    async getUserInfo() {
-      return new Promise((resolve, reject) => {
-        axiosRequest
-          .get("/account/me")
-          .then((response) => {
-            if (response.data) {
-              this.account = response.data.personal_data;
-            }
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    },
+    // async getUserInfo() {
+    //   return new Promise((resolve, reject) => {
+    //     axiosRequest
+    //       .get("/account/me")
+    //       .then((response) => {
+    //         if (response.data) {
+    //           this.account = response.data.personal_data;
+    //         }
+    //         resolve(response);
+    //       })
+    //       .catch((error) => {
+    //         reject(error);
+    //       });
+    //   });
+    // },
 
     // This function is used to logout a user
     async logout() {

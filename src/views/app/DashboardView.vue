@@ -91,6 +91,8 @@ const fetchData = async () => {
     const response = await axiosInstance().get("/account/me");
     const data = response.data;
 
+    accountStore.setAccount(data.personal_data);
+
     totalClicked.value = data.events_stats.total_today;
     totalEvents.value = data.events_stats.total_today;
     totalCampaigns.value = data.total_campaigns;
