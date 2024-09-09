@@ -6,51 +6,7 @@ import { useToast } from "primevue/usetoast";
 import type { Employee } from "@/types/employee";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import SettingsList from "@/components/parametres/SettingsList.vue";
-import axios from "axios";
-
-const apiClient = axios.create({
-  baseURL: "https://preprod.api.fishemi.ilies.ch",
-});
-
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (
-      error.response.status === 401 &&
-      error.response.data.message === "Token expired"
-    ) {
-      const refreshToken = localStorage.getItem("refreshToken");
-      try {
-        const response = await axios.post(
-          "https://preprod.api.fishemi.ilies.ch/account/refresh",
-          { refresh_token: refreshToken }
-        );
-        localStorage.setItem("accessToken", response.data.access_token);
-        error.config.headers[
-          "Authorization"
-        ] = `Bearer ${response.data.access_token}`;
-        return apiClient.request(error.config);
-      } catch (refreshError) {
-        console.error(
-          "Erreur lors du rafraîchissement du token:",
-          refreshError
-        );
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+import { axiosInstance } from "@/services/AxiosService";
 
 const toast = useToast();
 const searchValue: Ref<string> = ref("");
@@ -64,10 +20,7 @@ const managerName: Ref<string> = ref("");
 const managerEmail: Ref<string> = ref("");
 const managerRoles: Ref<string> = ref("");
 
-const employees: Ref<Employee[]> = ref([
-  { id: "1", full_name: "John Doe", email: "johndoe@example.com" },
-  { id: "2", full_name: "Jane Smith", email: "janesmith@example.com" },
-]);
+const employees: Ref<Employee[]> = ref([]);
 
 const rights = ref({
   read: false,
@@ -76,7 +29,7 @@ const rights = ref({
 
 const fetchSettings = async () => {
   try {
-    const response = await apiClient.get("/settings");
+    const response = await axiosInstance().get("/settings");
     const data = response.data;
     companyName.value = data.company_name;
     email.value = data.email;
@@ -85,8 +38,6 @@ const fetchSettings = async () => {
       full_name: admin.full_name,
       email: admin.email,
     }));
-
-    console.log(data);
   } catch (error) {
     console.error("Erreur lors de la récupération des paramètres:", error);
     toast.add({
@@ -113,7 +64,7 @@ const handleCheckboxChange = (type: string) => {
 
 const createManager = async () => {
   try {
-    await apiClient.post("/settings/manager", {
+    await axiosInstance().post("/settings/manager", {
       email: managerEmail.value,
       full_name: managerName.value,
       roles: rights.value.write ? "lector,writer" : "lector",
@@ -136,7 +87,7 @@ const createManager = async () => {
 
 const saveSettings = async () => {
   try {
-    await apiClient.patch("/settings", {
+    await axiosInstance().patch("/settings", {
       company_name: companyName.value,
     });
     toast.add({
