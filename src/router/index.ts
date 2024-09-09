@@ -35,6 +35,11 @@ const router = createRouter({
       component: () => import("@/views/app/EmployeesView.vue"),
     },
     {
+      path: "/parametres",
+      name: "parametres",
+      component: () => import("@/views/app/SettingsView.vue"),
+    },
+    {
       path: "/mes-listes",
       name: "listes",
       component: () => import("@/views/app/ListsView.vue"),
@@ -56,14 +61,12 @@ router.beforeEach(async (to, from, next) => {
     } else if (isAuth && onlyForNonAuthenticated.includes(to.name as string)) {
       // authenticated but want access to non-authenticated page
       next({ name: from.name as string });
-    }
-    else {
+    } else {
       // authenticated
       next();
     }
   }
 });
-
 
 router.beforeEach((to, from, next) => {
   const publicPages = ["/", "/login", "/register", "/otp"];
