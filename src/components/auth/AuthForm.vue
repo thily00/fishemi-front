@@ -4,6 +4,7 @@ import axios from "axios";
 import InputText from "primevue/inputtext";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import Message from "primevue/message";
+import {axiosNotAuthInstance} from "@/services/AxiosService";
 
 const emit = defineEmits(["redirect-to"]);
 
@@ -55,9 +56,8 @@ const handleSignup = async () => {
   };
 
   try {
-    //eslint-disable-next-line
-    const response: any = await axios.post(
-      "https://preprod.api.fishemi.ilies.ch/account/signup",
+    await axiosNotAuthInstance().post(
+      "/account/signup",
       payload
     );
     successMessage.value =
@@ -85,9 +85,8 @@ const handleLogin = async () => {
   }
 
   try {
-    //eslint-disable-next-line
-    const response = await axios.get(
-      "https://preprod.api.fishemi.ilies.ch/account/sendOtp",
+    await axiosNotAuthInstance().get(
+      "/account/sendOtp",
       {
         params: {
           email: email.value,
