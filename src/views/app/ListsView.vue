@@ -1,0 +1,113 @@
+<script setup lang="ts">
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
+import { useToast } from 'primevue/usetoast';
+import type { List } from '@/types/employee';
+import { ref, type Ref, onMounted } from 'vue';
+import { useListStore } from '@/stores/listStore';
+import Modal from '@/components/layouts/FishemiModal.vue';
+import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import ListList from '@/components/lists/ListList.vue';
+
+const toast = useToast();
+const searchValue: Ref<string> = ref('');
+const newListName: Ref<string> = ref('');
+const isAddModalVisible: Ref<boolean> = ref(false);
+
+const listStore = useListStore();
+const lists: Ref<List[]> = ref([]);
+
+onMounted(() => {
+    getLists();
+});
+
+const createList = () => {
+    isAddModalVisible.value = true;
+}
+
+const addList = async () => {
+    console.log(newListName.value);
+    const response = await listStore.createList(newListName.value);
+    console.log(response);
+    
+    isAddModalVisible.value = false;
+}
+
+const getLists = async () => {
+    const response: any = await listStore.getAllLists();
+    if(response.status === 200) {
+        lists.value = listStore.lists;
+    }
+}
+
+const search = async () => {    
+    const response:any = await employeeStore.searchEmployee(searchValue.value);
+    if(response.status === 200) {
+        if(response.data.length === 0) {
+            getEmployee();
+        }
+        employees.value = response.data;
+    }
+}
+
+
+
+const removeSelection = async () => {
+    try {
+        const employeeIds =  employeeStore.selectedEmployees;
+        const response: any = await employeeStore.deleteEmployee(employeeIds);
+        if(response.status === 200) {
+            await getEmployee();
+            employeeStore.setSelectionList([]);
+            toast.add({ severity: 'success', summary: 'Suppression réussie', detail: 'Les données ont été supprimées avec succès.', life: 3000 });
+        }
+    } catch (error) {
+        console.log(error);
+        toast.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la suppression.', life: 3000 });
+    }
+};
+
+</script>
+<template>
+    <div class="w-full h-full rounded-lg bg-blue p-10">
+        <div class="flex justify-between items-center">
+            <h3 class="text-3xl text-white">Vos listes</h3>
+            <FishemiButton label="Créer une nouvelle liste" icon="pi pi-plus" :fullWidth=true :action="createList"/>
+        </div> 
+
+        <p class="mt-4 text-xl text-gray-500">Vous pouvez créer plusiseurs listes et chacunes contient le nombre d'employés que vous souhaitez,
+            lorsque vous programmez une campagne, vous serez invité à choisir une liste d'employés à qui envoyer la campagne.
+        </p>
+
+        <div class="flex items-center h-8 gap-6 mt-8 mb-8">
+            <div class="w-96">
+                <IconField>
+                    <InputIcon class="pi pi-search"/>
+                    <InputText v-model="searchValue" @keyup.enter="search" placeholder="Rechercher une liste" class="bg-background border-0 p-4" />
+                </IconField>
+            </div>
+            <div class="w-0.5 h-full bg-gray-400"></div>
+            <div @click="removeSelection"> <i class="pi pi-trash text-gray-400 cursor-pointer"></i> </div>
+        </div>
+        <ListList 
+          :lists="lists" 
+          :getLists="getLists"
+        />
+        <Modal :isVisible="isAddModalVisible" @close="isAddModalVisible = false">
+            <div class="flex flex-col gap-6">
+                <h1 class="text-2xl text-white">Créer une nouvelle liste </h1>
+                <div class="form flex flex-col gap-2">
+                    <div class="w-full flex flex-col gap-2 text-white">
+                        <label for="email">Nom</label>
+                        <InputText
+                          id="name"
+                          v-model="newListName"
+                          class="mb-2 bg-background border-slate-700" placeholder="Nom de la liste" />
+                    </div>
+                    <FishemiButton label="Enregistrer" :action="addList" />
+                </div>
+            </div>
+        </Modal>
+    </div>
+</template>
