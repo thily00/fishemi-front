@@ -52,13 +52,21 @@ onMounted(() => {
   fetchSettings();
 });
 
-const handleCheckboxChange = (type: string) => {
-  if (type === "read") {
-    rights.value.read = !rights.value.read;
-    if (!rights.value.read) rights.value.write = false;
-  } else if (type === "write") {
-    rights.value.write = !rights.value.write;
-    if (rights.value.write) rights.value.read = true;
+const handleCheckboxChange = (type: string, checked: boolean) => {
+  console.log("gggg", type, checked);
+  if (type === "read" && checked == true) {
+    rights.value.read = true;
+    rights.value.write = false;
+  } else {
+    rights.value.read = false;
+    rights.value.write = true;
+  }
+  if (type === "write" && checked == true) {
+    rights.value.read = false;
+    rights.value.write = true;
+  } else {
+    rights.value.read = true;
+    rights.value.write = false;
   }
 };
 
@@ -178,10 +186,11 @@ const saveSettings = async () => {
                 class="w-full flex items-center p-4 gap-2 rounded-lg bg-blue"
               >
                 <Checkbox
-                  v-model="rights.read"
+                  :modelValue="rights.read"
+                  @update:modelValue="handleCheckboxChange('read', $event)"
+                  :binary="true"
                   inputId="readCheckbox"
                   class="bg-background border-slate-700"
-                  @change="handleCheckboxChange('read')"
                 />
                 <label for="readCheckbox" class="text-white">Lecture</label>
               </div>
@@ -190,10 +199,11 @@ const saveSettings = async () => {
                 class="w-full flex items-center p-4 gap-2 rounded-lg bg-blue"
               >
                 <Checkbox
-                  v-model="rights.write"
+                  :modelValue="rights.write"
+                  @update:modelValue="handleCheckboxChange('write', $event)"
+                  :binary="true"
                   inputId="writeCheckbox"
                   class="bg-background border-slate-700"
-                  @change="handleCheckboxChange('write')"
                 />
                 <label for="writeCheckbox" class="text-white">Ecriture</label>
               </div>
