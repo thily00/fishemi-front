@@ -37,9 +37,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import axios from "axios";
 import Chart from "primevue/chart";
+import { useAccountStore } from "@/stores/accountStore";
 
+const accountStore = useAccountStore();
 const totalClicked = ref(0);
 const totalEvents = ref(0);
 const totalCampaigns = ref(0);
@@ -86,21 +87,8 @@ const chartOptions = ref({
 
 const fetchData = async () => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      console.error("Token manquant. Redirection vers la page de connexion.");
-      window.location.href = "/login";
-      return;
-    }
+    const response: any = await accountStore.getUserInfo();
 
-    const response = await axios.get(
-      "https://preprod.api.fishemi.ilies.ch/account/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
     const data = response.data;
 
     totalClicked.value = data.events_stats.total_today;
@@ -116,12 +104,6 @@ const fetchData = async () => {
     chartData.value.datasets[0].data = values;
   } catch (error: any) {
     console.error("Erreur lors de la récupération des données", error);
-    if (error.response && error.response.status === 401) {
-      console.error(
-        "Token expiré ou invalide. Redirection vers la page de connexion."
-      );
-      window.location.href = "/login";
-    }
   }
 };
 

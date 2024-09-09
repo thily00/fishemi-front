@@ -9,7 +9,6 @@ const router = useRouter();
 const goToRegister = () => {
   router.push("/register");
 };
-
 </script>
 
 <template>
@@ -36,7 +35,12 @@ const goToRegister = () => {
               Sécurisez votre entreprise avec nos solutions intelligentes et
               restez toujours un pas en avant des menaces
             </h2>
-            <FishemiButton label="Inscrire mon organisation" :action="goToRegister" />
+            <div class="flex justify-center">
+              <FishemiButton
+                label="Inscrire mon organisation"
+                :action="goToRegister"
+              />
+            </div>
           </div>
         </div>
       </div>
