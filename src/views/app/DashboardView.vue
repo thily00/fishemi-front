@@ -14,7 +14,7 @@
           type="line"
           :data="chartData"
           :options="chartOptions"
-          class="w-full h-[20rem] md:h-[30rem]"
+          class="w-full"
         />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -39,6 +39,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import Chart from "primevue/chart";
+import {axiosInstance} from "@/services/AxiosService";
 
 const totalClicked = ref(0);
 const totalEvents = ref(0);
@@ -93,14 +94,7 @@ const fetchData = async () => {
       return;
     }
 
-    const response = await axios.get(
-      "https://preprod.api.fishemi.ilies.ch/account/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await axiosInstance().get("/account/me");
     const data = response.data;
 
     totalClicked.value = data.events_stats.total_today;

@@ -34,7 +34,7 @@ const triggerFileInput = (): void => {
     }
 };
 
-const search = async () => {    
+const search = async () => {
     const response:any = await employeeStore.searchEmployee(searchValue.value);
     if(response.status === 200) {
         if(response.data.length === 0) {
@@ -46,7 +46,7 @@ const search = async () => {
 
 const removeSelection = async () => {
     try {
-        const employeeIds =  employeeStore.selectedEmployees;
+        const employeeIds = employeeStore.selectedEmployees;
         const response: any = await employeeStore.deleteEmployee(employeeIds);
         if(response.status === 200) {
             await getEmployee();
@@ -57,6 +57,11 @@ const removeSelection = async () => {
         console.log(error);
         toast.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la suppression.', life: 3000 });
     }
+};
+
+const removeAll = () => {
+  employeeStore.setSelectionList(employees.value.map((employee) => employee.id));
+  removeSelection();
 };
 
 const handleFileUpload = async (event: Event): Promise<void> => {
@@ -84,12 +89,13 @@ const handleFileUpload = async (event: Event): Promise<void> => {
     <div class="w-full h-full rounded-lg bg-blue p-10">
         <div class="flex justify-between items-center">
             <h3 class="text-3xl text-white">Vos employés</h3>
-            <FishemiButton label="Importer des nouveax  employés" icon="pi pi-plus" :fullWidth=true :action="triggerFileInput" :loading="fileUploading" />
+            <FishemiButton label="Importer des nouveaux employés" icon="pi pi-plus" :fullWidth=true :action="triggerFileInput" :loading="fileUploading" />
             <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" />
-        </div> 
+        </div>
 
-        <p class="mt-4 text-xl text-gray-500">Il est impossible d'importer vos employés via l'import de fichier Excel, ce fichier doit suivre un modèle que vous pouvez télécharger en cliquant 
-            <a href="/public/employees_template.csv" class="cursor-pointer underline underline-offset-1 text-white">ici</a>.
+        <p class="mt-4 text-xl text-gray-500">Il est impossible d'importer vos employés via l'import de fichier Excel, ce fichier doit suivre un modèle que vous pouvez télécharger en cliquant
+            <a href="/public/employees_template.csv" class="cursor-pointer underline underline-offset-1 text-white">ici</a>.<br/>
+            Les employés que vous avez déjà importés ne seront pas supprimé.
         </p>
 
         <div class="flex items-center h-8 gap-6 mt-8 mb-8">
@@ -99,11 +105,13 @@ const handleFileUpload = async (event: Event): Promise<void> => {
                     <InputText v-model="searchValue" @keyup.enter="search" placeholder="Rechercher un employé" class="bg-[#111826] border-0 p-4" />
                 </IconField>
             </div>
-            <div class="w-0.5 h-full bg-gray-400"></div>
+          <div class="w-0.5 h-full bg-gray-400"></div>
             <div @click="removeSelection"> <i class="pi pi-trash text-gray-400 cursor-pointer"></i> </div>
         </div>
-        <EmployeeList 
-          :employees="employees" 
+      <FishemiButton label="Supprimer tout les employés" icon="pi pi-trash" :action="removeAll" />
+      <br/>
+      <EmployeeList
+          :employees="employees"
           :getEmployee="getEmployee"
         />
     </div>

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import FishemiButton from "../FishemiButton.vue";
 import { useRouter } from 'vue-router';
-
+import { isAuthenticated } from "@/services/AuthService";
 
 const router = useRouter();
-const goToLogin = () => {
-  router.push("/login");
+const goToLogin = async () => {
+  if (await isAuthenticated()) {
+    await router.push("/dashboard");
+  } else {
+    await router.push("/login");
+  }
 };
 
 </script>
