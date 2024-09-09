@@ -2,33 +2,32 @@
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import ProgressSpinner from "primevue/progressspinner";
-import {setAccessToken, setRefreshToken} from "@/services/AuthService";
-import {axiosNotAuthInstance} from "@/services/AxiosService";
+import { useAccountStore } from "@/stores/accountStore";
+import { setAccessToken, setRefreshToken } from "@/services/AuthService";
+import { axiosNotAuthInstance } from "@/services/AxiosService";
 
+const accountStore = useAccountStore();
 const isLoading = ref(true);
 const router = useRouter();
 const route = useRoute();
 
-const email = ref<string | null>(null);
-const otpCode = ref<string | null>(null);
-
 const login = async () => {
-  if (!email.value || !otpCode.value) {
+  const email = route.query.email as string | null;
+  const otpCode = route.query.token as string | null;
+
+  if (!email || !otpCode) {
     console.error("Email ou code OTP manquant.");
     isLoading.value = false;
     return;
   }
 
   try {
-    const response = await axiosNotAuthInstance().get(
-      "/account/login",
-      {
-        params: {
-          email: email.value,
-          "otp-code": otpCode.value,
-        },
-      }
-    );
+    const response = await axiosNotAuthInstance().get("/account/login", {
+      params: {
+        email: email,
+        "otp-code": otpCode,
+      },
+    });
 
     setTimeout(() => {
       isLoading.value = false;
@@ -37,9 +36,10 @@ const login = async () => {
       const refreshToken = response.data.refresh_token;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
+      accountStore.setConnexionStatus(true);
 
       router.push("/dashboard");
-    }, 3000);
+    });
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
     isLoading.value = false;
@@ -47,9 +47,6 @@ const login = async () => {
 };
 
 onMounted(() => {
-  email.value = route.query.email as string | null;
-  otpCode.value = route.query.token as string | null;
-
   login();
 });
 </script>

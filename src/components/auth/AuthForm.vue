@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import axios from "axios";
 import InputText from "primevue/inputtext";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import Message from "primevue/message";
-import {axiosNotAuthInstance} from "@/services/AxiosService";
+import { axiosNotAuthInstance } from "@/services/AxiosService";
 
 const emit = defineEmits(["redirect-to"]);
-
 const props = defineProps({
   isLogin: {
     type: Boolean,
     required: true,
   },
 });
+
+const email = ref("");
+const fullName = ref("");
+const companyName = ref("");
+const successMessage = ref("");
+const errorMessage = ref("");
 
 const redirectTo = (pagename: string) => {
   if (pagename === "authScreen") {
@@ -22,13 +26,6 @@ const redirectTo = (pagename: string) => {
 
   emit("redirect-to", pagename);
 };
-
-const email = ref("");
-const fullName = ref("");
-const companyName = ref("");
-
-const successMessage = ref("");
-const errorMessage = ref("");
 
 const validateFields = () => {
   if (
@@ -39,6 +36,14 @@ const validateFields = () => {
     return false;
   }
   return true;
+};
+
+const handleSubmit = () => {
+  if (props.isLogin) {
+    handleLogin();
+  } else {
+    handleSignup();
+  }
 };
 
 const handleSignup = async () => {
@@ -56,10 +61,7 @@ const handleSignup = async () => {
   };
 
   try {
-    await axiosNotAuthInstance().post(
-      "/account/signup",
-      payload
-    );
+    await axiosNotAuthInstance().post("/account/signup", payload);
     successMessage.value =
       "Inscription réussie ! Veuillez vérifier votre email.";
   } catch (error: any) {
@@ -85,14 +87,11 @@ const handleLogin = async () => {
   }
 
   try {
-    await axiosNotAuthInstance().get(
-      "/account/sendOtp",
-      {
-        params: {
-          email: email.value,
-        },
-      }
-    );
+    await axiosNotAuthInstance().get("/account/sendOtp", {
+      params: {
+        email: email.value,
+      },
+    });
 
     successMessage.value =
       "Connexion réussie ! Veuillez vérifier votre email pour le code OTP.";
@@ -108,14 +107,6 @@ const handleLogin = async () => {
     } else {
       errorMessage.value = "Une erreur inconnue s'est produite.";
     }
-  }
-};
-
-const handleSubmit = () => {
-  if (props.isLogin) {
-    handleLogin();
-  } else {
-    handleSignup();
   }
 };
 </script>

@@ -34,6 +34,11 @@ const router = createRouter({
       name: "employees",
       component: () => import("@/views/app/EmployeesView.vue"),
     },
+    {
+      path: "/mes-listes",
+      name: "listes",
+      component: () => import("@/views/app/ListsView.vue"),
+    },
   ],
 });
 router.beforeEach(async (to, from, next) => {
@@ -57,6 +62,19 @@ router.beforeEach(async (to, from, next) => {
       next();
     }
   }
+});
+
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/", "/login", "/register", "/otp"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("accessToken");
+
+  if (authRequired && !loggedIn) {
+    return next("/login");
+  }
+
+  next();
 });
 
 export default router;

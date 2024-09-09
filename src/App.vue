@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { RouterView } from "vue-router";
 import FishemiHeader2 from "@/components/layouts/headers/FishemiHeader2.vue";
-import Sidebar from "@/components/layouts/Sidebar.vue";
+import Sidebar from "@/components/layouts/FishemiSidebar.vue";
 import { useRoute } from "vue-router";
 import Toast from 'primevue/toast';
 
