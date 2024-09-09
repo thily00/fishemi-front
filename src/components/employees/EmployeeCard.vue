@@ -6,17 +6,16 @@ import FishemiButton from "@/components/layouts/FishemiButton.vue";
 
 const employeeStore = useEmployeeStore();
 const props = defineProps({
-  id: String,
+  id:{
+    type: String,
+    required: true
+  },
   name: String,
   email: String,
   isOpen: Boolean,
-  selectedEmployees: {
-    type: Array,
-    required: true
-  },
 });
 
-const emit = defineEmits(['toggle', 'edit', 'remove', 'update:selectedEmployees']);
+const emit = defineEmits(['toggle', 'edit', 'remove']);
 
 const toggleCard = () => {
   emit('toggle');
@@ -32,11 +31,15 @@ const removeEmployee = () => {
 };
 
 const handleCheckboxChange = (checked: boolean) => {
-  const updatedList = checked
-    ? [...props.selectedEmployees, props.id]
-    : props.selectedEmployees.filter(id => id !== props.id);
+  const updatedList = [...employeeStore.selectedEmployees];
+  if(checked) {
+    updatedList.push(props.id);
+  } else {
+    const index = updatedList.indexOf(props.id);
+    updatedList.splice(index, 1);
+  }
   
-  emit('update:selectedEmployees', updatedList);
+  employeeStore.setSelectionList(updatedList);
 };
 
 const beforeEnter = (el: HTMLElement | any) => {
@@ -76,7 +79,7 @@ const leave = (el: HTMLElement | any) => {
     @before-leave="beforeLeave">
       <div v-if="!isOpen" class="w-full flex items-center justify-between">     
         <div class="flex items-center gap-6">
-          <Checkbox :modelValue="props.selectedEmployees.includes(props.id)" @update:modelValue="handleCheckboxChange" :binary="true" class="bg-blue rounded-sm" />
+          <Checkbox :modelValue="employeeStore.selectedEmployees.includes(props.id)" @update:modelValue="handleCheckboxChange" :binary="true" class="bg-blue rounded-sm" />
           <i class="pi pi-user fishemi-text-color" style="font-size: 1.75rem"></i>
           <div>
             <h1 class="fishemi-text-color text-xl mb-1">{{ props.name }}</h1>

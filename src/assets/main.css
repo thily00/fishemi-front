@@ -2,7 +2,7 @@
 @import "primeicons/primeicons.css";
 @import "fonts.css";
 
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -167,7 +167,6 @@ textarea {
   top: 47%;
   left: 51%;
   transform: translate(-50%, -50%);
-  background: url("/bg-frame/bg.svg");
   width: 1350px;
   height: 100%;
   z-index: 1;
@@ -181,5 +180,5 @@ textarea {
         width: 100%;
         top: 50%;
         left: 50%;
-    } 
+    }
 }

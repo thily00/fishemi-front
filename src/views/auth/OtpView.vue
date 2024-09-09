@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import axios from "axios";
 import ProgressSpinner from "primevue/progressspinner";
+import {setAccessToken, setRefreshToken} from "@/services/AuthService";
+import {axiosNotAuthInstance} from "@/services/AxiosService";
 
 const isLoading = ref(true);
 const router = useRouter();
@@ -19,8 +20,8 @@ const login = async () => {
   }
 
   try {
-    const response = await axios.get(
-      "https://preprod.api.fishemi.ilies.ch/account/login",
+    const response = await axiosNotAuthInstance().get(
+      "/account/login",
       {
         params: {
           email: email.value,
@@ -34,8 +35,8 @@ const login = async () => {
 
       const accessToken = response.data.access_token;
       const refreshToken = response.data.refresh_token;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 

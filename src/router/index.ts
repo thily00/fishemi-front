@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { isAuthenticated } from "@/services/AuthService";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,28 @@ const router = createRouter({
       component: () => import("@/views/app/SettingsView.vue"),
     },
   ],
+});
+router.beforeEach(async (to, from, next) => {
+  const onlyForNonAuthenticated = ["login", "register", "otp"];
+
+  if (to.name === "home") {
+    // if request is for "home", both authenticated and non-authenticated has access
+    next();
+  } else {
+    const isAuth = await isAuthenticated();
+
+    if (!isAuth && !onlyForNonAuthenticated.includes(to.name as string)) {
+      // not authenticated but want access to authenticated page
+      next({ name: "login" });
+    } else if (isAuth && onlyForNonAuthenticated.includes(to.name as string)) {
+      // authenticated but want access to non-authenticated page
+      next({ name: from.name as string });
+    }
+    else {
+      // authenticated
+      next();
+    }
+  }
 });
 
 export default router;

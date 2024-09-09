@@ -1,17 +1,19 @@
 // stores/useUsersStore.ts
-import axios from 'axios'
 import { defineStore } from 'pinia'
 import type { Employee } from '@/types/employee'
+import {axiosInstance} from "@/services/AxiosService";
 
 interface EmployeeStore {
   employeeList: Employee[]
   selectedEmployee: Employee | null
+  selectedEmployees: string[]
 }
 
 export const useEmployeeStore = defineStore('employee', {
   state: (): EmployeeStore => ({
     employeeList: [],
-    selectedEmployee: null
+    selectedEmployee: null,
+    selectedEmployees: []
   }),
 
   getters: {
@@ -26,14 +28,12 @@ export const useEmployeeStore = defineStore('employee', {
   actions: {
     async importEmployees(file: File){
       return new Promise((resolve, reject) => {
-        const accessToken = localStorage.getItem('accessToken');
         const formData = new FormData();
         formData.append('file', file);
 
-        axios.post('https://preprod.api.fishemi.ilies.ch/employee/import', formData ,{
+        axiosInstance().post('/employee/import', formData ,{
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${accessToken}`
           }
         })
         .then(response => {
@@ -47,12 +47,7 @@ export const useEmployeeStore = defineStore('employee', {
 
     async getAllEmployees() {
       return new Promise((resolve, reject) => {
-        const accessToken = localStorage.getItem('accessToken');
-        axios.get('https://preprod.api.fishemi.ilies.ch/employee', {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          }
-        })
+        axiosInstance().get('/employee')
         .then(response => {
           this.employeeList = response.data
           resolve(response)
@@ -63,40 +58,11 @@ export const useEmployeeStore = defineStore('employee', {
       })
     },
 
-
     async updateEmployee() {
       const employee = this.selectedEmployee
 
       return new Promise((resolve, reject) => {
-        const accessToken = localStorage.getItem('accessToken');
-        axios.patch(`https://preprod.api.fishemi.ilies.ch/employee`, employee, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-          }
-        })
-        .then(response => {   
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
-    },
-
-
-    async deleteEmployee(employeeIds: string[]) {      
-      const body= {'id': employeeIds}
-    
-      return new Promise((resolve, reject) => {
-        const accessToken = localStorage.getItem('accessToken');
-        axios.delete(`https://preprod.api.fishemi.ilies.ch/employee`, {
-          data: body,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-          }
-        })
+        axiosInstance().patch(`/employee`, employee)
         .then(response => {
           resolve(response)
         })
@@ -106,11 +72,41 @@ export const useEmployeeStore = defineStore('employee', {
       })
     },
 
-    setSelectedEmployee(employeeId: string) {        
+    async deleteEmployee(employeeIds: string[]) {
+      const body= {'id': employeeIds}
+
+      return new Promise((resolve, reject) => {
+        axiosInstance().delete(`/employee`, { data: body })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    searchEmployee(value: string) {
+      return new Promise((resolve, reject) => {
+        axiosInstance().get(`/employee/search?name=${value}`)
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    setSelectedEmployee(employeeId: string) {
         const employee = this.getUserById(employeeId)
         if (employee) {
             this.selectedEmployee = employee
         }
+    },
+
+    setSelectionList(employeeIds: string[]) {
+      this.selectedEmployees = employeeIds
     }
-  },
+  }
 })
