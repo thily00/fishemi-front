@@ -3,7 +3,7 @@ import { ref, onMounted, type Ref } from "vue";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import { useToast } from "primevue/usetoast";
-import type { Employee } from "@/types/employee";
+import type { Gestionnaire } from "@/types/gestionnaire";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import SettingsList from "@/components/parametres/SettingsList.vue";
 import { axiosInstance } from "@/services/AxiosService";
@@ -20,7 +20,7 @@ const managerName: Ref<string> = ref("");
 const managerEmail: Ref<string> = ref("");
 const managerRoles: Ref<string> = ref("");
 
-const employees: Ref<Employee[]> = ref([]);
+const gestionnaires: Ref<Gestionnaire[]> = ref([]);
 
 const rights = ref({
   read: false,
@@ -33,7 +33,7 @@ const fetchSettings = async () => {
     const data = response.data;
     companyName.value = data.company_name;
     email.value = data.email;
-    employees.value = data.admins.map((admin: any) => ({
+    gestionnaires.value = data.admins.map((admin: any) => ({
       id: admin.id,
       full_name: admin.full_name,
       email: admin.email,
@@ -222,6 +222,6 @@ const saveSettings = async () => {
       <h3 class="text-3xl text-white">Gestionnaires</h3>
     </div>
 
-    <SettingsList :employees="employees" />
+    <SettingsList :gestionnaires="gestionnaires" />
   </div>
 </template>

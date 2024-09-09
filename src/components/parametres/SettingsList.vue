@@ -2,39 +2,39 @@
 import { ref, type Ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { axiosInstance } from "@/services/AxiosService";
-import type { Employee } from "@/types/employee";
+import type { Gestionnaire } from "@/types/gestionnaire";
 import SettingsCard from "@/components/parametres/SettingsCard.vue";
 
 const toast = useToast();
-const selectedEmployees: Ref<string[]> = ref([]);
+const selectedGestionnaires: Ref<string[]> = ref([]);
 
 const props = defineProps({
-  employees: {
-    type: Array<Employee>,
+  gestionnaires: {
+    type: Array<Gestionnaire>,
     required: true,
   },
-  getEmployee: {
-    type: Function,
-    required: true,
-  },
+  // getGestionnaire: {
+  //   type: Function,
+  //   required: true,
+  // },
 });
 
-const removeEmployee = async (employeeIds: string[]) => {
+const removeGestionnaire = async (gestionnairesIds: string[]) => {
   try {
     const response = await axiosInstance().delete("/settings/manager", {
       params: {
-        "manager-id": employeeIds[0],
+        "manager-id": gestionnairesIds[0],
       },
     });
 
     toast.add({
       severity: "success",
       summary: "Suppression réussie",
-      detail: "L'employé a été supprimé avec succès.",
+      detail: "Le gestionnaire a été supprimé avec succès.",
       life: 3000,
     });
 
-    props.getEmployee();
+    // props.getGestionnaire();
   } catch (error: any) {
     console.error("Erreur lors de la suppression:", error);
 
@@ -61,14 +61,14 @@ const removeEmployee = async (employeeIds: string[]) => {
 <template>
   <div class="w-full">
     <ul class="flex flex-col gap-4">
-      <li v-for="employee in props.employees" :key="employee.id">
+      <li v-for="gestionnaire in props.gestionnaires" :key="gestionnaire.id">
         <SettingsCard
-          :name="employee.full_name"
-          :email="employee.email"
-          :id="employee.id"
+          :name="gestionnaire.full_name"
+          :email="gestionnaire.email"
+          :id="gestionnaire.id"
           :isOpen="false"
-          :selectedEmployees="selectedEmployees"
-          @remove="removeEmployee"
+          :selectedUsers="selectedGestionnaires"
+          @remove="removeGestionnaire"
         />
       </li>
     </ul>

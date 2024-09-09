@@ -7,7 +7,7 @@ const props = defineProps({
   name: String,
   email: String,
   isOpen: Boolean,
-  selectedEmployees: {
+  selectedUsers: {
     type: Array,
     required: true,
   },
@@ -15,9 +15,9 @@ const props = defineProps({
 
 const emit = defineEmits(["remove"]);
 
-const removeEmployee = () => {
-  const employeeIds = [props.id];
-  emit("remove", employeeIds);
+const removeUsers = () => {
+  const usersIds = [props.id];
+  emit("remove", usersIds);
 };
 </script>
 
@@ -36,7 +36,7 @@ const removeEmployee = () => {
           label="Supprimer"
           icon="pi pi-trash"
           type="primary"
-          @click="removeEmployee"
+          @click="removeUsers"
         />
       </div>
     </div>

@@ -38,8 +38,6 @@ const login = async () => {
       setRefreshToken(refreshToken);
       accountStore.setConnexionStatus(true);
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
       router.push("/dashboard");
     });
   } catch (error) {
