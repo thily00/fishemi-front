@@ -2,11 +2,9 @@
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import ProgressSpinner from "primevue/progressspinner";
-import { useAccountStore } from "@/stores/accountStore";
 import { setAccessToken, setRefreshToken } from "@/services/AuthService";
 import { axiosNotAuthInstance } from "@/services/AxiosService";
 
-const accountStore = useAccountStore();
 const isLoading = ref(true);
 const router = useRouter();
 const route = useRoute();
@@ -36,7 +34,6 @@ const login = async () => {
       const refreshToken = response.data.refresh_token;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      accountStore.setConnexionStatus(true);
 
       router.push("/dashboard");
     });

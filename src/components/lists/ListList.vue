@@ -35,32 +35,6 @@ const toggleCard = (listId: string) => {
     listStore.setSelectedList(listId);
   }
 };
-
-// const editEmployee = async () => {
-//      try{
-//         const response: any = await employeeStore.updateEmployee();
-//         if(response.status === 200) {
-//             props.getEmployee();
-//             toast.add({ severity: 'success', summary: 'Modification réussie', detail: 'Les données ont été modifiées avec succès.', life: 3000 });
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         toast.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la modification.', life: 3000 });
-//     }
-// };
-
-// const removeEmployee = async (employeeIds: []) => {
-//     try {
-//         const response: any = await employeeStore.deleteEmployee(employeeIds);
-//         if(response.status === 200) {
-//             props.getEmployee();
-//             toast.add({ severity: 'success', summary: 'Suppression réussie', detail: 'Les données ont été supprimées avec succès.', life: 3000 });
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         toast.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue lors de la suppression.', life: 3000 });
-//     }
-// };
 </script>
 <template>
   <div class="w-full">
@@ -71,6 +45,7 @@ const toggleCard = (listId: string) => {
           :name="list.name"
           :employee_count="list.employee_count"
           :employeeList="employeeStore.employeeList"
+          :listEmployees="list.employee_lists.map((el) => el.id)"
           :isOpen="listStore.selectedList?.id === list.id"
           @toggle="toggleCard(list.id)"
         />
