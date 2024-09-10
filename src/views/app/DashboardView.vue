@@ -39,7 +39,6 @@
 import { ref, onMounted } from "vue";
 import Chart from "primevue/chart";
 import { useAccountStore } from "@/stores/accountStore";
-import { axiosInstance } from "@/services/AxiosService";
 
 const accountStore = useAccountStore();
 const totalClicked = ref(0);
@@ -88,10 +87,8 @@ const chartOptions = ref({
 
 const fetchData = async () => {
   try {
-    const response = await axiosInstance().get("/account/me");
+    const response: any = await accountStore.me();
     const data = response.data;
-
-    accountStore.setAccount(data.personal_data);
 
     totalClicked.value = data.events_stats.total_today;
     totalEvents.value = data.events_stats.total_today;
