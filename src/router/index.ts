@@ -44,6 +44,11 @@ const router = createRouter({
       name: "listes",
       component: () => import("@/views/app/ListsView.vue"),
     },
+    {
+      path: "/campagnes",
+      name: "campagnes",
+      component: () => import("@/views/app/CampaignView.vue"),
+    },
   ],
 });
 router.beforeEach(async (to, from, next) => {

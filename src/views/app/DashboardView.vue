@@ -73,6 +73,7 @@ const chartOptions = ref({
       grid: {
         display: false,
       },
+      reverse: false,
     },
     y: {
       grid: {
@@ -80,6 +81,10 @@ const chartOptions = ref({
       },
       ticks: {
         color: "#9CA3AF",
+        beginAtZero: true,
+        callback: function (value: number) {
+          return Number.isInteger(value) ? value : null;
+        },
       },
     },
   },
@@ -95,10 +100,12 @@ const fetchData = async () => {
     totalCampaigns.value = data.total_campaigns;
     totalEmployees.value = data.total_employees;
 
-    const labels = data.events_stats.total_clicked.map((item: any) => item.day);
-    const values = data.events_stats.total_clicked.map(
-      (item: any) => item.value
-    );
+    const labels = data.events_stats.total_clicked
+      .map((item: any) => item.day)
+      .reverse();
+    const values = data.events_stats.total_clicked
+      .map((item: any) => item.value)
+      .reverse();
     chartData.value.labels = labels;
     chartData.value.datasets[0].data = values;
   } catch (error: any) {
