@@ -13,10 +13,10 @@ const props = defineProps({
     type: Array<Gestionnaire>,
     required: true,
   },
-  // getGestionnaire: {
-  //   type: Function,
-  //   required: true,
-  // },
+  refreshList: {
+    type: Function,
+    required: true,
+  },
 });
 
 const removeGestionnaire = async (gestionnairesIds: string[]) => {
@@ -34,7 +34,7 @@ const removeGestionnaire = async (gestionnairesIds: string[]) => {
       life: 3000,
     });
 
-    // props.getGestionnaire();
+    props.refreshList();
   } catch (error: any) {
     console.error("Erreur lors de la suppression:", error);
 

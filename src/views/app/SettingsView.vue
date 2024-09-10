@@ -27,6 +27,8 @@ const rights = ref({
   write: false,
 });
 
+const isManagerFormVisible = ref(false);
+
 const fetchSettings = async () => {
   try {
     const response = await axiosInstance().get("/settings");
@@ -83,6 +85,7 @@ const createManager = async () => {
       detail: "Gestionnaire créé avec succès.",
     });
     fetchSettings();
+    isManagerFormVisible.value = false;
   } catch (error) {
     console.error("Erreur lors de la création du gestionnaire:", error);
     toast.add({
@@ -140,22 +143,35 @@ const saveSettings = async () => {
       />
     </div>
 
-    <!-- Formulaire de création d'un nouveau gestionnaire -->
     <div class="my-12">
       <div class="flex justify-between">
-        <h3 class="text-3xl text-white">Créer un nouveau gestionnaire</h3>
+        <h3 class="text-3xl text-white">Gestionnaires de l’organisation</h3>
+        <FishemiButton
+          class="flex justify-center"
+          label="Créer un nouveau gestionnaire"
+          @click="isManagerFormVisible = true"
+        />
       </div>
       <p class="mt-4 text-xl text-gray-500">
-        Vous pouvez créer des gestionnaires de l’organisation avec différents
-        droits d’accès.
+        Vous pouvez créer des gestionnaires de l’organisation. Ils peuvent
+        accéder aux statistiques des campagnes et aux listes d’employés (droit
+        de lecture), vous pouvez aussi autoriser un membre à créer des campagnes
+        et modifier les listes d’employés (droit d’écriture)
       </p>
     </div>
 
-    <div class="w-full bg-background rounded-md p-5 my-8 flex flex-col">
-      <div class="flex items-center gap-6">
-        <i class="pi pi-times text-gray-400 text-2xl cursor-pointer"></i>
-        <div class="w-0.5 min-h-6 bg-gray-400"></div>
-        <i class="pi pi-user fishemi-text-color text-2xl cursor-pointer"></i>
+    <div
+      v-if="isManagerFormVisible"
+      class="w-full bg-background rounded-md p-5 my-8 flex flex-col"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <i class="pi pi-user fishemi-text-color text-2xl cursor-pointer"></i>
+        </div>
+        <i
+          class="pi pi-times text-gray-400 text-2xl cursor-pointer"
+          @click="isManagerFormVisible = false"
+        ></i>
       </div>
 
       <div class="form flex flex-col flex-start my-4">
@@ -222,6 +238,6 @@ const saveSettings = async () => {
       <h3 class="text-3xl text-white">Gestionnaires</h3>
     </div>
 
-    <SettingsList :gestionnaires="gestionnaires" />
+    <SettingsList :gestionnaires="gestionnaires" :refreshList="fetchSettings" />
   </div>
 </template>
