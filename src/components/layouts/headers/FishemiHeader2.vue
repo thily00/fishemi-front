@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
 import { useRouter } from "vue-router";
-import { ref, defineEmits, computed } from "vue";
+import { ref, defineEmits, computed, onMounted } from "vue";
 import { useAccountStore } from "@/stores/accountStore";
+import { logOut } from "@/services/AuthService";
 
 const emit = defineEmits(["toggle-sidebar"]);
 const router = useRouter();
@@ -20,13 +21,18 @@ const items = ref([
         label: "Se déconnecter",
         icon: "pi pi-sign-out",
         command: () => {
-          console.log("logout");
-          accountStore.logout();
+          logOut();
         },
       },
     ],
   },
 ]);
+
+onMounted(() => {
+  if (!accountStore.account) {
+    accountStore.me();
+  }
+});
 
 const capitalizedFullName = computed(() => {
   const fullName = accountStore.account?.full_name || "";

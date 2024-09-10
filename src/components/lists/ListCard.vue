@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, computed } from "vue";
 import IconField from "primevue/iconfield";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
@@ -8,7 +8,6 @@ import type { Employee } from "@/types/employee";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 
 const emit = defineEmits(["toggle", "edit", "remove"]);
-const listEmployees = ref<string[]>([]);
 const listStore = useListStore();
 const props = defineProps({
   id: {
@@ -18,16 +17,26 @@ const props = defineProps({
   name: String,
   isOpen: Boolean,
   employee_count: Number,
-  employeeList: Array<Employee>,
+  employeeList: {
+    type: Array<Employee>,
+    required: true,
+  },
+  listEmployees: {
+    type: Array<String>,
+    required: true,
+  },
 });
+
+const listEmployees = ref<String[]>(props.listEmployees);
+const employeeSearchQuery = ref("");
 
 const toggleCard = () => {
   emit("toggle");
 };
 
-const editList = () => {
-  emit("edit");
-};
+// const editList = () => {
+//   emit("edit");
+// };
 
 const removeList = () => {
   const employeeIds = [props.id];
@@ -48,14 +57,20 @@ const handleCheckboxChange = (checked: boolean) => {
 
 const handleEmployeeCheckboxChange = async (employeeId: string) => {
   if (listEmployees.value.includes(employeeId)) {
+    await listStore.removeEmployee(props.id, employeeId);
     const index = listEmployees.value.indexOf(employeeId);
     listEmployees.value.splice(index, 1);
   } else {
-    // const response = await listStore.addEmployeeToList(props.id, employeeId);
-    // console.log(response);
+    await listStore.addEmployeeToList(props.id, employeeId);
     listEmployees.value.push(employeeId);
   }
 };
+
+const filteredEmployeeList = computed(() => {
+  return props.employeeList.filter((employee) =>
+    employee.full_name.toLowerCase().includes(employeeSearchQuery.value)
+  );
+});
 
 const beforeEnter = (el: HTMLElement | any) => {
   el.style.maxHeight = "0";
@@ -194,12 +209,13 @@ const leave = (el: HTMLElement | any) => {
                   <InputText
                     placeholder="Rechercher un employé..."
                     class="border-0 bg-blue p-4"
+                    v-model="employeeSearchQuery"
                   />
                 </IconField>
               </div>
               <ul class="flex gap-4">
                 <li
-                  v-for="employee in props.employeeList"
+                  v-for="employee in filteredEmployeeList"
                   :key="employee.id"
                   class="flex flex-col items-start gap-1 bg-blue rounded-md p-4"
                 >
@@ -219,7 +235,7 @@ const leave = (el: HTMLElement | any) => {
               </ul>
             </div>
           </div>
-          <FishemiButton label="Enregistrer" :action="editList" />
+          <!-- <FishemiButton label="Enregistrer" :action="editList" /> -->
         </div>
       </div>
     </transition>

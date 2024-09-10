@@ -3,15 +3,15 @@
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-// import { useToast } from "primevue/usetoast";
+import { useToast } from "primevue/usetoast";
 import type { List } from "@/types/list";
 import { ref, type Ref, onMounted } from "vue";
 import { useListStore } from "@/stores/listStore";
-// import FishemiModal from "@/components/layouts/FishemiModal.vue";
+import FishemiModal from "@/components/layouts/FishemiModal.vue";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import ListList from "@/components/lists/ListList.vue";
 
-// const toast = useToast();
+const toast = useToast();
 const searchValue: Ref<string> = ref("");
 const newListName: Ref<string> = ref("");
 const isAddModalVisible: Ref<boolean> = ref(false);
@@ -27,13 +27,32 @@ const createList = () => {
   isAddModalVisible.value = true;
 };
 
-// const addList = async () => {
-//   console.log(newListName.value);
-//   const response = await listStore.createList(newListName.value);
-//   console.log(response);
-
-//   isAddModalVisible.value = false;
-// };
+const addList = async () => {
+  try {
+    const response: any = await listStore.createList(newListName.value);
+    if (response.status === 201) {
+      await getLists();
+      isAddModalVisible.value = false;
+      newListName.value = "";
+      toast.add({
+        severity: "success",
+        summary: "Ajout réussi",
+        detail: "Les données ont été ajoutées avec succès.",
+        life: 3000,
+      });
+    }
+  } catch (error: any) {
+    console.log(error);
+    const message =
+      error.response.data.message || "Une erreur est survenue lors de l'ajout.";
+    toast.add({
+      severity: "error",
+      summary: "Erreur",
+      detail: message,
+      life: 3000,
+    });
+  }
+};
 
 const getLists = async () => {
   const response: any = await listStore.getAllLists();
@@ -43,41 +62,13 @@ const getLists = async () => {
 };
 
 const search = async () => {
-  console.log("search");
-
-  //   const response: any = await employeeStore.searchEmployee(searchValue.value);
-  //   if (response.status === 200) {
-  //     if (response.data.length === 0) {
-  //       getEmployee();
-  //     }
-  //     employees.value = response.data;
-  //   }
-};
-
-const removeSelection = async () => {
-  console.log("removeSelection");
-  //   try {
-  //     const employeeIds = employeeStore.selectedEmployees;
-  //     const response: any = await employeeStore.deleteEmployee(employeeIds);
-  //     if (response.status === 200) {
-  //       await getEmployee();
-  //       employeeStore.setSelectionList([]);
-  //       toast.add({
-  //         severity: "success",
-  //         summary: "Suppression réussie",
-  //         detail: "Les données ont été supprimées avec succès.",
-  //         life: 3000,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.add({
-  //       severity: "error",
-  //       summary: "Erreur",
-  //       detail: "Une erreur est survenue lors de la suppression.",
-  //       life: 3000,
-  //     });
-  //   }
+  const response: any = await listStore.searchList(searchValue.value);
+  if (response.status === 200) {
+    if (response.data.length === 0) {
+      getLists();
+    }
+    lists.value = response.data;
+  }
 };
 </script>
 <template>
@@ -111,12 +102,12 @@ const removeSelection = async () => {
         </IconField>
       </div>
       <div class="w-0.5 h-full bg-gray-400"></div>
-      <div @click="removeSelection">
+      <div>
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>
     <ListList :lists="lists" :getLists="getLists" />
-    <!-- <FishemiModal
+    <FishemiModal
       :isVisible="isAddModalVisible"
       @close="isAddModalVisible = false"
     >
@@ -135,6 +126,6 @@ const removeSelection = async () => {
           <FishemiButton label="Enregistrer" :action="addList" />
         </div>
       </div>
-    </FishemiModal> -->
+    </FishemiModal>
   </div>
 </template>
