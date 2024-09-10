@@ -55,7 +55,7 @@ const toggleSidebar = () => {
 
 <template>
   <div
-    class="w-full h-20 flex items-center justify-between p-8 md:p-12 bg-blue rounded-b-3xl mb-12"
+    class="sticky z-50 w-full top-0 h-20 shadow-2xl flex items-center justify-between p-8 md:p-12 bg-blue rounded-b-2xl"
   >
     <div
       class="flex items-center gap-2 cursor-pointer"
