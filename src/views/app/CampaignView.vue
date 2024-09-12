@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, type Ref } from "vue";
 import { useToast } from "primevue/usetoast";
+import type { Campaign } from "@/types/campaign";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import CampaignsList from "@/components/campagnes/CampaignsList.vue";
 import { axiosInstance } from "@/services/AxiosService";

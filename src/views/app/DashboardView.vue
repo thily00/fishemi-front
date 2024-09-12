@@ -1,13 +1,15 @@
 <template>
   <div class="flex flex-col md:flex-row">
-    <!-- <Sidebar :sidebarVisible="sidebarVisible" /> -->
     <div class="flex-1 p-4">
-      <!-- <Header @toggle-sidebar="toggleSidebar" /> -->
       <div class="bg-blue p-6 rounded-lg mb-4">
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex gap-8 items-center mb-4">
           <div>
-            <p class="text-4xl mb-4 font-bold text-white">{{ totalClicked }}</p>
+            <p class="text-4xl mb-4 font-bold text-white">{{ firstClicked }}</p>
             <p class="text-grey mb-4">Liens cliqués les dernières 24h</p>
+          </div>
+          <div>
+            <p class="text-4xl mb-4 font-bold text-white">{{ firstOpened }}</p>
+            <p class="text-grey mb-4">Emails ouvert les dernières 24h</p>
           </div>
         </div>
         <Chart
@@ -19,7 +21,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-blue p-4 rounded-lg text-center text-white">
-          <p class="text-xl font-bold">{{ totalEvents }}</p>
+          <p class="text-xl font-bold">{{ firstClicked }}</p>
           <p class="text-grey">Nouveaux événements</p>
         </div>
         <div class="bg-blue p-4 rounded-lg text-center text-white">
@@ -41,10 +43,12 @@ import Chart from "primevue/chart";
 import { useAccountStore } from "@/stores/accountStore";
 
 const accountStore = useAccountStore();
-const totalClicked = ref(0);
-const totalEvents = ref(0);
 const totalCampaigns = ref(0);
 const totalEmployees = ref(0);
+
+const firstClicked = ref(0);
+const firstOpened = ref(0);
+
 const chartData = ref({
   labels: [],
   datasets: [
@@ -56,13 +60,22 @@ const chartData = ref({
       fill: false,
       tension: 0.4,
     },
+    {
+      label: "Emails ouverts",
+      backgroundColor: "rgba(54, 162, 235, 0.5)",
+      borderColor: "#36A2EB",
+      data: [],
+      fill: false,
+      tension: 0.4,
+    },
   ],
 });
+
 const chartOptions = ref({
   responsive: true,
   plugins: {
     legend: {
-      display: false,
+      display: true,
     },
     title: {
       display: false,
@@ -95,19 +108,26 @@ const fetchData = async () => {
     const response: any = await accountStore.me();
     const data = response.data;
 
-    totalClicked.value = data.events_stats.total_today;
-    totalEvents.value = data.events_stats.total_today;
     totalCampaigns.value = data.total_campaigns;
     totalEmployees.value = data.total_employees;
 
+    firstClicked.value = data.events_stats.total_clicked[0]?.value || 0;
+    firstOpened.value = data.events_stats.total_opened[0]?.value || 0;
     const labels = data.events_stats.total_clicked
       .map((item: any) => item.day)
       .reverse();
-    const values = data.events_stats.total_clicked
+
+    const clickedValues = data.events_stats.total_clicked
       .map((item: any) => item.value)
       .reverse();
+
+    const openedValues = data.events_stats.total_opened
+      .map((item: any) => item.value)
+      .reverse();
+
     chartData.value.labels = labels;
-    chartData.value.datasets[0].data = values;
+    chartData.value.datasets[0].data = clickedValues;
+    chartData.value.datasets[1].data = openedValues;
   } catch (error: any) {
     console.error("Erreur lors de la récupération des données", error);
   }
