@@ -1,12 +1,12 @@
 <template>
   <div
     :class="[
-      'fixed md:static md:flex',
+      'fixed md:flex',
       props.sidebarVisible ? 'block' : 'hidden',
       'w-60 min-h-[82vh] h-auto flex flex-col gap-4',
     ]"
   >
-    <ul class="space-y-6 bg-blue rounded-lg p-8">
+    <ul class="space-y-4 bg-blue rounded-lg p-8">
       <li v-for="item in menuItems" :key="item.name">
         <router-link
           :to="item.to"

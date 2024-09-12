@@ -4,7 +4,7 @@ import { RouterView } from "vue-router";
 import FishemiHeader2 from "@/components/layouts/headers/FishemiHeader2.vue";
 import Sidebar from "@/components/layouts/FishemiSidebar.vue";
 import { useRoute } from "vue-router";
-import Toast from 'primevue/toast';
+import Toast from "primevue/toast";
 
 const route = useRoute();
 const isDarkMode = ref(true);
@@ -24,9 +24,9 @@ const showAppLayout = computed(() => {
     <div class="dark:bg-background w-full min-h-screen">
       <div class="w-full mx-auto xl:px-12 px-6">
         <FishemiHeader2 v-if="showAppLayout" />
-        <div class="flex gap-8">
+        <div class="flex gap-8 pt-8">
           <Sidebar v-if="showAppLayout" />
-          <div class="w-full">
+          <div class="w-full md:w-[calc(100%-15rem)] md:ml-[17rem]">
             <RouterView />
           </div>
         </div>
