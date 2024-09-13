@@ -59,6 +59,12 @@ const router = createRouter({
       name: "payment-campagne",
       component: () => import("@/views/app/CampaignPayment.vue"),
     },
+    {
+      path: "/campagnes/:id/resultats",
+      name: "campaignResults",
+      component: () => import("@/views/app/CampaignResultsView.vue"),
+      props: true
+    },
   ],
 });
 router.beforeEach(async (to, from, next) => {

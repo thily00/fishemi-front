@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { type Campaign } from "@/types/campaign";
 import CampaignCard from "@/components/campagnes/CampaignCard.vue";
 import { axiosInstance } from "@/services/AxiosService";
 
+const router = useRouter();
 const props = defineProps<{
   campaigns: Campaign[];
   refreshList: () => void;
@@ -39,6 +41,10 @@ const handleRemoveCampaign = async (campaignId: string) => {
     });
   }
 };
+
+const handleAccessResults = (campaignId: string) => {
+  router.push({ name: "CampaignResults", params: { id: campaignId } });
+};
 </script>
 
 <template>
@@ -49,7 +55,6 @@ const handleRemoveCampaign = async (campaignId: string) => {
           :id="campaign.id"
           :name="campaign.name"
           :status="campaign.status"
-          @edit="handleEditCampaign"
           @remove="handleRemoveCampaign"
           @accessResults="handleAccessResults"
         />
