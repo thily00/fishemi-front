@@ -3,7 +3,7 @@
     <div class="mb-8">
       <h3 class="text-3xl mb-4 text-white">Campagne “{{ campaign.name }}”</h3>
       <p class="text-sm text-grey">
-        Campagne crée le {{ formatDate(campaign.created_at) }}
+        Campagne créée le {{ formatDate(campaign.created_at) }}
       </p>
     </div>
 
@@ -28,15 +28,21 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { axiosInstance } from "@/services/AxiosService";
+import dayjs from "dayjs";
+import "dayjs/locale/fr";
+
 import CampaignStats from "@/components/campagnesResults/CampaignStats.vue";
 import CampaignEvents from "@/components/campagnesResults/CampaignEvents.vue";
 import CampaignLists from "@/components/campagnesResults/CampaignLists.vue";
+
+dayjs.locale("fr");
 
 const route = useRoute();
 const campaignId = route.params.id;
 
 const campaign = ref({
   name: "",
+  created_at: "",
   lists: [],
   stats: {
     total: 0,
@@ -60,15 +66,8 @@ const fetchCampaignData = async () => {
   }
 };
 
-const formatDate = (dateString) => {
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
-  return new Date(dateString).toLocaleDateString("fr-FR", options);
+const formatDate = (dateString: string): string => {
+  return dayjs(dateString).format("D MMMM YYYY à HH:mm");
 };
 
 onMounted(() => {

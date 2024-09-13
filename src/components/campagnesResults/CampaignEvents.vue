@@ -1,7 +1,45 @@
+<script setup lang="ts">
+import { type CampaignEvent } from "@/types/campaignResults";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/fr";
+
+dayjs.extend(relativeTime);
+dayjs.locale("fr");
+
+const props = defineProps<{
+  events: CampaignEvent[];
+}>();
+
+const getEventPhrase = (type: string) => {
+  switch (type) {
+    case "opened":
+      return "à ouvert le lien";
+    case "sent":
+      return "à envoyé le lien";
+    case "clicked":
+      return "à cliqué sur le lien";
+    default:
+      return "";
+  }
+};
+
+const formatEventDate = (dateString: string): string => {
+  const eventDate = dayjs(dateString);
+  const now = dayjs();
+
+  if (eventDate.isSame(now, "day")) {
+    return `Aujourd'hui à ${eventDate.format("HH:mm")}`;
+  }
+
+  return eventDate.format("DD MMM YYYY à HH:mm");
+};
+</script>
+
 <template>
   <ul>
     <li
-      v-for="(event, index) in events"
+      v-for="(event, index) in props.events"
       :key="index"
       class="flex justify-between items-center text-white mb-4 bg-dark rounded-md"
     >
@@ -22,33 +60,9 @@
           <span class="block text-grey">{{ getEventPhrase(event.type) }}</span>
         </div>
         <div class="flex flex-col items-end">
-          <span class="text-grey">{{
-            new Date(event.date).toLocaleString()
-          }}</span>
+          <span class="text-grey">{{ formatEventDate(event.date) }}</span>
         </div>
       </div>
     </li>
   </ul>
 </template>
-
-<script setup lang="ts">
-const props = defineProps({
-  events: {
-    type: Array,
-    required: true,
-  },
-});
-
-const getEventPhrase = (type: string) => {
-  switch (type) {
-    case "opened":
-      return "à ouvert le lien";
-    case "sent":
-      return "à envoyé le lien";
-    case "clicked":
-      return "à cliqué sur le lien";
-    default:
-      return "";
-  }
-};
-</script>

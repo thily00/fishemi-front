@@ -26,10 +26,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  lists: {
-    type: Array,
-    required: true,
-  },
-});
+import { type CampaignList } from "@/types/campaignResults";
+
+const props = defineProps<{
+  lists: CampaignList[];
+}>();
 </script>
