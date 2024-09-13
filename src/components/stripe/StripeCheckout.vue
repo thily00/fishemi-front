@@ -1,10 +1,6 @@
 <template>
   <div v-if="sessionId !== ''">
-    <stripe-checkout
-      ref="checkoutRef"
-      :pk="'pk_test_51PmfS2LhULWNdD38hlhu2v9inwxQDZZDxFvqls05CYmpsZ7jALy8cuAXo09XOJ7s7gDeSN9iAa4aOhrV6MHpY0m400iviPvfAX'"
-      :session-id="sessionId"
-    />
+    <stripe-checkout ref="checkoutRef" :pk="PK" :session-id="sessionId" />
   </div>
 </template>
 
@@ -20,6 +16,12 @@ export default {
       type: String,
       required: true,
     },
+  },
+
+  data() {
+    return {
+      PK: import.meta.env.VITE_STRIPE_PK,
+    };
   },
 
   watch: {

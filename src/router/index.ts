@@ -56,12 +56,12 @@ const router = createRouter({
     },
     {
       path: "/campaign/payment-confirmation",
-      name: "payment-campagne",
+      name: "payment-confirmation",
       component: () => import("@/views/app/CampaignPaymentConfirmation.vue"),
     },
     {
       path: "/campaign/payment-cancellation",
-      name: "payment-campagne",
+      name: "payment-cancellation",
       component: () => import("@/views/app/CampaignPaymentCancellation.vue"),
     },
     {
