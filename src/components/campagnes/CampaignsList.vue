@@ -9,6 +9,14 @@ const props = defineProps<{
   toast: any;
 }>();
 
+const handleEditCampaign = (campaignId: string) => {
+  console.log("Edition de la campagne:", campaignId);
+};
+
+const handleAccessResults = (campaignId: string) => {
+  console.log("Accès aux résultats de la campagne:", campaignId);
+};
+
 const handleRemoveCampaign = async (campaignId: string) => {
   try {
     await axiosInstance().delete("/campaign/delete", {

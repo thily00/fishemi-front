@@ -49,6 +49,16 @@ const router = createRouter({
       name: "campagnes",
       component: () => import("@/views/app/CampaignView.vue"),
     },
+    {
+      path: "/campagnes/nouvelle-campagne",
+      name: "nouvell-campagne",
+      component: () => import("@/views/app/CampaignManager.vue"),
+    },
+    {
+      path: "/campagnes/payment-confirmation",
+      name: "payment-campagne",
+      component: () => import("@/views/app/CampaignPayment.vue"),
+    },
   ],
 });
 router.beforeEach(async (to, from, next) => {
