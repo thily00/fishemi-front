@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const props = defineProps({
   id: {
@@ -27,7 +30,7 @@ const removeCampaign = () => {
 };
 
 const accessResults = () => {
-  emit("accessResults", props.id);
+  router.push({ name: "campaignResults", params: { id: props.id } });
 };
 </script>
 
