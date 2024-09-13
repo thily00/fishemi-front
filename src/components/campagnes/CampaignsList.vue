@@ -4,13 +4,16 @@ import { type Campaign } from "@/types/campaign";
 import CampaignCard from "@/components/campagnes/CampaignCard.vue";
 import { axiosInstance } from "@/services/AxiosService";
 
+const router = useRouter();
 const props = defineProps<{
   campaigns: Campaign[];
   refreshList: () => void;
   toast: any;
 }>();
 
-const router = useRouter();
+const handleEditCampaign = (campaignId: string) => {
+  console.log("Edition de la campagne:", campaignId);
+};
 
 const handleRemoveCampaign = async (campaignId: string) => {
   try {

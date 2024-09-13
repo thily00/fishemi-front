@@ -53,7 +53,7 @@ const router = createRouter({
       path: "/campagnes/:id/resultats",
       name: "campaignResults",
       component: () => import("@/views/app/CampaignResultsView.vue"),
-      props: true,
+      props: true
     },
   ],
 });

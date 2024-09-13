@@ -17,6 +17,19 @@ const showAppLayout = computed(() => {
     route.path !== "/"
   );
 });
+
+const autoWidth = computed(() => {
+  if (
+    !route.path.includes("/login") &&
+    !route.path.includes("/register") &&
+    !route.path.includes("/otp") &&
+    route.path !== "/"
+  ) {
+    return "w-full md:w-[calc(100%-15rem)] md:ml-[17rem]";
+  } else {
+    return "w-full";
+  }
+});
 </script>
 
 <template>
@@ -26,7 +39,7 @@ const showAppLayout = computed(() => {
         <FishemiHeader2 v-if="showAppLayout" />
         <div class="flex gap-8 pt-8">
           <Sidebar v-if="showAppLayout" />
-          <div class="w-full md:w-[calc(100%-15rem)] md:ml-[17rem]">
+          <div :class="autoWidth">
             <RouterView />
           </div>
         </div>

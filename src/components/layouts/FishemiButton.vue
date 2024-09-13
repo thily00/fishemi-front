@@ -7,8 +7,8 @@ const props = defineProps({
   action: Function,
   loading: Boolean,
   type: {
-    type: String as () => 'primary' | 'secondary',
-    default: 'primary', // Valeur par défaut
+    type: String as () => "primary" | "secondary",
+    default: "primary",
   },
   fullWidth: {
     type: Boolean,
@@ -24,9 +24,9 @@ const props = defineProps({
       :label="props.label"
       :loading="props.loading ? props.loading : false"
       :class="[
-        { 'w-full': props.fullWidth}, 
+        { 'w-full': props.fullWidth },
         'custom-button',
-        $props.type === 'primary' ? 'primary' : 'secondary'
+        $props.type === 'primary' ? 'primary' : 'secondary',
       ]"
       @click="props.action"
     />
@@ -48,17 +48,17 @@ const props = defineProps({
   font-weight: 500 !important;
 }
 
-.custom-button .pi{
+.custom-button .pi {
   font-family: primeicons !important;
 }
 
-.primary{
+.primary {
   background: radial-gradient(circle, #e9ff90 0%, #ccff00 40%);
   color: black;
 }
 
-.secondary{
+.secondary {
   background: var(--blue);
-  color: #CCFF00;
+  color: #ccff00;
 }
 </style>
