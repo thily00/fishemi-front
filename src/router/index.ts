@@ -50,10 +50,25 @@ const router = createRouter({
       component: () => import("@/views/app/CampaignView.vue"),
     },
     {
+      path: "/campagnes/nouvelle-campagne",
+      name: "nouvell-campagne",
+      component: () => import("@/views/app/CampaignManager.vue"),
+    },
+    {
+      path: "/campaign/payment-confirmation",
+      name: "payment-campagne",
+      component: () => import("@/views/app/CampaignPaymentConfirmation.vue"),
+    },
+    {
+      path: "/campaign/payment-cancellation",
+      name: "payment-campagne",
+      component: () => import("@/views/app/CampaignPaymentCancellation.vue"),
+    },
+    {
       path: "/campagnes/:id/resultats",
       name: "campaignResults",
       component: () => import("@/views/app/CampaignResultsView.vue"),
-      props: true
+      props: true,
     },
   ],
 });
