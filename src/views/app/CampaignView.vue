@@ -4,8 +4,11 @@ import { useToast } from "primevue/usetoast";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import CampaignsList from "@/components/campagnes/CampaignsList.vue";
 import { axiosInstance } from "@/services/AxiosService";
+import { useRouter } from "vue-router";
+import type { Campaign } from "@/types/campaign";
 
 const toast = useToast();
+const router = useRouter();
 const campaigns: Ref<Campaign[]> = ref([]);
 
 const fetchCampaigns = async () => {
@@ -40,7 +43,9 @@ onMounted(() => {
         <h3 class="text-3xl text-white">Vos campagnes</h3>
         <FishemiButton
           class="flex justify-center"
-          label="+ Créer une nouvelle campagne"
+          label="Créer une nouvelle campagne"
+          icon="pi pi-plus"
+          @click="router.push('/campagnes/nouvelle-campagne')"
         />
       </div>
       <p class="mt-4 text-xl text-gray-500">

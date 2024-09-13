@@ -55,9 +55,14 @@ const router = createRouter({
       component: () => import("@/views/app/CampaignManager.vue"),
     },
     {
-      path: "/campagnes/payment-confirmation",
+      path: "/campaign/payment-confirmation",
       name: "payment-campagne",
-      component: () => import("@/views/app/CampaignPayment.vue"),
+      component: () => import("@/views/app/CampaignPaymentConfirmation.vue"),
+    },
+    {
+      path: "/campaign/payment-cancellation",
+      name: "payment-campagne",
+      component: () => import("@/views/app/CampaignPaymentCancellation.vue"),
     },
   ],
 });
