@@ -6,7 +6,6 @@ import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import CampaignsList from "@/components/campagnes/CampaignsList.vue";
 import { axiosInstance } from "@/services/AxiosService";
 import { useRouter } from "vue-router";
-import type { Campaign } from "@/types/campaign";
 
 const toast = useToast();
 const router = useRouter();
