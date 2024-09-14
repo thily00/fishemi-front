@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted, type Ref } from "vue";
-// import { useToast } from "primevue/usetoast";
+import { useToast } from "primevue/usetoast";
 import { useListStore } from "@/stores/listStore";
 import InputText from "primevue/inputtext";
 import type { List } from "@/types/list";
 import Textarea from "primevue/textarea";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import { useCampaignStore } from "@/stores/campaignStore";
+import { useRoute } from "vue-router";
 
 import StripeCheckout from "@/components/stripe/StripeCheckout.vue";
 import FishemiAutoComplete from "@/components/layouts/FishemiAutoComplete.vue";
 import CampaignManagerLists from "@/components/campagnes/manager/CampaignManagerLists.vue";
 import CampaignManagerTemplate from "@/components/campagnes/manager/CampaignManagerTemplate.vue";
 
-// const toast = useToast();
+const toast = useToast();
+const route = useRoute();
 const listStore = useListStore();
 const campaignStore = useCampaignStore();
 const companyLists: Ref<List[]> = ref([]);
@@ -26,10 +28,37 @@ const campaignContent: Ref<string> = ref(defaultContent);
 const CostEstimation: Ref<number> = ref(0);
 const generatingContent: Ref<boolean> = ref(false);
 const checkoutSession: Ref<string> = ref("");
+const paymentInProgress: Ref<boolean> = ref(false);
 
 onMounted(() => {
   getLists();
+
+  // Hydrate data if we are in edit mode
+  const route = useRoute();
+  if (route.name === "edit-campaign") {
+    hydrateData();
+  }
 });
+
+const hydrateData = async () => {
+  try {
+    const campaignId = route.params.id as string;
+    const response: any = await campaignStore.getCampaign(campaignId);
+
+    if (response && response.status === 200) {
+      campaignName.value = response.data.name;
+      campaignSubject.value = response.data.subject;
+      campaignContent.value = response.data.content;
+      campaignTemplate.value = response.data.template;
+      campaignLists.value = response.data.lists as List[];
+    }
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données de la campagne:",
+      error
+    );
+  }
+};
 
 const getLists = async () => {
   companyLists.value = listStore.lists;
@@ -82,6 +111,7 @@ const estimateCost = async () => {
 };
 
 const createCampaign = async () => {
+  paymentInProgress.value = true;
   const campaign = {
     lists: campaignLists.value.map((list) => list.id),
     name: campaignName.value,
@@ -90,13 +120,33 @@ const createCampaign = async () => {
     content: campaignContent.value,
   };
   const response: any = await campaignStore.createCampaign(campaign);
-  console.log(response);
+  paymentInProgress.value = false;
   if (response && response.status === 201) {
     const res: any = await campaignStore.createCheckout(response.data.id);
-    console.log(res);
     if (res && res.status === 200) {
       checkoutSession.value = res.data.checkout_id;
     }
+  }
+};
+
+const editCampaign = async () => {
+  const campaign = {
+    id: route.params.id as string,
+    lists: campaignLists.value.map((list) => list.id),
+    name: campaignName.value,
+    template: campaignTemplate.value,
+    subject: campaignSubject.value,
+    content: campaignContent.value,
+  };
+
+  const response: any = await campaignStore.updateCampaign(campaign);
+  if (response && response.status === 200) {
+    toast.add({
+      severity: "success",
+      summary: "Campagne modifiée",
+      detail: "La campagne a été modifiée avec succès",
+      life: 2000,
+    });
   }
 };
 </script>
@@ -203,12 +253,14 @@ const createCampaign = async () => {
             icon="pi pi-download"
             type="secondary"
             :fullWidth="true"
+            :action="editCampaign"
           />
 
           <FishemiButton
             :label="'Lancer la campagne'"
             :fullWidth="true"
             :action="createCampaign"
+            :loading="paymentInProgress"
             icon="pi pi-play"
           />
 

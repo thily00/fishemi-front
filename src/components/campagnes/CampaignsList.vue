@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const handleEditCampaign = (campaignId: string) => {
-  console.log("Edition de la campagne:", campaignId);
+  router.push({ name: "edit-campaign", params: { id: campaignId } });
 };
 
 const handleRemoveCampaign = async (campaignId: string) => {
@@ -51,6 +51,7 @@ const handleAccessResults = (campaignId: string) => {
           :id="campaign.id"
           :name="campaign.name"
           :status="campaign.status"
+          @edit="handleEditCampaign"
           @remove="handleRemoveCampaign"
           @accessResults="handleAccessResults"
         />

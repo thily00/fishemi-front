@@ -14,6 +14,19 @@ export const useCampaignStore = defineStore("campaign", {
   getters: {},
 
   actions: {
+    getCampaign(campaign_id: string) {
+      return new Promise((resolve, reject) => {
+        axiosInstance()
+          .get(`/campaign/find-one?id=${campaign_id}`)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+
     createCampaign(data: {
       lists: string[];
       name: string;
@@ -24,6 +37,26 @@ export const useCampaignStore = defineStore("campaign", {
       return new Promise((resolve, reject) => {
         axiosInstance()
           .post("/campaign/new", data)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+
+    updateCampaign(data: {
+      id: string;
+      lists?: string[];
+      name?: string;
+      template?: string;
+      subject?: string;
+      content?: string;
+    }) {
+      return new Promise((resolve, reject) => {
+        axiosInstance()
+          .patch("/campaign", data)
           .then((response) => {
             resolve(response);
           })
