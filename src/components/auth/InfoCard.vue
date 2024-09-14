@@ -20,12 +20,12 @@ const redirectTo = (pagename: string) => {
 
             <div class="flex items-center gap-2">
                 <img src="/icons/check.svg" alt="check_icon" class="w-6 h-6">
-                <p class="xl:text-xl lg:text-lg"> Commencez à intégrer vos employés gratuitetement par imporrt de fichier .CSV</p>
+                <p class="xl:text-xl lg:text-lg"> Commencez à intégrer vos employés gratuitement par import de fichier .CSV</p>
             </div>
 
             <div class="flex items-center gap-2">
                 <img src="/icons/check.svg" alt="check_icon" class="w-6 h-6">
-                <p class="xl:text-xl lg:text-lg"> Profitez d'un support 100% francçais présent 7j/7 de 9h à 20h (heure Paris)</p>
+                <p class="xl:text-xl lg:text-lg"> Profitez d'un support 100% français présent 7j/7 de 9h à 20h (heure Paris)</p>
             </div>
         </div>
     </div>

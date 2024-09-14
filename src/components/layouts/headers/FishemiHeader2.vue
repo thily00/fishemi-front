@@ -1,17 +1,52 @@
 <script setup lang="ts">
+import Menu from "primevue/menu";
 import { useRouter } from "vue-router";
-import { ref, defineEmits } from "vue";
+import { ref, defineEmits, computed, onMounted } from "vue";
+import { useAccountStore } from "@/stores/accountStore";
+import { logOut } from "@/services/AuthService";
 
+const emit = defineEmits(["toggle-sidebar"]);
 const router = useRouter();
+const accountStore = useAccountStore();
+const sidebarVisible = ref(false);
+const menu = ref();
+const items = ref([
+  {
+    items: [
+      {
+        label: "Profil",
+        icon: "pi pi-user",
+      },
+      {
+        label: "Se déconnecter",
+        icon: "pi pi-sign-out",
+        command: () => {
+          logOut();
+        },
+      },
+    ],
+  },
+]);
+
+onMounted(() => {
+  if (!accountStore.account) {
+    accountStore.me();
+  }
+});
+
+const capitalizedFullName = computed(() => {
+  const fullName = accountStore.account?.full_name || "";
+  return fullName.charAt(0).toUpperCase();
+});
+
 const redirecTo = (pagename: string) => {
   router.push(`/${pagename}`);
 };
 
-// État pour contrôler la visibilité de la sidebar
-const sidebarVisible = ref(false);
-const emit = defineEmits(["toggle-sidebar"]);
+const toggleMenu = (event: Event) => {
+  menu.value.toggle(event);
+};
 
-// Émettre un événement pour basculer la visibilité de la sidebar
 const toggleSidebar = () => {
   sidebarVisible.value = !sidebarVisible.value;
   emit("toggle-sidebar", sidebarVisible.value);
@@ -20,7 +55,7 @@ const toggleSidebar = () => {
 
 <template>
   <div
-    class="w-full h-20 flex items-center justify-between p-8 md:p-12 bg-blue rounded-b-3xl mb-12"
+    class="sticky z-50 w-full top-0 h-20 shadow-2xl flex items-center justify-between p-8 md:p-12 bg-blue rounded-b-2xl"
   >
     <div
       class="flex items-center gap-2 cursor-pointer"
@@ -48,17 +83,33 @@ const toggleSidebar = () => {
           ></path>
         </svg>
       </div>
-      <div class="hidden md:flex items-center gap-4 cursor-pointer">
+      <div
+        class="hidden md:flex items-center gap-4 cursor-pointer"
+        @click="toggleMenu"
+        aria-haspopup="true"
+        aria-controls="overlay_menu"
+      >
         <div class="text-right text-white">
-          <p class="mb-0 text-xl fishemi-text-color">Hetic</p>
-          <p class="mb-0 text-md font-light">Administrateur</p>
+          <p class="mb-0 text-xl fishemi-text-color">
+            {{ accountStore.account?.full_name }}
+          </p>
+          <p class="mb-0 text-md font-light">
+            {{ accountStore.account?.role }}
+          </p>
         </div>
         <div
-          class="w-8 md:w-10 h-8 md:h-10 bg-yellow-400 rounded-full flex justify-center items-center"
+          class="w-8 md:w-10 h-8 md:h-10 primary rounded-full flex justify-center items-center"
         >
-          <p class="mb-0 font-normal text-xl">A</p>
+          <p class="mb-0 font-normal text-xl">{{ capitalizedFullName }}</p>
         </div>
       </div>
+      <Menu
+        ref="menu"
+        id="overlay_menu"
+        :model="items"
+        :popup="true"
+        :pt="{ root: 'bg-blue shadow-2xl' }"
+      />
     </div>
   </div>
 </template>

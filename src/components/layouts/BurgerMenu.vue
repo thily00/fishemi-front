@@ -27,7 +27,7 @@
             class="text-white hover:text-yellow-400 flex items-center"
           >
             <img
-              src="/public/icons/sidebar/dashboardWhite.svg"
+              src="/icons/sidebar/dashboardWhite.svg"
               alt="dashboard icon"
               class="w-6 h-6 mr-3"
             />
@@ -40,7 +40,7 @@
             class="text-white hover:text-yellow-400 flex items-center"
           >
             <img
-              src="/public/icons/sidebar/emailWhite.svg"
+              src="/icons/sidebar/emailWhite.svg"
               alt="campagnes icon"
               class="w-6 h-6 mr-3"
             />
@@ -53,7 +53,7 @@
             class="text-white hover:text-yellow-400 flex items-center"
           >
             <img
-              src="/public/icons/sidebar/usersWhite.svg"
+              src="/icons/sidebar/usersWhite.svg"
               alt="Listes icon"
               class="w-6 h-6 mr-3"
             />
@@ -66,7 +66,7 @@
             class="text-white hover:text-yellow-400 flex items-center"
           >
             <img
-              src="/public/icons/sidebar/user.svg"
+              src="/icons/sidebar/user.svg"
               alt="Employe icon"
               class="w-6 h-6 mr-3"
             />
@@ -79,7 +79,7 @@
             class="text-white hover:text-yellow-400 flex items-center"
           >
             <img
-              src="/public/icons/sidebar/settings.svg"
+              src="/icons/sidebar/settings.svg"
               alt="Settings icon"
               class="w-6 h-6 mr-3"
             />
