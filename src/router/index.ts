@@ -51,8 +51,14 @@ const router = createRouter({
     },
     {
       path: "/campagnes/nouvelle-campagne",
-      name: "nouvell-campagne",
+      name: "nouvelle-campagne",
       component: () => import("@/views/app/CampaignManager.vue"),
+    },
+    {
+      path: "/campagnes/modifier-campagne/:id",
+      name: "edit-campaign",
+      component: () => import("@/views/app/CampaignManager.vue"),
+      props: true,
     },
     {
       path: "/campaign/payment-confirmation",
