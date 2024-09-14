@@ -51,6 +51,7 @@ const hydrateData = async () => {
       campaignContent.value = response.data.content;
       campaignTemplate.value = response.data.template;
       campaignLists.value = response.data.lists as List[];
+      estimateCost();
     }
   } catch (error) {
     console.error(
