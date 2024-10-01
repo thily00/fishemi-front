@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
   <div class="w-full h-full rounded-lg bg-blue p-10">
-    <div class="my-12">
+    <div class="mb-12">
       <div class="flex justify-between">
         <h3 class="text-3xl text-white">Vos campagnes</h3>
         <FishemiButton
