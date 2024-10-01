@@ -115,7 +115,7 @@ const leave = (el: HTMLElement | any) => {
     >
       <div
         v-if="!isOpen"
-        class="w-full flex items-center justify-between flex-col gap-4 md:flex-row"
+        class="w-full flex items-center justify-between flex-col gap-4 lg:flex-row"
       >
         <div class="flex items-center gap-6 rounded-md">
           <Checkbox
@@ -141,7 +141,9 @@ const leave = (el: HTMLElement | any) => {
             </h6>
           </div>
         </div>
-        <div class="flex gap-4 items-center">
+        <div
+          class="flex flex-col sm:flex-row w-full sm:w-auto gap-4 items-center"
+        >
           <FishemiButton
             label="Modifier"
             icon="pi pi-pencil"

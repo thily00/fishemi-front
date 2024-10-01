@@ -99,7 +99,7 @@ const removeSelection = async () => {
 <template>
   <div class="w-full h-full p-4 md:p-10 bg-blue rounded-lg">
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+      class="flex flex-col sm:flex-row justify-between items-start md:items-center gap-4"
     >
       <h3 class="text-2xl md:text-3xl text-white">Vos listes</h3>
       <FishemiButton
@@ -107,7 +107,7 @@ const removeSelection = async () => {
         icon="pi pi-plus"
         :fullWidth="true"
         :action="createList"
-        class="w-full md:w-auto"
+        class="w-auto"
       />
     </div>
 
@@ -117,7 +117,7 @@ const removeSelection = async () => {
       choisirez une liste d'employés pour envoyer la campagne.
     </p>
 
-    <div class="flex flex-col md:flex-row items-center gap-4 mt-8 mb-8">
+    <div class="flex flex-row items-center gap-2 mt-8 mb-8">
       <div class="w-full md:w-96">
         <IconField>
           <InputIcon class="pi pi-search" />
