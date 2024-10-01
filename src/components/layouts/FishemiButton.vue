@@ -14,11 +14,19 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  parentCustomClass: {
+    type: String,
+    default: "",
+  },
+  buttonCustomClass: {
+    type: String,
+    default: "",
+  },
 });
-</script>
+</script> 
 
 <template>
-  <div class="card flex">
+  <div :class="['card flex', parentCustomClass]" >
     <Button
       :icon="props.icon"
       :label="props.label"
@@ -26,6 +34,7 @@ const props = defineProps({
       :class="[
         { 'w-full': props.fullWidth },
         'custom-button',
+        buttonCustomClass,
         $props.type === 'primary' ? 'primary' : 'secondary',
       ]"
       @click="props.action"
