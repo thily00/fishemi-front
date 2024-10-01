@@ -41,27 +41,27 @@ const menuItems = [
   {
     name: "Dashboard",
     to: "/dashboard",
-    icon: "/public/icons/sidebar/dashboardWhite.svg",
+    icon: "/icons/sidebar/dashboardWhite.svg",
   },
   {
     name: "Campagnes",
     to: "/campagnes",
-    icon: "/public/icons/sidebar/emailWhite.svg",
+    icon: "/icons/sidebar/emailWhite.svg",
   },
   {
     name: "Listes",
     to: "/mes-listes",
-    icon: "/public/icons/sidebar/usersWhite.svg",
+    icon: "/icons/sidebar/usersWhite.svg",
   },
   {
     name: "Employés",
     to: "/mes-employes",
-    icon: "/public/icons/sidebar/user.svg",
+    icon: "/icons/sidebar/user.svg",
   },
   {
     name: "Paramètres",
     to: "/parametres",
-    icon: "/public/icons/sidebar/settings.svg",
+    icon: "/icons/sidebar/settings.svg",
   },
 ];
 

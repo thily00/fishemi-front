@@ -70,6 +70,31 @@ const search = async () => {
     lists.value = response.data;
   }
 };
+
+const removeSelection = async () => {
+  try {
+    const listIds = listStore.selectedLists;
+    const response: any = await listStore.deleteList(listIds);
+    if (response === "success") {
+      await getLists();
+      listStore.setSelectionList([]);
+      toast.add({
+        severity: "success",
+        summary: "Suppression réussie",
+        detail: "Les données ont été supprimées avec succès.",
+        life: 3000,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    toast.add({
+      severity: "error",
+      summary: "Erreur",
+      detail: "Une erreur est survenue lors de la suppression.",
+      life: 3000,
+    });
+  }
+};
 </script>
 <template>
   <div class="w-full h-full p-4 md:p-10 bg-blue rounded-lg">
@@ -104,12 +129,12 @@ const search = async () => {
           />
         </IconField>
       </div>
-      <div class="hidden md:block w-0.5 h-full bg-gray-400"></div>
-      <div>
+      <div class="w-0.5 h-full bg-gray-400"></div>
+      <div @click="removeSelection">
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>
-    <ListList :lists="lists" :getLists="getLists" />
+    <ListList :lists="lists" @get-lists="getLists" />
     <FishemiModal
       :isVisible="isAddModalVisible"
       @close="isAddModalVisible = false"

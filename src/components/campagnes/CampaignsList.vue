@@ -4,13 +4,16 @@ import { type Campaign } from "@/types/campaign";
 import CampaignCard from "@/components/campagnes/CampaignCard.vue";
 import { axiosInstance } from "@/services/AxiosService";
 
+const router = useRouter();
 const props = defineProps<{
   campaigns: Campaign[];
   refreshList: () => void;
   toast: any;
 }>();
 
-const router = useRouter();
+const handleEditCampaign = (campaignId: string) => {
+  router.push({ name: "edit-campaign", params: { id: campaignId } });
+};
 
 const handleRemoveCampaign = async (campaignId: string) => {
   try {
@@ -48,6 +51,7 @@ const handleAccessResults = (campaignId: string) => {
           :id="campaign.id"
           :name="campaign.name"
           :status="campaign.status"
+          @edit="handleEditCampaign"
           @remove="handleRemoveCampaign"
           @accessResults="handleAccessResults"
         />

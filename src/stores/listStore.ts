@@ -58,6 +58,42 @@ export const useListStore = defineStore("liste", {
       });
     },
 
+    async updateList(list: List) {
+      return new Promise((resolve, reject) => {
+        axiosInstance()
+          .patch(`/list`, list)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+
+    async deleteList(listIds: string[]) {
+      return Promise.all(
+        listIds.map((listId) => {
+          return new Promise((resolve, reject) => {
+            axiosInstance()
+              .delete(`/list/?id=${listId}`)
+              .then((response) => {
+                resolve(response);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          });
+        })
+      )
+        .then(() => {
+          return "success";
+        })
+        .catch((error) => {
+          throw error;
+        });
+    },
+
     async searchList(name: string) {
       return new Promise((resolve, reject) => {
         axiosInstance()

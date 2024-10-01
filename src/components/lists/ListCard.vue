@@ -34,13 +34,18 @@ const toggleCard = () => {
   emit("toggle");
 };
 
-// const editList = () => {
-//   emit("edit");
-// };
+const editList = () => {
+  const list = {
+    id: listStore.selectedList?.id,
+    name: listStore.selectedList?.name,
+    employee_ids: listEmployees.value,
+  };
+  emit("edit", list);
+};
 
 const removeList = () => {
-  const employeeIds = [props.id];
-  emit("remove", employeeIds);
+  const listIds = [props.id];
+  emit("remove", listIds);
 };
 
 const handleCheckboxChange = (checked: boolean) => {
@@ -199,7 +204,6 @@ const leave = (el: HTMLElement | any) => {
                 id="name"
                 class="mb-2 bg-background border-slate-700"
                 v-model="listStore.selectedList.name"
-                disabled
               />
             </div>
             <div class="w-full flex flex-col gap-4 text-white">
@@ -236,7 +240,7 @@ const leave = (el: HTMLElement | any) => {
               </ul>
             </div>
           </div>
-          <!-- <FishemiButton label="Enregistrer" :action="editList" /> -->
+          <FishemiButton label="Enregistrer" :action="editList" />
         </div>
       </div>
     </transition>
