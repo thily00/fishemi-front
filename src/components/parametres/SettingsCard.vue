@@ -22,20 +22,23 @@ const removeUsers = () => {
 </script>
 
 <template>
-  <div class="w-full bg-background rounded-md p-5 transition-all duration-300">
-    <div class="w-full flex items-center justify-between">
-      <div class="flex items-center gap-6">
-        <i class="pi pi-user fishemi-text-color" style="font-size: 1.75rem"></i>
+  <div
+    class="w-full bg-background rounded-md p-4 md:p-5 transition-all duration-300"
+  >
+    <div class="flex flex-col md:flex-row items-center justify-between">
+      <div class="flex items-center gap-4 md:gap-6">
+        <i class="pi pi-user fishemi-text-color text-2xl md:text-3xl"></i>
         <div>
-          <h1 class="fishemi-text-color text-xl mb-1">{{ props.name }}</h1>
-          <h6 class="text-gray-400">{{ props.email }}</h6>
+          <h1 class="fishemi-text-color text-lg md:text-xl">
+            {{ props.name }}
+          </h1>
+          <h6 class="text-gray-400 text-sm md:text-base">{{ props.email }}</h6>
         </div>
       </div>
-      <div class="flex gap-4 items-center">
+      <div class="flex gap-2 md:gap-4 items-center mt-4 md:mt-0">
         <FishemiButton
           label="Supprimer"
           icon="pi pi-trash"
-          type="primary"
           @click="removeUsers"
         />
       </div>

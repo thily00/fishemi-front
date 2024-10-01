@@ -99,7 +99,6 @@ const leave = (el: HTMLElement | any) => {
 
 <template>
   <div class="w-full bg-background rounded-md p-5 transition-all duration-300">
-    <!-- Transition pour la vue par défaut (affichage employé) -->
     <transition
       name="expand-fade"
       mode="out-in"
@@ -109,7 +108,10 @@ const leave = (el: HTMLElement | any) => {
       @after-enter="afterEnter"
       @before-leave="beforeLeave"
     >
-      <div v-if="!isOpen" class="w-full flex items-center justify-between">
+      <div
+        v-if="!isOpen"
+        class="w-full flex items-center justify-between flex-col gap-4 md:flex-row"
+      >
         <div class="flex items-center gap-6 rounded-md">
           <Checkbox
             :modelValue="listStore.selectedLists.includes(props.id)"
@@ -152,7 +154,6 @@ const leave = (el: HTMLElement | any) => {
       </div>
     </transition>
 
-    <!-- Transition pour la vue de modification -->
     <transition
       name="expand-fade"
       mode="out-in"
@@ -243,7 +244,6 @@ const leave = (el: HTMLElement | any) => {
 </template>
 
 <style scoped>
-/* Animation pour la transition d'apparition et disparition */
 .expand-fade-enter-active,
 .expand-fade-leave-active {
   transition: max-height 0.3s ease, opacity 0.3s ease;

@@ -10,8 +10,8 @@
       <li v-for="item in menuItems" :key="item.name">
         <router-link
           :to="item.to"
-          class="flex items-center text-white hover:text-yellow-400"
-          :class="{ 'text-yellow-400': isActive(item.to) }"
+          class="flex items-center text-white hover:fishemi-text-color"
+          :class="{ 'fishemi-text-color': isActive(item.to) }"
         >
           <img
             :src="item.icon"

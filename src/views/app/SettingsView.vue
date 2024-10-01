@@ -121,7 +121,7 @@ const saveSettings = async () => {
 </script>
 
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
+  <div class="w-full h-full rounded-lg bg-blue py-10 pr-4 pl-4 md:p-10">
     <div class="flex justify-between items-center">
       <h3 class="text-3xl text-white">Paramètres</h3>
     </div>
@@ -144,7 +144,7 @@ const saveSettings = async () => {
     </div>
 
     <div class="my-12">
-      <div class="flex justify-between">
+      <div class="flex justify-between gap-4 flex-col md:flex-row">
         <h3 class="text-3xl text-white">Gestionnaires de l’organisation</h3>
         <FishemiButton
           class="flex justify-center"
@@ -175,7 +175,7 @@ const saveSettings = async () => {
       </div>
 
       <div class="form flex flex-col flex-start my-4">
-        <div class="flex my-4 gap-4">
+        <div class="flex my-4 gap-4 flex-col md:flex-row">
           <div class="w-full flex flex-col gap-2 text-white">
             <label for="name">Nom</label>
             <InputText
@@ -197,7 +197,7 @@ const saveSettings = async () => {
         <div class="flex my-4 gap-4">
           <div class="w-full flex flex-col gap-2 text-white">
             <label>Droit</label>
-            <div class="flex justify-between gap-4">
+            <div class="flex justify-between gap-4 flex-col md:flex-row">
               <div
                 class="w-full flex items-center p-4 gap-2 rounded-lg bg-blue"
               >
@@ -234,7 +234,7 @@ const saveSettings = async () => {
       </div>
     </div>
 
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mb-4">
       <h3 class="text-3xl text-white">Gestionnaires</h3>
     </div>
 

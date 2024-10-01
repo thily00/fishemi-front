@@ -14,10 +14,6 @@ const items = ref([
   {
     items: [
       {
-        label: "Profil",
-        icon: "pi pi-user",
-      },
-      {
         label: "Se déconnecter",
         icon: "pi pi-sign-out",
         command: () => {
@@ -66,7 +62,6 @@ const toggleSidebar = () => {
     </div>
 
     <div class="flex items-center gap-4">
-      <!-- Menu burger icon for mobile view -->
       <div class="md:hidden" @click="toggleSidebar">
         <svg
           class="w-8 h-8 text-white"
@@ -112,6 +107,51 @@ const toggleSidebar = () => {
       />
     </div>
   </div>
+  <transition name="slide">
+    <div
+      v-if="sidebarVisible"
+      class="fixed top-0 left-0 z-50 w-64 h-full bg-blue text-white p-4 shadow-lg"
+    >
+      <div class="flex justify-between items-center">
+        <div
+          class="flex items-center gap-2 cursor-pointer"
+          @click="redirecTo('dashboard')"
+        >
+          <img src="/logo-alt.png" class="w-8 md:w-10" alt="logo" />
+          <p class="text-base text-white">Fishemi.io</p>
+        </div>
+        <button @click="toggleSidebar" class="text-2xl">&times;</button>
+      </div>
+
+      <div class="mt-8">
+        <div class="mb-4">
+          <p class="text-lg">{{ accountStore.account?.full_name }}</p>
+          <p class="text-sm font-light">{{ accountStore.account?.role }}</p>
+        </div>
+        <ul>
+          <li
+            v-for="item in items[0].items"
+            :key="item.label"
+            class="mb-4 cursor-pointer"
+            @click="item.command"
+          >
+            <i :class="item.icon"></i> {{ item.label }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </transition>
 </template>
 
-<style scoped></style>
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease;
+}
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+.slide-leave-to {
+  transform: translateX(-100%);
+}
+</style>
