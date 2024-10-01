@@ -148,6 +148,8 @@ const leave = (el: HTMLElement | any) => {
             label="Modifier"
             icon="pi pi-pencil"
             type="secondary"
+            parentCustomClass="w-full sm:w-auto"
+            buttonCustomClass="w-full sm:w-auto"
             :action="toggleCard"
           />
 
@@ -155,6 +157,8 @@ const leave = (el: HTMLElement | any) => {
             label="Supprimer"
             icon="pi pi-trash"
             type="primary"
+            parentCustomClass="w-full sm:w-auto"
+            buttonCustomClass="w-full sm:w-auto"
             :action="removeList"
           />
         </div>
