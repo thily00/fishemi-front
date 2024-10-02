@@ -10,8 +10,11 @@ import { useListStore } from "@/stores/listStore";
 import FishemiModal from "@/components/layouts/FishemiModal.vue";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import ListList from "@/components/lists/ListList.vue";
+import { useAccountStore } from "@/stores/accountStore";
+
 
 const toast = useToast();
+const accountStore = useAccountStore();
 const searchValue: Ref<string> = ref("");
 const newListName: Ref<string> = ref("");
 const isAddModalVisible: Ref<boolean> = ref(false);
@@ -97,37 +100,41 @@ const removeSelection = async () => {
 };
 </script>
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
-    <div class="flex justify-between items-center">
-      <h3 class="text-3xl text-white">Vos listes</h3>
+  <div class="w-full h-full p-4 md:p-10 bg-blue rounded-lg">
+    <div
+      class="flex flex-col sm:flex-row justify-between items-start md:items-center gap-4"
+    >
+      <h3 class="text-2xl md:text-3xl text-white">Vos listes</h3>
       <FishemiButton
+        v-if="accountStore.isAdmin || accountStore.isEditor"
         label="Créer une nouvelle liste"
         icon="pi pi-plus"
         :fullWidth="true"
         :action="createList"
+        class="w-auto"
       />
     </div>
 
-    <p class="mt-4 text-xl text-gray-500">
-      Vous pouvez créer plusiseurs listes et chacunes contient le nombre
-      d'employés que vous souhaitez, lorsque vous programmez une campagne, vous
-      serez invité à choisir une liste d'employés à qui envoyer la campagne.
+    <p class="mt-4 text-lg md:text-xl text-gray-500">
+      Vous pouvez créer plusieurs listes, chacune contenant le nombre d'employés
+      que vous souhaitez. Lors de la programmation d'une campagne, vous
+      choisirez une liste d'employés pour envoyer la campagne.
     </p>
 
-    <div class="flex items-center h-8 gap-6 mt-8 mb-8">
-      <div class="w-96">
+    <div class="flex flex-row items-center gap-2 mt-8 mb-8">
+      <div class="w-full md:w-96">
         <IconField>
           <InputIcon class="pi pi-search" />
           <InputText
             v-model="searchValue"
             @keyup.enter="search"
             placeholder="Rechercher une liste"
-            class="bg-background border-0 p-4"
+            class="bg-background border-0 p-4 w-full"
           />
         </IconField>
       </div>
       <div class="w-0.5 h-full bg-gray-400"></div>
-      <div @click="removeSelection">
+      <div v-if="accountStore.isAdmin || accountStore.isEditor" @click="removeSelection">
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>
@@ -137,18 +144,18 @@ const removeSelection = async () => {
       @close="isAddModalVisible = false"
     >
       <div class="flex flex-col gap-6">
-        <h1 class="text-2xl text-white">Créer une nouvelle liste</h1>
+        <h1 class="text-xl md:text-2xl text-white">Créer une nouvelle liste</h1>
         <div class="form flex flex-col gap-2">
           <div class="w-full flex flex-col gap-2 text-white">
-            <label for="email">Nom</label>
+            <label for="name">Nom</label>
             <InputText
               id="name"
               v-model="newListName"
-              class="mb-2 bg-background border-slate-700"
+              class="mb-2 bg-background border-slate-700 w-full"
               placeholder="Nom de la liste"
             />
           </div>
-          <FishemiButton label="Enregistrer" :action="addList" />
+          <FishemiButton label="Enregistrer" :action="addList" class="w-full" />
         </div>
       </div>
     </FishemiModal>

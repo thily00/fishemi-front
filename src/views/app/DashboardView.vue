@@ -1,15 +1,15 @@
 <template>
-  <div class="flex flex-col md:flex-row">
-    <div class="flex-1 p-4">
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="flex-1">
       <div class="bg-blue p-6 rounded-lg mb-4">
-        <div class="flex gap-8 items-center mb-4">
-          <div>
-            <p class="text-4xl mb-4 font-bold text-white">{{ firstClicked }}</p>
-            <p class="text-grey mb-4">Liens cliqués les dernières 24h</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+          <div class="text-left">
+            <p class="text-4xl mb-2 font-bold text-white">{{ firstClicked }}</p>
+            <p class="text-grey">Liens cliqués les dernières 24h</p>
           </div>
-          <div>
-            <p class="text-4xl mb-4 font-bold text-white">{{ firstOpened }}</p>
-            <p class="text-grey mb-4">Emails ouvert les dernières 24h</p>
+          <div class="text-left">
+            <p class="text-4xl mb-2 font-bold text-white">{{ firstOpened }}</p>
+            <p class="text-grey">Emails ouverts les dernières 24h</p>
           </div>
         </div>
         <Chart
@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Chart from "primevue/chart";
 import { useAccountStore } from "@/stores/accountStore";
 
@@ -71,11 +71,14 @@ const chartData = ref({
   ],
 });
 
-const chartOptions = ref({
+const defaultChartOptions = ref({
   responsive: true,
   plugins: {
     legend: {
       display: true,
+      labels: {
+        color: "#FFF",
+      },
     },
     title: {
       display: false,
@@ -86,7 +89,6 @@ const chartOptions = ref({
       grid: {
         display: false,
       },
-      reverse: false,
     },
     y: {
       grid: {
@@ -95,12 +97,54 @@ const chartOptions = ref({
       ticks: {
         color: "#9CA3AF",
         beginAtZero: true,
-        callback: function (value: number) {
-          return Number.isInteger(value) ? value : null;
-        },
+        stepSize: 1,
       },
     },
   },
+});
+
+const mobileChartOptions = ref({
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        color: "#374151",
+      },
+      ticks: {
+        color: "#9CA3AF",
+        beginAtZero: true,
+        stepSize: 1,
+      },
+    },
+  },
+});
+
+const isMobile = ref(false);
+
+const chartOptions = computed(() => {
+  return isMobile.value ? mobileChartOptions.value : defaultChartOptions.value;
+});
+
+onMounted(() => {
+  const updateIsMobile = () => {
+    isMobile.value = window.innerWidth <= 768;
+  };
+
+  updateIsMobile();
+
+  window.addEventListener("resize", updateIsMobile);
+
+  return () => window.removeEventListener("resize", updateIsMobile);
 });
 
 const fetchData = async () => {

@@ -133,8 +133,8 @@ table {
   border-spacing: 0;
 }
 
-.pi{
-  font-family: 'primeicons' !important;
+.pi {
+  font-family: "primeicons" !important;
 }
 
 /* to do */
@@ -169,6 +169,7 @@ textarea {
   transform: translate(-50%, -50%);
   width: 1350px;
   height: 100%;
+  background-image: url("/public/bg-frame/bg.png");
   z-index: 1;
   background-position: center;
   background-size: contain;
@@ -176,9 +177,9 @@ textarea {
 }
 
 @media screen and (max-width: 1380px) {
-    .auth-bg-frame {
-        width: 100%;
-        top: 50%;
-        left: 50%;
-    }
+  .auth-bg-frame {
+    width: 100%;
+    top: 50%;
+    left: 50%;
+  }
 }

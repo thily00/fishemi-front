@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { isAuthenticated } from "@/services/AuthService";
+import { useAccountStore } from "@/stores/accountStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,12 +81,14 @@ const router = createRouter({
 });
 router.beforeEach(async (to, from, next) => {
   const onlyForNonAuthenticated = ["login", "register", "otp"];
+  const accountStore = useAccountStore();
 
   if (to.name === "home") {
     // if request is for "home", both authenticated and non-authenticated has access
     next();
   } else {
     const isAuth = await isAuthenticated();
+    const isAdmin = accountStore.isAdmin;
 
     if (!isAuth && !onlyForNonAuthenticated.includes(to.name as string)) {
       // not authenticated but want access to authenticated page
@@ -95,21 +98,14 @@ router.beforeEach(async (to, from, next) => {
       next({ name: from.name as string });
     } else {
       // authenticated
+      if(to.name === "parametres" && !isAdmin) { // if user is not admin, redirect to dashboard
+        next({ name: "dashboard" });
+      }else {
       next();
+      }
     }
   }
 });
 
-router.beforeEach((to, from, next) => {
-  const publicPages = ["/", "/login", "/register", "/otp"];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem("accessToken");
-
-  if (authRequired && !loggedIn) {
-    return next("/login");
-  }
-
-  next();
-});
 
 export default router;

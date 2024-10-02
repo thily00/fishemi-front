@@ -24,7 +24,7 @@
         <li>
           <a
             href="#"
-            class="text-white hover:text-yellow-400 flex items-center"
+            class="text-white hover:fishemi-text-color flex items-center"
           >
             <img
               src="/icons/sidebar/dashboardWhite.svg"
@@ -37,7 +37,7 @@
         <li>
           <a
             href="#"
-            class="text-white hover:text-yellow-400 flex items-center"
+            class="text-white hover:fishemi-text-color flex items-center"
           >
             <img
               src="/icons/sidebar/emailWhite.svg"
@@ -50,7 +50,7 @@
         <li>
           <a
             href="#"
-            class="text-white hover:text-yellow-400 flex items-center"
+            class="text-white hover:fishemi-text-color flex items-center"
           >
             <img
               src="/icons/sidebar/usersWhite.svg"
@@ -63,7 +63,7 @@
         <li>
           <a
             href="#"
-            class="text-white hover:text-yellow-400 flex items-center"
+            class="text-white hover:fishemi-text-color flex items-center"
           >
             <img
               src="/icons/sidebar/user.svg"
@@ -76,7 +76,7 @@
         <li>
           <a
             href="#"
-            class="text-white hover:text-yellow-400 flex items-center"
+            class="text-white hover:fishemi-text-color flex items-center"
           >
             <img
               src="/icons/sidebar/settings.svg"
@@ -100,7 +100,3 @@ function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
 }
 </script>
-
-<style scoped>
-/* Optionally, add some styles for smooth transitions */
-</style>

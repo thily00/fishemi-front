@@ -6,7 +6,9 @@ import InputText from "primevue/inputtext";
 import { useListStore } from "@/stores/listStore";
 import type { Employee } from "@/types/employee";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useAccountStore } from "@/stores/accountStore";
 
+const accountStore = useAccountStore();
 const emit = defineEmits(["toggle", "edit", "remove"]);
 const listStore = useListStore();
 const props = defineProps({
@@ -104,7 +106,6 @@ const leave = (el: HTMLElement | any) => {
 
 <template>
   <div class="w-full bg-background rounded-md p-5 transition-all duration-300">
-    <!-- Transition pour la vue par défaut (affichage employé) -->
     <transition
       name="expand-fade"
       mode="out-in"
@@ -114,7 +115,10 @@ const leave = (el: HTMLElement | any) => {
       @after-enter="afterEnter"
       @before-leave="beforeLeave"
     >
-      <div v-if="!isOpen" class="w-full flex items-center justify-between">
+      <div
+        v-if="!isOpen"
+        class="w-full flex items-center justify-between flex-col gap-4 lg:flex-row"
+      >
         <div class="flex items-center gap-6 rounded-md">
           <Checkbox
             :modelValue="listStore.selectedLists.includes(props.id)"
@@ -139,25 +143,32 @@ const leave = (el: HTMLElement | any) => {
             </h6>
           </div>
         </div>
-        <div class="flex gap-4 items-center">
+        <div
+          class="flex flex-col sm:flex-row w-full sm:w-auto gap-4 items-center"
+        >
           <FishemiButton
+            v-if="accountStore.isAdmin || accountStore.isEditor"
             label="Modifier"
             icon="pi pi-pencil"
             type="secondary"
+            parentCustomClass="w-full sm:w-auto"
+            buttonCustomClass="w-full sm:w-auto"
             :action="toggleCard"
           />
 
           <FishemiButton
+            v-if="accountStore.isAdmin || accountStore.isEditor"
             label="Supprimer"
             icon="pi pi-trash"
             type="primary"
+            parentCustomClass="w-full sm:w-auto"
+            buttonCustomClass="w-full sm:w-auto"
             :action="removeList"
           />
         </div>
       </div>
     </transition>
 
-    <!-- Transition pour la vue de modification -->
     <transition
       name="expand-fade"
       mode="out-in"
@@ -207,7 +218,7 @@ const leave = (el: HTMLElement | any) => {
             </div>
             <div class="w-full flex flex-col gap-4 text-white">
               <label for="name">Employés</label>
-              <div class="w-96">
+              <div class="w-full md:w-96">
                 <IconField>
                   <InputIcon class="pi pi-search" />
                   <InputText
@@ -217,7 +228,7 @@ const leave = (el: HTMLElement | any) => {
                   />
                 </IconField>
               </div>
-              <ul class="flex gap-4">
+              <ul class="flex gap-4 overflow-auto custom-scrollbar">
                 <li
                   v-for="employee in filteredEmployeeList"
                   :key="employee.id"
@@ -247,7 +258,6 @@ const leave = (el: HTMLElement | any) => {
 </template>
 
 <style scoped>
-/* Animation pour la transition d'apparition et disparition */
 .expand-fade-enter-active,
 .expand-fade-leave-active {
   transition: max-height 0.3s ease, opacity 0.3s ease;
@@ -256,5 +266,24 @@ const leave = (el: HTMLElement | any) => {
 .expand-fade-leave-to {
   max-height: 0;
   opacity: 0;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--blue);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 </style>

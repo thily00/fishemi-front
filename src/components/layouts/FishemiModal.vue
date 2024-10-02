@@ -31,6 +31,7 @@ const close = () => {
   left: 0;
   right: 0;
   bottom: 0;
+  margin: 20px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;

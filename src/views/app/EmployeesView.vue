@@ -8,8 +8,10 @@ import type { Employee } from "@/types/employee";
 import { useEmployeeStore } from "@/stores/employeeStore";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import EmployeeList from "@/components/employees/EmployeeList.vue";
+import { useAccountStore } from "@/stores/accountStore";
 
 const toast = useToast();
+const accountStore = useAccountStore();
 const searchValue: Ref<string> = ref("");
 const fileUploading: Ref<boolean> = ref(false);
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
@@ -107,10 +109,13 @@ const handleFileUpload = async (event: Event): Promise<void> => {
 };
 </script>
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
-    <div class="flex justify-between items-center">
-      <h3 class="text-3xl text-white">Vos employés</h3>
+  <div class="w-full h-full rounded-lg bg-blue p-4 md:p-10">
+    <div
+      class="flex flex-col sm:flex-row justify-between items-start md:items-center gap-4"
+    >
+      <h3 class="text-2xl md:text-3xl text-white">Vos employés</h3>
       <FishemiButton
+        v-if="accountStore.isAdmin || accountStore.isEditor"
         label="Importer des nouveaux employés"
         icon="pi pi-plus"
         :fullWidth="true"
@@ -137,7 +142,7 @@ const handleFileUpload = async (event: Event): Promise<void> => {
     </p>
 
     <div class="flex items-center h-8 gap-6 mt-8 mb-8">
-      <div class="w-96">
+      <div class="w-full md:w-96">
         <IconField>
           <InputIcon class="pi pi-search" />
           <InputText
@@ -149,11 +154,12 @@ const handleFileUpload = async (event: Event): Promise<void> => {
         </IconField>
       </div>
       <div class="w-0.5 h-full bg-gray-400"></div>
-      <div @click="removeSelection">
+      <div v-if="accountStore.isAdmin || accountStore.isEditor" @click="removeSelection">
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>
     <FishemiButton
+      v-if="accountStore.isAdmin || accountStore.isEditor"
       label="Supprimer tout les employés"
       icon="pi pi-trash"
       :action="removeAll"
