@@ -44,18 +44,20 @@ const formatEventDate = (dateString: string): string => {
       class="flex justify-between items-center text-white mb-4 bg-dark rounded-md"
     >
       <div
-        class="w-full bg-background rounded-md p-5 flex justify-between items-center"
+        class="w-full flex-col md:flex-row gap-4 bg-background rounded-md p-5 flex justify-between items-center"
       >
-        <div class="flex items-center gap-4">
-          <i
-            class="pi pi-user fishemi-text-color"
-            style="font-size: 1.5rem"
-          ></i>
-          <div>
-            <span class="block fishemi-text-color mb-2 font-bold">
-              {{ event.employee_full_name }}
-            </span>
-            <span class="text-grey">{{ event.employee_email }}</span>
+        <div class="flex flex-col md:flex-row items-center gap-4">
+          <div class="flex gap-4">
+            <i
+              class="pi pi-user fishemi-text-color"
+              style="font-size: 1.5rem"
+            ></i>
+            <div>
+              <span class="block fishemi-text-color mb-2 font-bold">
+                {{ event.employee_full_name }}
+              </span>
+              <span class="text-grey">{{ event.employee_email }}</span>
+            </div>
           </div>
           <span class="block text-grey">{{ getEventPhrase(event.type) }}</span>
         </div>

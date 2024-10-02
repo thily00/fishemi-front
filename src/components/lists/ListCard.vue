@@ -214,7 +214,7 @@ const leave = (el: HTMLElement | any) => {
             </div>
             <div class="w-full flex flex-col gap-4 text-white">
               <label for="name">Employés</label>
-              <div class="w-96">
+              <div class="w-full md:w-96">
                 <IconField>
                   <InputIcon class="pi pi-search" />
                   <InputText
@@ -224,7 +224,7 @@ const leave = (el: HTMLElement | any) => {
                   />
                 </IconField>
               </div>
-              <ul class="flex gap-4">
+              <ul class="flex gap-4 overflow-auto custom-scrollbar">
                 <li
                   v-for="employee in filteredEmployeeList"
                   :key="employee.id"
@@ -262,5 +262,24 @@ const leave = (el: HTMLElement | any) => {
 .expand-fade-leave-to {
   max-height: 0;
   opacity: 0;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--blue);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 </style>

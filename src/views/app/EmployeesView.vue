@@ -107,9 +107,11 @@ const handleFileUpload = async (event: Event): Promise<void> => {
 };
 </script>
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
-    <div class="flex justify-between items-center">
-      <h3 class="text-3xl text-white">Vos employés</h3>
+  <div class="w-full h-full rounded-lg bg-blue p-4 md:p-10">
+    <div
+      class="flex flex-col sm:flex-row justify-between items-start md:items-center gap-4"
+    >
+      <h3 class="text-2xl md:text-3xl text-white">Vos employés</h3>
       <FishemiButton
         label="Importer des nouveaux employés"
         icon="pi pi-plus"
@@ -137,7 +139,7 @@ const handleFileUpload = async (event: Event): Promise<void> => {
     </p>
 
     <div class="flex items-center h-8 gap-6 mt-8 mb-8">
-      <div class="w-96">
+      <div class="w-full md:w-96">
         <IconField>
           <InputIcon class="pi pi-search" />
           <InputText
