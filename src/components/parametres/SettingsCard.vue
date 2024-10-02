@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useAccountStore } from "@/stores/accountStore";
 
+const accountStore = useAccountStore();
 const props = defineProps({
   id: String,
   name: String,
@@ -37,6 +39,7 @@ const removeUsers = () => {
       </div>
       <div class="flex gap-2 md:gap-4 items-center mt-4 md:mt-0">
         <FishemiButton
+          v-if="accountStore.isAdmin"
           label="Supprimer"
           icon="pi pi-trash"
           @click="removeUsers"

@@ -10,8 +10,11 @@ import { useListStore } from "@/stores/listStore";
 import FishemiModal from "@/components/layouts/FishemiModal.vue";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import ListList from "@/components/lists/ListList.vue";
+import { useAccountStore } from "@/stores/accountStore";
+
 
 const toast = useToast();
+const accountStore = useAccountStore();
 const searchValue: Ref<string> = ref("");
 const newListName: Ref<string> = ref("");
 const isAddModalVisible: Ref<boolean> = ref(false);
@@ -103,6 +106,7 @@ const removeSelection = async () => {
     >
       <h3 class="text-2xl md:text-3xl text-white">Vos listes</h3>
       <FishemiButton
+        v-if="accountStore.isAdmin || accountStore.isEditor"
         label="Créer une nouvelle liste"
         icon="pi pi-plus"
         :fullWidth="true"
@@ -130,7 +134,7 @@ const removeSelection = async () => {
         </IconField>
       </div>
       <div class="w-0.5 h-full bg-gray-400"></div>
-      <div @click="removeSelection">
+      <div v-if="accountStore.isAdmin || accountStore.isEditor" @click="removeSelection">
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>

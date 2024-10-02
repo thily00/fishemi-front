@@ -6,7 +6,9 @@ import InputText from "primevue/inputtext";
 import { useListStore } from "@/stores/listStore";
 import type { Employee } from "@/types/employee";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useAccountStore } from "@/stores/accountStore";
 
+const accountStore = useAccountStore();
 const emit = defineEmits(["toggle", "edit", "remove"]);
 const listStore = useListStore();
 const props = defineProps({
@@ -145,6 +147,7 @@ const leave = (el: HTMLElement | any) => {
           class="flex flex-col sm:flex-row w-full sm:w-auto gap-4 items-center"
         >
           <FishemiButton
+            v-if="accountStore.isAdmin || accountStore.isEditor"
             label="Modifier"
             icon="pi pi-pencil"
             type="secondary"
@@ -154,6 +157,7 @@ const leave = (el: HTMLElement | any) => {
           />
 
           <FishemiButton
+            v-if="accountStore.isAdmin || accountStore.isEditor"
             label="Supprimer"
             icon="pi pi-trash"
             type="primary"

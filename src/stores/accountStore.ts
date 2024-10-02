@@ -16,6 +16,10 @@ export const useAccountStore = defineStore("account", {
     getUserInfos(state) {
       return state.account;
     },
+
+    isAdmin: (state) => state.account?.role === "Administrateur",
+    isEditor: (state) => state.account?.role === "Éditeur",
+    isReader: (state) => state.account?.role === "Lecteur"
   },
 
   actions: {

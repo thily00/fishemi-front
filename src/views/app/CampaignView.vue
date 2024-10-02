@@ -6,9 +6,11 @@ import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import CampaignsList from "@/components/campagnes/CampaignsList.vue";
 import { axiosInstance } from "@/services/AxiosService";
 import { useRouter } from "vue-router";
+import { useAccountStore } from "@/stores/accountStore";
 
 const toast = useToast();
 const router = useRouter();
+const accountStore = useAccountStore();
 const campaigns: Ref<Campaign[]> = ref([]);
 
 const fetchCampaigns = async () => {
@@ -42,6 +44,7 @@ onMounted(() => {
       <div class="flex justify-between">
         <h3 class="text-3xl text-white">Vos campagnes</h3>
         <FishemiButton
+          v-if="accountStore.isAdmin || accountStore.isEditor"
           class="flex justify-center"
           label="Créer une nouvelle campagne"
           icon="pi pi-plus"
