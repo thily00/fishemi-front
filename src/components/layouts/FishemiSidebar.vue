@@ -7,7 +7,7 @@
     ]"
   >
     <ul class="space-y-4 bg-blue rounded-lg p-8">
-      <li v-for="item in menuItems" :key="item.name">
+      <li v-for="item in filteredMenuItems" :key="item.name">
         <router-link
           :to="item.to"
           class="flex items-center text-white hover:fishemi-text-color"
@@ -35,7 +35,10 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useAccountStore } from "@/stores/accountStore";
+import { computed, defineProps } from "vue";
 
+const accountStore = useAccountStore();
 const route = useRoute();
 const menuItems = [
   {
@@ -72,6 +75,15 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+});
+
+const filteredMenuItems = computed(() => {
+  return menuItems.filter(item => {
+    if (item.name === "Paramètres" && !accountStore.isAdmin) {
+      return false; 
+    }
+    return true;
+  });
 });
 </script>
 

@@ -7,21 +7,22 @@ import type { Gestionnaire } from "@/types/gestionnaire";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import SettingsList from "@/components/parametres/SettingsList.vue";
 import { axiosInstance } from "@/services/AxiosService";
+import { useAccountStore } from "@/stores/accountStore";
 
 const toast = useToast();
-const searchValue: Ref<string> = ref("");
-const fileUploading: Ref<boolean> = ref(false);
-const fileInput: Ref<HTMLInputElement | null> = ref(null);
+// const searchValue: Ref<string> = ref("");
+// const fileUploading: Ref<boolean> = ref(false);
+// const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
 const companyName: Ref<string> = ref("");
 const email: Ref<string> = ref("");
 
 const managerName: Ref<string> = ref("");
 const managerEmail: Ref<string> = ref("");
-const managerRoles: Ref<string> = ref("");
+// const managerRoles: Ref<string> = ref("");
 
 const gestionnaires: Ref<Gestionnaire[]> = ref([]);
-
+const accountStore = useAccountStore();
 const rights = ref({
   read: false,
   write: false,
@@ -137,6 +138,7 @@ const saveSettings = async () => {
         </div>
       </div>
       <FishemiButton
+        v-if="accountStore.isAdmin"
         class="flex justify-center"
         label="Sauvegarder"
         @click="saveSettings"
@@ -147,6 +149,7 @@ const saveSettings = async () => {
       <div class="flex justify-between gap-4 flex-col md:flex-row">
         <h3 class="text-3xl text-white">Gestionnaires de l’organisation</h3>
         <FishemiButton
+          v-if="accountStore.isAdmin"
           class="flex md:justify-center"
           label="Créer un nouveau gestionnaire"
           @click="isManagerFormVisible = true"

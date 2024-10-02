@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useAccountStore } from "@/stores/accountStore";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const accountStore = useAccountStore();
 
 const props = defineProps({
   id: {
@@ -51,7 +53,7 @@ const accessResults = () => {
 
     <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-4">
       <FishemiButton
-        v-if="status === 'draft'"
+        v-if="status === 'draft' && (accountStore.isAdmin || accountStore.isEditor)"
         label="Modifier"
         icon="pi pi-pencil"
         type="secondary"
@@ -60,7 +62,7 @@ const accessResults = () => {
         :action="editCampaign"
       />
       <FishemiButton
-        v-if="status === 'draft'"
+        v-if="status === 'draft' && (accountStore.isAdmin || accountStore.isEditor)"
         label="Supprimer"
         icon="pi pi-trash"
         type="primary"
