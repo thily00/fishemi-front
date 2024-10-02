@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
 import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { ref, defineEmits, computed, onMounted } from "vue";
 import { useAccountStore } from "@/stores/accountStore";
 import { logOut } from "@/services/AuthService";
 
+const route = useRoute();
 const emit = defineEmits(["toggle-sidebar"]);
 const router = useRouter();
 const accountStore = useAccountStore();
@@ -23,6 +25,35 @@ const items = ref([
     ],
   },
 ]);
+
+const menuItems = [
+  {
+    name: "Dashboard",
+    to: "/dashboard",
+    icon: "/icons/sidebar/dashboardWhite.svg",
+  },
+  {
+    name: "Campagnes",
+    to: "/campagnes",
+    icon: "/icons/sidebar/emailWhite.svg",
+  },
+  {
+    name: "Listes",
+    to: "/mes-listes",
+    icon: "/icons/sidebar/usersWhite.svg",
+  },
+  {
+    name: "Employés",
+    to: "/mes-employes",
+    icon: "/icons/sidebar/user.svg",
+  },
+  {
+    name: "Paramètres",
+    to: "/parametres",
+    icon: "/icons/sidebar/settings.svg",
+  },
+];
+const isActive = (path: string) => route.path === path;
 
 onMounted(() => {
   if (!accountStore.account) {
@@ -125,7 +156,9 @@ const toggleSidebar = () => {
 
       <div class="mt-8">
         <div class="mb-4">
-          <p class="text-lg">{{ accountStore.account?.full_name }}</p>
+          <p class="text-lg fishemi-text-color">
+            {{ accountStore.account?.full_name }}
+          </p>
           <p class="text-sm font-light">{{ accountStore.account?.role }}</p>
         </div>
         <ul>
@@ -139,6 +172,22 @@ const toggleSidebar = () => {
           </li>
         </ul>
       </div>
+      <ul class="space-y-4 bg-blue rounded-lg pt-8">
+        <li v-for="item in menuItems" :key="item.name">
+          <router-link
+            :to="item.to"
+            class="flex items-center text-white hover:fishemi-text-color"
+            :class="{ 'fishemi-text-color': isActive(item.to) }"
+          >
+            <img
+              :src="item.icon"
+              alt="`${item.name}` icon"
+              class="w-6 h-6 mr-3"
+            />
+            <span>{{ item.name }}</span>
+          </router-link>
+        </li>
+      </ul>
     </div>
   </transition>
 </template>

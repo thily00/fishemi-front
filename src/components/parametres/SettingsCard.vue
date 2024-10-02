@@ -37,11 +37,15 @@ const removeUsers = () => {
           <h6 class="text-gray-400 text-sm md:text-base">{{ props.email }}</h6>
         </div>
       </div>
-      <div class="flex gap-2 md:gap-4 items-center mt-4 md:mt-0">
+      <div
+        class="flex gap-2 md:gap-4 items-center mt-4 md:mt-0 w-full sm:w-auto"
+      >
         <FishemiButton
           v-if="accountStore.isAdmin"
           label="Supprimer"
           icon="pi pi-trash"
+          parentCustomClass="w-full sm:w-auto"
+          buttonCustomClass="w-full sm:w-auto"
           @click="removeUsers"
         />
       </div>

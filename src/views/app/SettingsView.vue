@@ -150,7 +150,7 @@ const saveSettings = async () => {
         <h3 class="text-3xl text-white">Gestionnaires de l’organisation</h3>
         <FishemiButton
           v-if="accountStore.isAdmin"
-          class="flex justify-center"
+          class="flex md:justify-center"
           label="Créer un nouveau gestionnaire"
           @click="isManagerFormVisible = true"
         />
