@@ -147,7 +147,7 @@ const saveSettings = async () => {
       <div class="flex justify-between gap-4 flex-col md:flex-row">
         <h3 class="text-3xl text-white">Gestionnaires de l’organisation</h3>
         <FishemiButton
-          class="flex justify-center"
+          class="flex md:justify-center"
           label="Créer un nouveau gestionnaire"
           @click="isManagerFormVisible = true"
         />

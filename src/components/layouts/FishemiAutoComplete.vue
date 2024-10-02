@@ -48,7 +48,7 @@ const selectItem = (selected: any) => {
       :suggestions="results"
       :placeholder="props.placeholder || 'Rechercher...'"
       :pt="{
-        root: 'w-96',
+        root: 'w-full w-96',
         input:
           'bg-background p-4 rounded-md w-full focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-500/50',
         panel: 'bg-background shadow-xl',

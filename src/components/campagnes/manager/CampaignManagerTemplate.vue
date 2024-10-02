@@ -41,7 +41,7 @@ const handleCheckboxChange = (checked: boolean, value: string) => {
 </script>
 
 <template>
-  <div class="flex gap-4">
+  <div class="flex flex-col lg:flex-row gap-4">
     <div
       v-for="template in campaignTemplates"
       :key="template.id"

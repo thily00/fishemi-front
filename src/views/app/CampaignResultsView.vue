@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
+  <div class="w-full h-full rounded-lg bg-blue p-4 md:p-10">
     <div class="mb-8">
       <h3 class="text-3xl mb-4 text-white">Campagne “{{ campaign.name }}”</h3>
       <p class="text-sm text-grey">

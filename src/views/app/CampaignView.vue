@@ -37,12 +37,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
+  <div class="w-full h-full rounded-lg bg-blue p-4 sm:p-10">
     <div class="mb-12">
-      <div class="flex justify-between">
+      <div class="flex flex-col sm:flex-row gap-4 justify-between">
         <h3 class="text-3xl text-white">Vos campagnes</h3>
         <FishemiButton
-          class="flex justify-center"
+          class="flex sm:justify-center"
           label="Créer une nouvelle campagne"
           icon="pi pi-plus"
           @click="router.push('/campagnes/nouvelle-campagne')"

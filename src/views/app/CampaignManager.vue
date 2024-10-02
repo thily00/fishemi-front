@@ -153,7 +153,7 @@ const editCampaign = async () => {
 </script>
 
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-10">
+  <div class="w-full h-full rounded-lg bg-blue p-4 md:p-10">
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-3xl text-white">Nouvelle Campagne</h3>
     </div>
