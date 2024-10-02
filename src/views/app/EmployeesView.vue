@@ -134,7 +134,7 @@ const handleFileUpload = async (event: Event): Promise<void> => {
       Il est impossible d'importer vos employés via l'import de fichier Excel,
       ce fichier doit suivre un modèle que vous pouvez télécharger en cliquant
       <a
-        href="/public/employees_template.csv"
+        href="/employees_template.csv"
         class="cursor-pointer underline underline-offset-1 text-white"
         >ici</a
       >.<br />
