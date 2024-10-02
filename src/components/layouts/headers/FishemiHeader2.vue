@@ -53,6 +53,16 @@ const menuItems = [
     icon: "/icons/sidebar/settings.svg",
   },
 ];
+
+const filteredMenuItems = computed(() => {
+  return menuItems.filter(item => {
+    if (item.name === "Paramètres" && !accountStore.isAdmin) {
+      return false; 
+    }
+    return true;
+  });
+});
+
 const isActive = (path: string) => route.path === path;
 
 onMounted(() => {
@@ -173,7 +183,7 @@ const toggleSidebar = () => {
         </ul>
       </div>
       <ul class="space-y-4 bg-blue rounded-lg pt-8">
-        <li v-for="item in menuItems" :key="item.name">
+        <li v-for="item in filteredMenuItems" :key="item.name" @click="toggleSidebar">
           <router-link
             :to="item.to"
             class="flex items-center text-white hover:fishemi-text-color"
