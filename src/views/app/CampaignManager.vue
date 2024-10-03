@@ -234,14 +234,17 @@ const editCampaign = async () => {
             Vous pouvez utiliser les variables dynamiques suivantes :
           </p>
           <ul class="flex flex-col list-disc ml-6 gap-1">
+            <!-- prettier-ignore -->
             <li v-pre class="text-gray-500">
-              {{ employeeName }}: Nom de l'employee
+              {{employeeName}}: Nom de l'employee
             </li>
+            <!-- prettier-ignore -->
             <li v-pre class="text-gray-500">
-              {{ boutton }}: Boutton qui redirige sur le formulaire de connexion
+              {{boutton}}: Boutton qui redirige sur le formulaire de connexion
             </li>
+            <!-- prettier-ignore -->
             <li v-pre class="text-gray-500">
-              {{ employeEmail }}:Adresse mail de l'employé
+              {{employeeEmail}}:Adresse mail de l'employé
             </li>
           </ul>
         </div>
