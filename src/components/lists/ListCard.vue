@@ -73,6 +73,14 @@ const handleEmployeeCheckboxChange = async (employeeId: string) => {
   }
 };
 
+const toggleSelectAllEmployee = async () => {
+  if (listEmployees.value.length === props.employeeList.length) {
+    listEmployees.value = [];
+  } else {
+    listEmployees.value = props.employeeList.map((employee) => employee.id);
+  }
+};
+
 const filteredEmployeeList = computed(() => {
   return props.employeeList.filter((employee) =>
     employee.full_name.toLowerCase().includes(employeeSearchQuery.value)
@@ -228,6 +236,15 @@ const leave = (el: HTMLElement | any) => {
                   />
                 </IconField>
               </div>
+
+              <div class="flex gap-2 items-center">
+                <Checkbox 
+                :modelValue="listEmployees.length === props.employeeList.length" 
+                @update:modelValue="toggleSelectAllEmployee()"  
+                :binary="true" class="bg-blue rounded-md"  />
+                <p class="text-white">Sélectionner tout les employés</p> 
+              </div>
+
               <ul class="flex gap-4 overflow-auto custom-scrollbar">
                 <li
                   v-for="employee in filteredEmployeeList"
