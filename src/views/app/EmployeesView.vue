@@ -138,7 +138,7 @@ const handleFileUpload = async (event: Event): Promise<void> => {
         class="cursor-pointer underline underline-offset-1 text-white"
         >ici</a
       >.<br />
-      Les employés que vous avez déjà importés ne seront pas supprimé.
+      Les employés que vous avez déjà importés ne seront pas supprimés.
     </p>
 
     <div class="flex items-center h-8 gap-6 mt-8 mb-8">
@@ -154,7 +154,10 @@ const handleFileUpload = async (event: Event): Promise<void> => {
         </IconField>
       </div>
       <div class="w-0.5 h-full bg-gray-400"></div>
-      <div v-if="accountStore.isAdmin || accountStore.isEditor" @click="removeSelection">
+      <div
+        v-if="accountStore.isAdmin || accountStore.isEditor"
+        @click="removeSelection"
+      >
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>
