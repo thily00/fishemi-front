@@ -1,7 +1,6 @@
-// stores/useUsersStore.ts
 import { defineStore } from 'pinia'
 import type { Employee } from '@/types/employee'
-import {axiosInstance} from "@/services/AxiosService";
+import EmployeeService from '@/services/EmployeeService';
 
 interface EmployeeStore {
   employeeList: Employee[]
@@ -26,76 +25,28 @@ export const useEmployeeStore = defineStore('employee', {
   },
 
   actions: {
-    async importEmployees(file: File){
-      return new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        axiosInstance().post('/employee/import', formData ,{
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        })
-        .then(response => {
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
+    async importEmployees(file: File): Promise<void> {
+      return EmployeeService.importEmployees(file)
     },
 
     async getAllEmployees() {
-      return new Promise((resolve, reject) => {
-        axiosInstance().get('/employee')
-        .then(response => {
-          this.employeeList = response.data
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
+      const response = await EmployeeService.getAllEmployees();
+      this.employeeList = response.data;
     },
 
     async updateEmployee() {
-      const employee = this.selectedEmployee
-
-      return new Promise((resolve, reject) => {
-        axiosInstance().patch(`/employee`, employee)
-        .then(response => {
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
+      if (this.selectedEmployee) {
+        return EmployeeService.updateEmployee(this.selectedEmployee);
+      }
     },
 
     async deleteEmployee(employeeIds: string[]) {
-      const body= {'id': employeeIds}
-
-      return new Promise((resolve, reject) => {
-        axiosInstance().delete(`/employee`, { data: body })
-        .then(response => {
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
+      return EmployeeService.deleteEmployee(employeeIds);
     },
 
-    searchEmployee(value: string) {
-      return new Promise((resolve, reject) => {
-        axiosInstance().get(`/employee/search?name=${value}`)
-        .then(response => {
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-      })
+    async searchEmployee(value: string) {
+      const response = await EmployeeService.searchEmployee(value);
+      this.employeeList = response.data;
     },
 
     setSelectedEmployee(employeeId: string) {
