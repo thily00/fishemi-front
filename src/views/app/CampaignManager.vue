@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from "vue";
+import { ref, onMounted, computed, type Ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useListStore } from "@/stores/listStore";
 import InputText from "primevue/inputtext";
@@ -30,6 +30,14 @@ const generatingContent: Ref<boolean> = ref(false);
 const checkoutSession: Ref<string> = ref("");
 const paymentInProgress: Ref<boolean> = ref(false);
 
+const isFormValid = computed(() => {
+  return (
+    campaignName.value.trim() !== "" &&
+    campaignSubject.value.trim() !== "" &&
+    campaignLists.value.length > 0
+  );
+});
+
 onMounted(() => {
   getLists();
 
@@ -43,14 +51,17 @@ onMounted(() => {
 const hydrateData = async () => {
   try {
     const campaignId = route.params.id as string;
-    const response: any = await campaignStore.getCampaign(campaignId);
+    const response = await campaignStore.getCampaign(campaignId);
 
-    if (response && response.status === 200) {
-      campaignName.value = response.data.name;
-      campaignSubject.value = response.data.subject;
-      campaignContent.value = response.data.content;
-      campaignTemplate.value = response.data.template;
-      campaignLists.value = response.data.lists as List[];
+    console.log("responsedddddd", response);
+    
+
+    if (response) {
+      campaignName.value = response.name;
+      campaignSubject.value = response.subject;
+      campaignContent.value = response.content;
+      campaignTemplate.value = response.template;
+      campaignLists.value = response.lists as List[];
       estimateCost();
     }
   } catch (error) {
@@ -234,14 +245,17 @@ const editCampaign = async () => {
             Vous pouvez utiliser les variables dynamiques suivantes :
           </p>
           <ul class="flex flex-col list-disc ml-6 gap-1">
+            <!-- prettier-ignore -->
             <li v-pre class="text-gray-500">
-              {{ employeeName }}: Nom de l'employee
+              {{employeeName}}: Nom de l'employee
             </li>
+            <!-- prettier-ignore -->
             <li v-pre class="text-gray-500">
-              {{ boutton }}: Boutton qui redirige sur le formulaire de connexion
+              {{boutton}}: Boutton qui redirige sur le formulaire de connexion
             </li>
+            <!-- prettier-ignore -->
             <li v-pre class="text-gray-500">
-              {{ employeEmail }}:Adresse mail de l'employé
+              {{employeeEmail}}:Adresse mail de l'employé
             </li>
           </ul>
         </div>
@@ -251,10 +265,11 @@ const editCampaign = async () => {
         <div class="flex flex-col items-center">
           <FishemiButton
             label="Sauvegarder la campagne"
-            icon="pi pi-download"
-            type="secondary"
+            icon="pi pi-save"
+            type="text-only"
             :fullWidth="true"
             :action="editCampaign"
+            :disabled="!isFormValid"
           />
 
           <FishemiButton
@@ -263,6 +278,7 @@ const editCampaign = async () => {
             :action="createCampaign"
             :loading="paymentInProgress"
             icon="pi pi-play"
+            :disabled="!isFormValid || paymentInProgress"
           />
 
           <p class="mt-3 text-gray-400">

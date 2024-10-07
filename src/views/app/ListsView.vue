@@ -3,101 +3,72 @@
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-import { useToast } from "primevue/usetoast";
-import type { List } from "@/types/list";
-import { ref, type Ref, onMounted } from "vue";
+import { ref, type Ref, onMounted, computed } from "vue";
 import { useListStore } from "@/stores/listStore";
 import FishemiModal from "@/components/layouts/FishemiModal.vue";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
+import { useToastService }  from '@/services/ToastService';
 import ListList from "@/components/lists/ListList.vue";
 import { useAccountStore } from "@/stores/accountStore";
 
 
-const toast = useToast();
+const { showToast } = useToastService();
 const accountStore = useAccountStore();
 const searchValue: Ref<string> = ref("");
 const newListName: Ref<string> = ref("");
 const isAddModalVisible: Ref<boolean> = ref(false);
-
 const listStore = useListStore();
-const lists: Ref<List[]> = ref([]);
+
+const getLists = async () => {
+  await listStore.getAllLists();
+};
+
+const addList = async () => {
+  const response = await listStore.createList(newListName.value);
+  if (response?.status === 201) {
+    await getLists();
+    isAddModalVisible.value = false;
+    newListName.value = "";
+    showToast({
+      severity: "success",
+      summary: "Ajout réussi",
+      detail: "Les données ont été ajoutées avec succès.",
+      life: 3000,
+    });
+  }
+};
+
+const removeSelection = async () => {
+  const listIds = listStore.selectedLists;
+  const response = await listStore.deleteList(listIds);
+  if (response === "success") {
+    await getLists();
+    listStore.setSelectionList([]);
+    showToast({
+      severity: "success",
+      summary: "Suppression réussie",
+      detail: "Les données ont été supprimées avec succès.",
+      life: 3000,
+    });
+  }
+};
+
+const search = async () => {
+  await listStore.searchList(searchValue.value);
+  if (listStore.lists.length === 0) {
+      getLists();
+  }
+};
+
+const openCreateListModal = () => {
+  isAddModalVisible.value = true;
+};
 
 onMounted(() => {
   getLists();
 });
 
-const createList = () => {
-  isAddModalVisible.value = true;
-};
-
-const addList = async () => {
-  try {
-    const response: any = await listStore.createList(newListName.value);
-    if (response.status === 201) {
-      await getLists();
-      isAddModalVisible.value = false;
-      newListName.value = "";
-      toast.add({
-        severity: "success",
-        summary: "Ajout réussi",
-        detail: "Les données ont été ajoutées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error: any) {
-    console.log(error);
-    const message =
-      error.response.data.message || "Une erreur est survenue lors de l'ajout.";
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: message,
-      life: 3000,
-    });
-  }
-};
-
-const getLists = async () => {
-  const response: any = await listStore.getAllLists();
-  if (response.status === 200) {
-    lists.value = listStore.lists;
-  }
-};
-
-const search = async () => {
-  const response: any = await listStore.searchList(searchValue.value);
-  if (response.status === 200) {
-    if (response.data.length === 0) {
-      getLists();
-    }
-    lists.value = response.data;
-  }
-};
-
-const removeSelection = async () => {
-  try {
-    const listIds = listStore.selectedLists;
-    const response: any = await listStore.deleteList(listIds);
-    if (response === "success") {
-      await getLists();
-      listStore.setSelectionList([]);
-      toast.add({
-        severity: "success",
-        summary: "Suppression réussie",
-        detail: "Les données ont été supprimées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la suppression.",
-      life: 3000,
-    });
-  }
-};
+const lists = computed(() => listStore.lists);
 </script>
 <template>
   <div class="w-full h-full p-4 md:p-10 bg-blue rounded-lg">
@@ -110,7 +81,7 @@ const removeSelection = async () => {
         label="Créer une nouvelle liste"
         icon="pi pi-plus"
         :fullWidth="true"
-        :action="createList"
+        :action="openCreateListModal"
         class="w-auto"
       />
     </div>

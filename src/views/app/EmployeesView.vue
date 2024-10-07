@@ -2,69 +2,48 @@
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
-import { useToast } from "primevue/usetoast";
-import { ref, type Ref, onMounted } from "vue";
-import type { Employee } from "@/types/employee";
+import { useToastService }  from '@/services/ToastService';
+import { ref, type Ref, onMounted, computed } from "vue";
 import { useEmployeeStore } from "@/stores/employeeStore";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import EmployeeList from "@/components/employees/EmployeeList.vue";
 import { useAccountStore } from "@/stores/accountStore";
 
-const toast = useToast();
+const { showToast } = useToastService();
 const accountStore = useAccountStore();
 const searchValue: Ref<string> = ref("");
 const fileUploading: Ref<boolean> = ref(false);
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
 const employeeStore = useEmployeeStore();
-const employees: Ref<Employee[]> = ref([]);
+
 
 const getEmployee = async () => {
-  const response: any = await employeeStore.getAllEmployees();
-  if (response.status === 200) {
-    employees.value = employeeStore.employeeList;
-  }
+  await employeeStore.getAllEmployees();
 };
 
-onMounted(() => {
-  getEmployee();
-});
-
-const triggerFileInput = (): void => {
-  if (fileInput.value) {
-    fileInput.value.click();
-  }
-};
-
-const search = async () => {
-  const response: any = await employeeStore.searchEmployee(searchValue.value);
-  if (response.status === 200) {
-    if (response.data.length === 0) {
-      getEmployee();
-    }
-    employees.value = response.data;
+const importEmployees = async (file: File) => {
+  const response = await employeeStore.importEmployees(file);
+  if (response?.status === 201) {
+    await getEmployee();
+    showToast({
+      severity: "success",
+      summary: "Importation réussie",
+      detail: "Les données ont été importées avec succès.",
+      life: 3000,
+    });
   }
 };
 
 const removeSelection = async () => {
-  try {
-    const employeeIds = employeeStore.selectedEmployees;
-    const response: any = await employeeStore.deleteEmployee(employeeIds);
-    if (response.status === 200) {
-      await getEmployee();
-      employeeStore.setSelectionList([]);
-      toast.add({
-        severity: "success",
-        summary: "Suppression réussie",
-        detail: "Les données ont été supprimées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la suppression.",
+  const employeeIds = employeeStore.selectedEmployees;
+  const response = await employeeStore.deleteEmployee(employeeIds);
+  if (response?.status === 200) {
+    await getEmployee();
+    employeeStore.setSelectionList([]);
+    showToast({
+      severity: "success",
+      summary: "Suppression réussie",
+      detail: "Les employés sélectionnés ont été supprimés avec succès.",
       life: 3000,
     });
   }
@@ -72,44 +51,44 @@ const removeSelection = async () => {
 
 const removeAll = () => {
   employeeStore.setSelectionList(
-    employees.value.map((employee) => employee.id)
+  employeeStore.employeeList.map((employee) => employee.id)
   );
   removeSelection();
 };
 
-const handleFileUpload = async (event: Event): Promise<void> => {
-  fileUploading.value = true;
-  const targuet = event.target as HTMLInputElement;
-  const file: File | null = targuet.files ? targuet.files[0] : null;
-
-  try {
-    if (file) {
-      const response: any = await employeeStore.importEmployees(file);
-      if (response.status === 201) {
-        getEmployee();
-        toast.add({
-          severity: "success",
-          summary: "Importation réussie",
-          detail: "Les données ont été importées avec succès.",
-          life: 3000,
-        });
-      }
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de l'importation des données.",
-      life: 3000,
-    });
-  } finally {
-    fileUploading.value = false;
+const search = async () => {
+  await employeeStore.searchEmployee(searchValue.value);
+  if(employeeStore.employeeList.length === 0) {
+    getEmployee();
   }
 };
+
+const triggerFileInput = (): void => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+
+const handleFileUpload = async (event: Event): Promise<void> => {
+  fileUploading.value = true;
+  const target = event.target as HTMLInputElement;
+  const file: File | null = target.files ? target.files[0] : null;
+
+  if (file) {
+    importEmployees(file);
+  }
+
+  fileUploading.value = false;
+};
+
+onMounted(() => {
+  getEmployee();
+});
+
+const employees = computed(() => employeeStore.employeeList);
 </script>
 <template>
-  <div class="w-full h-full rounded-lg bg-blue p-4 md:p-10">
+  <div class="w-full h-full rounded-lg bg-blue p-4 md:p-10" v-if="employees">
     <div
       class="flex flex-col sm:flex-row justify-between items-start md:items-center gap-4"
     >
@@ -138,7 +117,7 @@ const handleFileUpload = async (event: Event): Promise<void> => {
         class="cursor-pointer underline underline-offset-1 text-white"
         >ici</a
       >.<br />
-      Les employés que vous avez déjà importés ne seront pas supprimé.
+      Les employés que vous avez déjà importés ne seront pas supprimés.
     </p>
 
     <div class="flex items-center h-8 gap-6 mt-8 mb-8">
@@ -154,7 +133,10 @@ const handleFileUpload = async (event: Event): Promise<void> => {
         </IconField>
       </div>
       <div class="w-0.5 h-full bg-gray-400"></div>
-      <div v-if="accountStore.isAdmin || accountStore.isEditor" @click="removeSelection">
+      <div
+        v-if="accountStore.isAdmin || accountStore.isEditor"
+        @click="removeSelection"
+      >
         <i class="pi pi-trash text-gray-400 cursor-pointer"></i>
       </div>
     </div>

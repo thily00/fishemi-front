@@ -1,7 +1,6 @@
-// stores/useListStore.ts
 import { defineStore } from "pinia";
 import type { List } from "@/types/list";
-import { axiosInstance } from "@/services/AxiosService";
+import ListService from "@/services/ListService";
 
 interface ListStore {
   lists: List[];
@@ -29,112 +28,35 @@ export const useListStore = defineStore("liste", {
 
   actions: {
     async createList(name: string) {
-      const body = { name: name };
-
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .post("/list", body)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      return await ListService.createList(name);
     },
 
     async getAllLists() {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .get("/list")
-          .then((response) => {
-            this.lists = response.data;
-
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      const lists = await ListService.getAllLists();
+      this.lists = lists;
     },
 
     async updateList(list: List) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .patch(`/list`, list)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      return await ListService.updateList(list);
     },
 
     async deleteList(listIds: string[]) {
-      return Promise.all(
-        listIds.map((listId) => {
-          return new Promise((resolve, reject) => {
-            axiosInstance()
-              .delete(`/list/?id=${listId}`)
-              .then((response) => {
-                resolve(response);
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          });
-        })
-      )
-        .then(() => {
-          return "success";
-        })
-        .catch((error) => {
-          throw error;
-        });
+      return await ListService.deleteList(listIds);
     },
 
     async searchList(name: string) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .get(`/list/search?name=${name}`)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      // return await ListService.searchList(name);
+
+      const response = await ListService.searchList(name);
+      this.lists = response.data;
     },
 
     async addEmployeeToList(list_id: string, employee_id: string) {
-      const body = { list_id: list_id, employee_id: employee_id };
-
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .post("/list/employee", body)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      return await ListService.addEmployeeToList(list_id, employee_id);
     },
 
     async removeEmployee(list_id: string, employee_id: string) {
-      const body = { list_id: list_id, employee_id: employee_id };
-
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .delete(`/list/employee`, { data: body })
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      return await ListService.removeEmployee(list_id, employee_id);
     },
 
     setSelectedList(getListById: string) {

@@ -150,7 +150,7 @@ onMounted(() => {
 const fetchData = async () => {
   try {
     const response: any = await accountStore.me();
-    const data = response.data;
+    const data = response;
 
     totalCampaigns.value = data.total_campaigns;
     totalEmployees.value = data.total_employees;
