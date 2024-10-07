@@ -25,7 +25,7 @@ export const useEmployeeStore = defineStore('employee', {
   },
 
   actions: {
-    async importEmployees(file: File): Promise<void> {
+    async importEmployees(file: File): Promise<any> {
       return await EmployeeService.importEmployees(file)
     },
 
