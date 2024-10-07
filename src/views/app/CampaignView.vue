@@ -1,41 +1,26 @@
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from "vue";
+import { onMounted, computed } from "vue";
 import { useToast } from "primevue/usetoast";
-import type { Campaign } from "@/types/campaign";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import CampaignsList from "@/components/campagnes/CampaignsList.vue";
-import { axiosInstance } from "@/services/AxiosService";
 import { useRouter } from "vue-router";
 import { useAccountStore } from "@/stores/accountStore";
+import { useCampaignStore } from "@/stores/campaignStore";
 
 const toast = useToast();
 const router = useRouter();
 const accountStore = useAccountStore();
-const campaigns: Ref<Campaign[]> = ref([]);
+const campaignStore = useCampaignStore();
 
 const fetchCampaigns = async () => {
-  try {
-    const response = await axiosInstance().get("/campaign");
-    const data = response.data;
-    campaigns.value = data.map((campaign: any) => ({
-      id: campaign.id,
-      name: campaign.name,
-      status: campaign.status,
-    }));
-  } catch (error) {
-    console.error("Erreur lors de la récupération des campagnes:", error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Impossible de récupérer les campagnes.",
-      life: 3000,
-    });
-  }
+  await campaignStore.getAllCampaigns();
 };
 
 onMounted(() => {
   fetchCampaigns();
 });
+
+const campaigns = computed(() => campaignStore.campaigns);
 </script>
 
 <template>

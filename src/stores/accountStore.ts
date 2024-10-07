@@ -1,7 +1,6 @@
-// stores/useAccountStore.ts
 import { defineStore } from "pinia";
 import type { User } from "@/types/user";
-import { axiosInstance } from "@/services/AxiosService";
+import userService from "@/services/UserService";
 
 interface AccountStore {
   account: User | null;
@@ -23,18 +22,10 @@ export const useAccountStore = defineStore("account", {
   },
 
   actions: {
-    me() {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .get("/account/me")
-          .then((response) => {
-            this.setAccount(response.data.personal_data);
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    async me() {
+      const response = await userService.getuserInfo()
+      this.setAccount(response.personal_data);
+      return response;
     },
 
     setAccount(account: User) {

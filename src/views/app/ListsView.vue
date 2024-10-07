@@ -54,11 +54,9 @@ const removeSelection = async () => {
 };
 
 const search = async () => {
-  const response = await listStore.searchList(searchValue.value);
-  if (response?.status === 200) {
-    if (listStore.lists.length === 0) {
+  await listStore.searchList(searchValue.value);
+  if (listStore.lists.length === 0) {
       getLists();
-    }
   }
 };
 

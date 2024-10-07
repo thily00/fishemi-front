@@ -43,14 +43,17 @@ onMounted(() => {
 const hydrateData = async () => {
   try {
     const campaignId = route.params.id as string;
-    const response: any = await campaignStore.getCampaign(campaignId);
+    const response = await campaignStore.getCampaign(campaignId);
 
-    if (response && response.status === 200) {
-      campaignName.value = response.data.name;
-      campaignSubject.value = response.data.subject;
-      campaignContent.value = response.data.content;
-      campaignTemplate.value = response.data.template;
-      campaignLists.value = response.data.lists as List[];
+    console.log("responsedddddd", response);
+    
+
+    if (response) {
+      campaignName.value = response.name;
+      campaignSubject.value = response.subject;
+      campaignContent.value = response.content;
+      campaignTemplate.value = response.template;
+      campaignLists.value = response.lists as List[];
       estimateCost();
     }
   } catch (error) {

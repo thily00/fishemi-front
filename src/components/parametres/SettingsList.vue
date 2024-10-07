@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, type Ref } from "vue";
 import { useToast } from "primevue/usetoast";
-import { axiosInstance } from "@/services/AxiosService";
 import type { Gestionnaire } from "@/types/gestionnaire";
 import SettingsCard from "@/components/parametres/SettingsCard.vue";
+import SettingsServices from "@/services/SettingsServices";
 
 const toast = useToast();
 const selectedGestionnaires: Ref<string[]> = ref([]);
@@ -20,13 +20,7 @@ const props = defineProps({
 });
 
 const removeGestionnaire = async (gestionnairesIds: string[]) => {
-  try {
-    const response = await axiosInstance().delete("/settings/manager", {
-      params: {
-        "manager-id": gestionnairesIds[0],
-      },
-    });
-
+    await SettingsServices.deleteGestionnaire(gestionnairesIds);
     toast.add({
       severity: "success",
       summary: "Suppression réussie",
@@ -35,26 +29,6 @@ const removeGestionnaire = async (gestionnairesIds: string[]) => {
     });
 
     props.refreshList();
-  } catch (error: any) {
-    console.error("Erreur lors de la suppression:", error);
-
-    if (error?.response?.status === 401) {
-      toast.add({
-        severity: "error",
-        summary: "Session expirée",
-        detail: "Votre session a expiré. Veuillez vous reconnecter.",
-        life: 3000,
-      });
-      window.location.href = "/login";
-    } else {
-      toast.add({
-        severity: "error",
-        summary: "Erreur",
-        detail: "Une erreur est survenue lors de la suppression.",
-        life: 3000,
-      });
-    }
-  }
 };
 </script>
 

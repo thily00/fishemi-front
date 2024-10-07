@@ -45,7 +45,10 @@ export const useListStore = defineStore("liste", {
     },
 
     async searchList(name: string) {
-      return await ListService.searchList(name);
+      // return await ListService.searchList(name);
+
+      const response = await ListService.searchList(name);
+      this.lists = response.data;
     },
 
     async addEmployeeToList(list_id: string, employee_id: string) {

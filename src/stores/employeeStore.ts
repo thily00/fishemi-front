@@ -26,7 +26,7 @@ export const useEmployeeStore = defineStore('employee', {
 
   actions: {
     async importEmployees(file: File): Promise<void> {
-      return EmployeeService.importEmployees(file)
+      return await EmployeeService.importEmployees(file)
     },
 
     async getAllEmployees() {
@@ -36,12 +36,12 @@ export const useEmployeeStore = defineStore('employee', {
 
     async updateEmployee() {
       if (this.selectedEmployee) {
-        return EmployeeService.updateEmployee(this.selectedEmployee);
+        return await EmployeeService.updateEmployee(this.selectedEmployee);
       }
     },
 
     async deleteEmployee(employeeIds: string[]) {
-      return EmployeeService.deleteEmployee(employeeIds);
+      return await EmployeeService.deleteEmployee(employeeIds);
     },
 
     async searchEmployee(value: string) {
