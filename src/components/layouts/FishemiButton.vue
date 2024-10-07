@@ -6,8 +6,12 @@ const props = defineProps({
   label: String,
   action: Function,
   loading: Boolean,
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
   type: {
-    type: String as () => "primary" | "secondary",
+    type: String as () => "primary" | "secondary" | "text-only",
     default: "primary",
   },
   fullWidth: {
@@ -23,10 +27,10 @@ const props = defineProps({
     default: "",
   },
 });
-</script> 
+</script>
 
 <template>
-  <div :class="['card flex', parentCustomClass]" >
+  <div :class="['card flex', parentCustomClass]">
     <Button
       :icon="props.icon"
       :label="props.label"
@@ -35,9 +39,16 @@ const props = defineProps({
         { 'w-full': props.fullWidth },
         'custom-button',
         buttonCustomClass,
-        $props.type === 'primary' ? 'primary' : 'secondary',
+        props.type === 'text-only' ? 'fishemi-text-color' : '',
+        $props.type === 'primary'
+          ? 'primary'
+          : $props.type === 'secondary'
+          ? 'secondary'
+          : 'text-only',
+        props.disabled ? 'text-disabled' : '',
       ]"
       @click="props.action"
+      :disabled="props.disabled"
     />
   </div>
 </template>
@@ -49,7 +60,7 @@ const props = defineProps({
   font-weight: bold;
   padding: 12px 25px 14px;
   border-radius: 8px;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .custom-button > span {
@@ -69,5 +80,26 @@ const props = defineProps({
 .secondary {
   background: var(--blue);
   color: #ccff00;
+}
+.text-only {
+  background: transparent;
+}
+
+.fishemi-text-color {
+  background: radial-gradient(circle, #e9ff90 0%, #ccff00 40%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-disabled {
+  color: #d3d3d3 !important;
+}
+
+.custom-button:disabled {
+  cursor: not-allowed;
+}
+
+.custom-button:disabled.text-only {
+  color: #d3d3d3;
 }
 </style>
