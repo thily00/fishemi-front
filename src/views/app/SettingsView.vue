@@ -6,8 +6,8 @@ import { useToast } from "primevue/usetoast";
 import type { Gestionnaire } from "@/types/gestionnaire";
 import FishemiButton from "@/components/layouts/FishemiButton.vue";
 import SettingsList from "@/components/parametres/SettingsList.vue";
-import { axiosInstance } from "@/services/AxiosService";
 import { useAccountStore } from "@/stores/accountStore";
+import SettingsServices from "@/services/SettingsServices";
 
 const toast = useToast();
 
@@ -27,9 +27,8 @@ const rights = ref({
 const isManagerFormVisible = ref(false);
 
 const fetchSettings = async () => {
-  try {
-    const response = await axiosInstance().get("/settings");
-    const data = response.data;
+  const response = await SettingsServices.getSettings();
+    const data = response;
     companyName.value = data.company_name;
     email.value = data.email;
     gestionnaires.value = data.admins.map((admin: any) => ({
@@ -37,14 +36,6 @@ const fetchSettings = async () => {
       full_name: admin.full_name,
       email: admin.email,
     }));
-  } catch (error) {
-    console.error("Erreur lors de la récupération des paramètres:", error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Impossible de récupérer les paramètres.",
-    });
-  }
 };
 
 onMounted(() => {
@@ -70,12 +61,11 @@ const handleCheckboxChange = (type: string, checked: boolean) => {
 };
 
 const createManager = async () => {
-  try {
-    await axiosInstance().post("/settings/manager", {
-      email: managerEmail.value,
-      full_name: managerName.value,
-      roles: rights.value.write ? "lector,writer" : "lector",
-    });
+  await SettingsServices.addManager(
+      managerEmail.value,
+      managerName.value,
+      rights.value.write ? "lector,writer" : "lector"
+    );
     toast.add({
       severity: "success",
       summary: "Succès",
@@ -83,37 +73,15 @@ const createManager = async () => {
     });
     fetchSettings();
     isManagerFormVisible.value = false;
-  } catch (error) {
-    console.error("Erreur lors de la création du gestionnaire:", error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Impossible de créer le gestionnaire.",
-    });
-  }
 };
 
 const saveSettings = async () => {
-  try {
-    await axiosInstance().patch("/settings", {
-      company_name: companyName.value,
-    });
+  await SettingsServices.saveSettings(companyName.value)
     toast.add({
       severity: "success",
       summary: "Succès",
       detail: "Nom de l'entreprise sauvegardé avec succès.",
     });
-  } catch (error) {
-    console.error(
-      "Erreur lors de la sauvegarde du nom de l'entreprise:",
-      error
-    );
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Impossible de sauvegarder le nom de l'entreprise.",
-    });
-  }
 };
 </script>
 

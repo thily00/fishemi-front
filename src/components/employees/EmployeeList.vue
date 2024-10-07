@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useToast } from "primevue/usetoast";
 import type { Employee } from "@/types/employee";
 import { useEmployeeStore } from "@/stores/employeeStore";
+import { useToastService }  from '@/services/ToastService';
 import EmployeeCard from "@/components/employees/EmployeeCard.vue";
 
-const toast = useToast();
+const { showToast } = useToastService();
 const emit = defineEmits(["get-employees"]);
 const employeeStore = useEmployeeStore();
 const props = defineProps({
@@ -23,46 +23,26 @@ const toggleCard = (employeeId: string) => {
 };
 
 const editEmployee = async () => {
-  try {
-    const response: any = await employeeStore.updateEmployee();
-    if (response.status === 200) {
-      emit("get-employees");
-      toast.add({
-        severity: "success",
-        summary: "Modification réussie",
-        detail: "Les données ont été modifiées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la modification.",
+  const response = await employeeStore.updateEmployee();
+  if (response?.status === 200) {
+    emit("get-employees");
+    showToast({
+      severity: "success",
+      summary: "Modification réussie",
+      detail: "Les données ont été modifiées avec succès.",
       life: 3000,
     });
   }
 };
 
 const removeEmployee = async (employeeIds: []) => {
-  try {
-    const response: any = await employeeStore.deleteEmployee(employeeIds);
-    if (response.status === 200) {
-      emit("get-employees");
-      toast.add({
-        severity: "success",
-        summary: "Suppression réussie",
-        detail: "Les données ont été supprimées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la suppression.",
+  const response = await employeeStore.deleteEmployee(employeeIds);
+  if (response?.status === 200) {
+    emit("get-employees");
+    showToast({
+      severity: "success",
+      summary: "Suppression réussie",
+      detail: "Les données ont été supprimées avec succès.",
       life: 3000,
     });
   }

@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { axiosInstance } from "@/services/AxiosService";
+import { useCampaignStore } from "@/stores/campaignStore";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 
@@ -38,6 +38,7 @@ import CampaignLists from "@/components/campagnesResults/CampaignLists.vue";
 dayjs.locale("fr");
 
 const route = useRoute();
+const campaignStore = useCampaignStore();
 const campaignId = route.params.id;
 
 const campaign = ref({
@@ -53,17 +54,8 @@ const campaign = ref({
 });
 
 const fetchCampaignData = async () => {
-  try {
-    const response = await axiosInstance().get("/campaign/find-one", {
-      params: { id: campaignId },
-    });
-    campaign.value = response.data;
-  } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des données de la campagne:",
-      error
-    );
-  }
+  const reponse = await campaignStore.getCampaign(campaignId as string);
+  campaign.value = reponse;
 };
 
 const formatDate = (dateString: string): string => {

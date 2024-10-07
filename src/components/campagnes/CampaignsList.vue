@@ -2,9 +2,11 @@
 import { useRouter } from "vue-router";
 import { type Campaign } from "@/types/campaign";
 import CampaignCard from "@/components/campagnes/CampaignCard.vue";
-import { axiosInstance } from "@/services/AxiosService";
+import { useCampaignStore } from "@/stores/campaignStore";
+
 
 const router = useRouter();
+const campaignStore = useCampaignStore();
 const props = defineProps<{
   campaigns: Campaign[];
   refreshList: () => void;
@@ -16,10 +18,7 @@ const handleEditCampaign = (campaignId: string) => {
 };
 
 const handleRemoveCampaign = async (campaignId: string) => {
-  try {
-    await axiosInstance().delete("/campaign/delete", {
-      params: { id: campaignId },
-    });
+    await campaignStore.deleteCampaign(campaignId);
     props.toast.add({
       severity: "success",
       summary: "Suppression réussie",
@@ -27,15 +26,6 @@ const handleRemoveCampaign = async (campaignId: string) => {
       life: 3000,
     });
     props.refreshList();
-  } catch (error) {
-    console.error("Erreur lors de la suppression:", error);
-    props.toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la suppression.",
-      life: 3000,
-    });
-  }
 };
 
 const handleAccessResults = (campaignId: string) => {

@@ -4,9 +4,9 @@ import type { List } from "@/types/list";
 import { useListStore } from "@/stores/listStore";
 import { useEmployeeStore } from "@/stores/employeeStore";
 import ListCard from "@/components/lists/ListCard.vue";
-import { useToast } from "primevue/usetoast";
+import { useToastService }  from '@/services/ToastService';
 
-const toast = useToast();
+const { showToast } = useToastService();
 const listStore = useListStore();
 const emit = defineEmits(["get-lists"]);
 const employeeStore = useEmployeeStore();
@@ -19,7 +19,7 @@ const props = defineProps({
 
 onMounted(() => {
   const employees = employeeStore.employeeList;
-  if (employees.length === 0) {
+  if (employees?.length === 0) {
     employeeStore.getAllEmployees();
   }
 });
@@ -33,51 +33,27 @@ const toggleCard = (listId: string) => {
 };
 
 const editList = async (list: List) => {
-  try {
-    const response: any = await listStore.updateList(list);
-    if (response.status === 200) {
-      emit("get-lists");
-      toast.add({
-        severity: "success",
-        summary: "Modification réussie",
-        detail: "Les données ont été modifiées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la modification.",
+  const response = await listStore.updateList(list);
+  if (response?.status === 200) {
+    emit("get-lists");
+    showToast({
+      severity: "success",
+      summary: "Modification réussie",
+      detail: "Les données ont été modifiées avec succès.",
       life: 3000,
     });
   }
 };
 
 const removeList = async (listIds: []) => {
-  try {
-    const response: any = await listStore.deleteList(listIds);
-    console.log(response);
-
-    if (response === "success") {
-      emit("get-lists");
-      toast.add({
-        severity: "success",
-        summary: "Suppression réussie",
-        detail: "Les données ont été supprimées avec succès.",
-        life: 3000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    toast.add({
-      severity: "error",
-      summary: "Erreur",
-      detail: "Une erreur est survenue lors de la suppression.",
+    await listStore.deleteList(listIds);
+    emit("get-lists");
+    showToast({
+      severity: "success",
+      summary: "Suppression réussie",
+      detail: "Les données ont été supprimées avec succès.",
       life: 3000,
     });
-  }
 };
 </script>
 <template>

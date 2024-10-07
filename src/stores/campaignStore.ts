@@ -1,52 +1,40 @@
-// stores/useCampaignStore.ts
 import { defineStore } from "pinia";
-import { axiosInstance } from "@/services/AxiosService";
+import type { Campaign } from "@/types/campaign";
+import CampaignService from "@/services/CampaignService";
 
 interface CampaignStore {
-  campaign: [];
+  campaigns: Campaign[]
 }
 
 export const useCampaignStore = defineStore("campaign", {
   state: (): CampaignStore => ({
-    campaign: [],
+    campaigns: []
   }),
 
   getters: {},
 
   actions: {
-    getCampaign(campaign_id: string) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .get(`/campaign/find-one?id=${campaign_id}`)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    async getAllCampaigns() {
+      const response =  await CampaignService.getAllCampaigns(); 
+      this.campaigns = response;
     },
 
-    createCampaign(data: {
+    async getCampaign(campaign_id: string) {
+      const response = await CampaignService.getCampaign(campaign_id);
+      return response;
+    },
+
+    async createCampaign(data: {
       lists: string[];
       name: string;
       template: string;
       subject: string;
       content: string;
     }) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .post("/campaign/new", data)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      return await CampaignService.createCampaign(data);
     },
 
-    updateCampaign(data: {
+    async updateCampaign(data: {
       id: string;
       lists?: string[];
       name?: string;
@@ -54,68 +42,27 @@ export const useCampaignStore = defineStore("campaign", {
       subject?: string;
       content?: string;
     }) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .patch("/campaign", data)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      return await CampaignService.updateCampaign(data);
     },
 
-    createCheckout(campaign_id: string) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .get(`/campaign/create-checkout/?campaign_id=${campaign_id}`)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    async deleteCampaign(campaign_id: string) {
+      return await CampaignService.deleteCampaign(campaign_id);
     },
 
-    calculatePrice(lists: string[]) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .post("/campaign/calculate", { lists })
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    async createCheckout(campaign_id: string) {
+      return await CampaignService.createCheckout(campaign_id);
     },
 
-    generateContent() {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .get("/campaign/generate-content")
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    async calculatePrice(lists: string[]) {
+      return await CampaignService.calculatePrice(lists);
     },
 
-    validatePayment(payment_id: string) {
-      return new Promise((resolve, reject) => {
-        axiosInstance()
-          .post(`/campaign/validate-checkout?payment_id=${payment_id}`)
-          .then((response) => {
-            resolve(response);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+    async generateContent() {
+      return await CampaignService.generateContent();
+    },
+
+    async validatePayment(payment_id: string) {
+      return await CampaignService.validatePayment(payment_id);
     },
   },
 });
