@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from "vue";
+import { ref, onMounted, computed, type Ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useListStore } from "@/stores/listStore";
 import InputText from "primevue/inputtext";
@@ -29,6 +29,14 @@ const CostEstimation: Ref<number> = ref(0);
 const generatingContent: Ref<boolean> = ref(false);
 const checkoutSession: Ref<string> = ref("");
 const paymentInProgress: Ref<boolean> = ref(false);
+
+const isFormValid = computed(() => {
+  return (
+    campaignName.value.trim() !== "" &&
+    campaignSubject.value.trim() !== "" &&
+    campaignLists.value.length > 0
+  );
+});
 
 onMounted(() => {
   getLists();
@@ -254,10 +262,11 @@ const editCampaign = async () => {
         <div class="flex flex-col items-center">
           <FishemiButton
             label="Sauvegarder la campagne"
-            icon="pi pi-download"
-            type="secondary"
+            icon="pi pi-save"
+            type="text-only"
             :fullWidth="true"
             :action="editCampaign"
+            :disabled="!isFormValid"
           />
 
           <FishemiButton
@@ -266,6 +275,7 @@ const editCampaign = async () => {
             :action="createCampaign"
             :loading="paymentInProgress"
             icon="pi pi-play"
+            :disabled="!isFormValid || paymentInProgress"
           />
 
           <p class="mt-3 text-gray-400">

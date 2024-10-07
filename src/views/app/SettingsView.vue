@@ -10,16 +10,12 @@ import { axiosInstance } from "@/services/AxiosService";
 import { useAccountStore } from "@/stores/accountStore";
 
 const toast = useToast();
-// const searchValue: Ref<string> = ref("");
-// const fileUploading: Ref<boolean> = ref(false);
-// const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
 const companyName: Ref<string> = ref("");
 const email: Ref<string> = ref("");
 
 const managerName: Ref<string> = ref("");
 const managerEmail: Ref<string> = ref("");
-// const managerRoles: Ref<string> = ref("");
 
 const gestionnaires: Ref<Gestionnaire[]> = ref([]);
 const accountStore = useAccountStore();
