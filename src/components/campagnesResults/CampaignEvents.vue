@@ -14,9 +14,9 @@ const props = defineProps<{
 const getEventPhrase = (type: string) => {
   switch (type) {
     case "opened":
-      return "à ouvert le lien";
+      return "à cliqué sur le lien";
     case "sent":
-      return "à envoyé le lien";
+      return "à reçu le mail";
     case "clicked":
       return "à cliqué sur le lien";
     default:
